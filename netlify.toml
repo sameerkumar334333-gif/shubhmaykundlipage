@@ -1,0 +1,17 @@
+[build]
+  publish = "." # Publish the root directory since there's no build process
+  command = ""  # No build command for static HTML/CSS/JS
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+
+# Optional: Add a 404 fallback page rule (Netlify automatically serves 404.html if present)
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 404
