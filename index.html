@@ -25,11 +25,11 @@
     <link rel="preconnect" href="https://www.google-analytics.com">
     <link rel="preload" as="image" href="assets/premium_kundli.webp" fetchpriority="high">
     <link rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=optional"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap">
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=optional">
     </noscript>
     <!-- CTA click tracker - fires dataLayer event then redirects (250ms allows GTM tags to send) -->
     <script>
@@ -286,6 +286,8 @@
             z-index: 0;
             animation: spinSlow 200s linear infinite;
             pointer-events: none;
+            contain: layout paint;
+            transform: translateZ(0);
         }
 
         @keyframes spinSlow {
@@ -1669,6 +1671,7 @@
         .hero-mockup-wrapper.mockup-img-container {
             width: 100%;
             max-width: 450px;
+            aspect-ratio: 1;
             display: flex;
             justify-content: center;
             align-items: center;
