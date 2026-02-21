@@ -5,31 +5,44 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Complete Personalized Kundli Report</title>
+    <title>Personalized Kundli Report | Career, Marriage & Dasha Insights</title>
     <meta name="description"
-        content="Get structured clarity on your career, love, money, marriage, and dasha insights. Manually handcrafted by an expert, 100% private, based on your exact birth details.">
+        content="A 15–20 page report based on your birth details. Career, marriage, wealth, and dasha timelines—clear language, no hype. Prepared by a Vedic astrology specialist.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://www.google-analytics.com">
     <link rel="preload" as="image" href="assets/premium_kundli.webp" fetchpriority="high">
     <link rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap">
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap">
     </noscript>
-    <!-- Google Tag Manager -->
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-MGBML6GZ');</script>
-    <!-- End Google Tag Manager -->
+    <!-- dataLayer init - required for GTM + CTA tracking -->
+    <script>window.dataLayer = window.dataLayer || [];</script>
+    <!-- GTM deferred until after LCP (good for FCP/LCP) -->
+    <script>
+        window.addEventListener('load',function(){var w=window,d=document,s='script',l='dataLayer',i='GTM-MGBML6GZ';
+        w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);});
+    </script>
+    <!-- CTA click tracker - fires dataLayer event then redirects (250ms allows Meta/GA to send) -->
+    <script>
+        function trackCta(location, label) {
+            try {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'cta_click',
+                    cta_location: location,
+                    cta_label: label || 'Get Kundli Report',
+                    destination_url: 'https://superprofile.bio/vp/kundli-checkout'
+                });
+            } catch (e) { /* tracking fail-safe */ }
+            setTimeout(function() { window.location.href = 'https://superprofile.bio/vp/kundli-checkout'; }, 250);
+        }
+    </script>
     <style>
         :root {
             --deep-maroon: #2d080e;
@@ -490,6 +503,66 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .hero-price-bottom {
+            width: 100%;
+            margin-top: 56px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-price-bottom .impact-price-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 28px 40px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(199, 169, 98, 0.35);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 560px;
+            width: 100%;
+        }
+
+        .hero-price-bottom .impact-price-box {
+            margin-bottom: 0;
+            padding: 0;
+            border: none;
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .hero-price-bottom .price-header {
+            display: none;
+        }
+
+        .hero-price-bottom .price-content {
+            margin-bottom: 0;
+            gap: 12px;
+        }
+
+        .hero-price-bottom .mrp-impact {
+            font-size: 1.2rem;
+        }
+
+        .hero-price-bottom .price-amount-impact {
+            font-size: 2.5rem;
+        }
+
+        .hero-price-bottom .impact-cta {
+            flex-shrink: 0;
+            width: auto;
+            min-width: 200px;
+            margin-top: 0;
         }
 
         .hero-mockup-wrapper {
@@ -1002,6 +1075,205 @@
             width: 100%;
         }
 
+        .who-section {
+            background-color: var(--cream-light);
+            padding: 80px 0;
+        }
+
+        .who-grid,
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .who-card {
+            background: var(--cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 28px 24px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .who-card:hover {
+            border-color: var(--matte-gold);
+            box-shadow: var(--shadow-md);
+        }
+
+        .who-card .who-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 16px;
+            color: var(--matte-gold);
+        }
+
+        .who-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .who-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .how-helps-section .section-subtitle {
+            margin-bottom: 48px;
+        }
+
+        .helps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .helps-card {
+            background: var(--cream);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            text-align: left;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .helps-card:hover {
+            border-color: var(--matte-gold);
+            box-shadow: var(--shadow-md);
+        }
+
+        .helps-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .helps-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        .helps-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .why-details-section {
+            background: linear-gradient(180deg, var(--cream) 0%, rgba(199, 169, 98, 0.06) 100%);
+            padding: 80px 0;
+        }
+
+        .why-details-inner {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .why-details-inner h2 {
+            margin-bottom: 24px;
+        }
+
+        .why-details-inner p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .testimonials-section {
+            background-color: var(--cream);
+            padding: 80px 0;
+            overflow: hidden;
+        }
+
+        .testimonials-mask {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 24px 0;
+            cursor: grab;
+            user-select: none;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .testimonials-mask::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonials-mask:active {
+            cursor: grabbing;
+        }
+
+        .testimonials-track {
+            display: flex;
+            gap: 24px;
+            width: max-content;
+            padding: 0 24px;
+        }
+
+        .review-card {
+            flex-shrink: 0;
+            width: 340px;
+            background: var(--cream-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .review-card:hover {
+            border-color: rgba(199, 169, 98, 0.4);
+            box-shadow: var(--shadow-md);
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            color: var(--matte-gold);
+        }
+
+        .review-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .review-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--matte-gold), var(--saffron));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cream-light);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .review-name {
+            font-weight: 600;
+            color: var(--deep-maroon);
+            font-size: 0.95rem;
+        }
+
+        .review-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
         .authority-section {
             background-color: var(--cream);
         }
@@ -1151,10 +1423,6 @@
                 margin-right: auto;
             }
 
-            .astro-badge-overlap {
-                left: 50%;
-                transform: translate(-50%, 0) translateZ(30px);
-            }
         }
 
         @media (max-width:768px) {
@@ -1227,6 +1495,20 @@
                 flex-direction: column;
             }
 
+            .who-grid,
+            .areas-grid,
+            .helps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-five .step-title {
+                font-size: 1rem;
+            }
+
+            .review-card {
+                width: 300px;
+            }
+
             .sticky-container {
                 flex-direction: column;
                 text-align: center;
@@ -1284,12 +1566,19 @@
                 margin: 0 auto;
             }
 
-            .astro-badge-overlap {
-                left: 50%;
-                bottom: -50px;
-                width: 90%;
-                justify-content: center;
-                transform: translate(-50%, 0) translateZ(30px);
+            .hero-price-bottom {
+                margin-top: 32px;
+            }
+
+            .hero-price-bottom .impact-price-wrapper {
+                flex-direction: column;
+                padding: 24px 20px;
+                gap: 20px;
+            }
+
+            .hero-price-bottom .impact-cta {
+                width: 100%;
+                min-width: unset;
             }
         }
 
@@ -1374,13 +1663,17 @@
             transform: translateY(-2px);
         }
 
-        .mockup-img-container {
+        .hero-mockup-wrapper.mockup-img-container {
             width: 100%;
             max-width: 450px;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+        }
+
+        .hero-mockup-wrapper.mockup-img-container .hero-png-img {
+            width: 100%;
+            height: auto;
         }
 
         .hero-png-img {
@@ -1815,6 +2108,18 @@
             border-radius: 4px;
             letter-spacing: 0.5px;
         }
+
+        @media (min-width: 901px) {
+            .mobile-only {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .desktop-only {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -1836,332 +2141,169 @@
 
                 <!-- Left Column (Text & Offer) -->
                 <div class="hero-text-col">
-                    <div class="authority-badge-top">
-                        <span class="badge-item"><svg class="lucide lucide-users icon-small text-saffron" style=""
-                                class="lucide lucide-users" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                <circle cx="9" cy="7" r="4" />
-                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                            </svg>
-                            13K+
-                            Followers</span>
-                        <span class="badge-divider">•</span>
-                        <span class="badge-item"><svg class="lucide lucide-star icon-small text-saffron" style=""
-                                class="lucide lucide-star" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polygon
-                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                            </svg>
-                            Vedic
-                            Astrology
-                            Specialist</span>
-                    </div>
+                    <h1 class="headline">Personalized <span class="accent-text">Kundli Report</span></h1>
 
-                    <h1 class="headline">Get Your Complete Personalized <span class="accent-text">Kundli Report</span>
-                        <br><span class="headline-sub" style="color: var(--matte-gold);">Based On Your Exact Birth
-                            Details</span>
-                    </h1>
+                    <p class="subheadline" style="color: rgba(255,255,255,0.8);">Full birth chart report. Career, marriage, money, dasha and remedies. Based on your exact date, time and place of birth.</p>
 
-                    <p class="subheadline" style="color: rgba(255,255,255,0.8);">Love, Career, Money, Marriage & Dasha
-                        Insights – In a Detailed 15–20 Page
-                        PDF.</p>
-
-                    <div class="price-action-group">
-                        <div class="urgency-banner pulse-anim-light text-red">
-                            <svg class="lucide lucide-timer icon-small" style="" class="lucide lucide-timer"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <line x1="10" x2="14" y1="2" y2="2" />
-                                <line x1="12" x2="15" y1="14" y2="11" />
-                                <circle cx="12" cy="14" r="8" />
-                            </svg>
-
-                            <span><strong>Limited Time Offer</strong> — Price goes up soon!</span>
-                        </div>
-
-                        <!-- Transparent PNG inserted in place of price -->
-                        <div class="mockup-img-container floating-anim"
-                            style="margin-top: 16px; margin-bottom: 24px; max-width: 350px; aspect-ratio: 1/1;">
-                            <img src="assets/premium_kundli.webp" alt="Premium Kundli Report" class="hero-png-img"
-                                fetchpriority="high" width="600" height="600" style="width: 100%; height: auto;">
-                        </div>
-                    </div>
-
-                    <!-- Trust Chips -->
+                    <!-- Authority Strip -->
                     <div class="hero-trust-chips">
-                        <div class="trust-chip" style="color: #fff;"><svg
-                                class="lucide lucide-check-circle-2 icon-saffron" style="width: 14px;"
-                                class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                            </svg>
-                            <span>Expert Analysis</span>
-                        </div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-lock icon-saffron"
-                                style="width: 14px;" class="lucide lucide-lock" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-
-                            <span>Secure Payment</span>
-                        </div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-clock icon-saffron"
-                                style="width: 14px;" class="lucide lucide-clock" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                            </svg>
-
-                            <span>Personalized</span>
-                        </div>
+                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Vedic Chart Analysis</span></div>
+                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Expert Reviewed</span></div>
+                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Sent to Your Email</span></div>
                     </div>
                 </div>
 
-                <!-- Right Column (Visual Mockup) -->
+                <!-- Right Column (Product Image) -->
                 <div class="hero-visual-col">
-                    <div class="hero-mockup-wrapper">
-                        <!-- Price Wrapper inserted in place of PNG -->
-                        <div class="impact-price-wrapper"
-                            style="box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-radius: var(--radius-lg); background: transparent; padding: 12px; border: 1px solid rgba(199, 169, 98, 0.1); margin-top: -16px;">
-                            <div class="impact-price-box" style="margin-bottom: 12px;">
-                                <div class="price-header">Complete Kundli Report</div>
-                                <div class="price-content">
-                                    <span class="mrp-impact"><span class="line-through">₹999</span></span>
-                                    <span class="price-amount-impact">₹349</span>
-                                </div>
-                                <div class="price-urgency">⚡ Limited Time Offer</div>
-                            </div>
-
-                            <button class="cta-button impact-cta pulse-anim hero-cta-large"
-                                onclick="window.location.href='https://superprofile.bio/vp/kundli-checkout'"
-                                style="margin-top: 0;">
-                                <span class="cta-text">ORDER EXPERT KUNDLI NOW &rarr;</span>
-                            </button>
-                            <div class="cta-subtext"
-                                style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; color: rgba(255,255,255,0.6); font-size: 0.9rem;">
-                                <svg class="lucide lucide-shield-check icon-small" style=""
-                                    class="lucide lucide-shield-check" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                                    <path d="m9 12 2 2 4-4" />
-                                </svg>
-                                Secure Payment &bull; <svg class="lucide lucide-pen-tool icon-small" style=""
-                                    class="lucide lucide-pen-tool" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m12 19 7-7 3 3-7 7-3-3z" />
-                                    <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-                                    <path d="m2 2 7.586 7.586" />
-                                    <circle cx="11" cy="11" r="2" />
-                                </svg>
-                                Manually Prepared PDF
-                            </div>
-                        </div>
-
-                        <!-- Overlapping Astro Badge -->
-                        <div class="astro-badge-overlap">
-                            <div class="astro-img-mini"><svg class="lucide lucide-user " style=""
-                                    class="lucide lucide-user" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
-                            </div>
-                            <div class="astro-text-mini">
-                                <span class="light-text">Prepared By</span>
-                                <strong>AstroGuru Ashutosh</strong>
-                            </div>
-                        </div>
+                    <div class="hero-mockup-wrapper mockup-img-container">
+                        <img src="assets/premium_kundli.webp" alt="Personalized Kundli Report" class="hero-png-img"
+                            fetchpriority="high" width="600" height="600" decoding="async" loading="eager">
                     </div>
                 </div>
 
+            </div>
+
+            <!-- Price & CTA at bottom -->
+            <div class="hero-price-bottom">
+                <div class="impact-price-wrapper">
+                    <div class="impact-price-box">
+                        <span class="mrp-impact"><span class="line-through">₹999</span></span>
+                        <span class="price-amount-impact">₹349</span>
+                    </div>
+                    <button class="cta-button impact-cta pulse-anim"
+                        onclick="trackCta('hero','Order My Kundli Report')">
+                        <span class="cta-text">Order My Kundli Report</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. Problem Agitation Section -->
+    <!-- 1b. Karmic Solution Image + CTA -->
+    <section class="karmic-image-section" style="padding: 48px 0; background: var(--cream);">
+        <div class="container" style="text-align: center;">
+            <img src="assets/karmic_solution_compressed.webp" alt="Karmic Solution" loading="lazy"
+                style="max-width: 500px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); margin-bottom: 24px;"
+                width="600" height="600">
+            <button class="cta-button pulse-anim" onclick="trackCta('karmic_section','Get My Kundli Report')">
+                Get My Kundli Report
+            </button>
+        </div>
+    </section>
+
+    <!-- 2. Emotional Hook Section -->
     <section class="agitation-section dark-section">
         <div class="container">
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <svg class="lucide lucide-frown icon-large icon-gold" style="" class="lucide lucide-frown"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-                        <line x1="9" x2="9.01" y1="9" y2="9" />
-                        <line x1="15" x2="15.01" y1="9" y2="9" />
-                    </svg>
+            <h2 class="section-title text-light">Make Your Life Better in Every Way</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8); max-width: 720px;">Your Kundli report looks at your past, present and future. We study your birth chart, planets, DOB and houses. Our expert gives you answers for love, career, marriage and business. No guesswork.</p>
+        </div>
+    </section>
 
-                    <h3>Confused about career direction?</h3>
+    <!-- 2b. How Janam Kundli Report Helps You -->
+    <section class="how-helps-section" style="padding: 80px 0; background: var(--cream-light);">
+        <div class="container">
+            <h2 class="section-title">How Janam Kundli Report Helps You</h2>
+            <p class="section-subtitle">Your birth chart holds answers. A Janam Kundli report helps you use them.</p>
+            <div class="helps-grid">
+                <div class="helps-card">
+                    <div class="helps-icon">📅</div>
+                    <h3>Know Your Right Time</h3>
+                    <p>Dasha tells you which planet is running your life now. Know the best years for job change, marriage, business start. Act when stars support you.</p>
                 </div>
-                <div class="problem-card">
-                    <svg class="lucide lucide-heart-crack icon-large icon-gold" style=""
-                        class="lucide lucide-heart-crack" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                        <path d="m12 13-1-1 2-2-3-3 2-2" />
-                    </svg>
-
-                    <h3>Marriage delay or issues?</h3>
+                <div class="helps-card">
+                    <div class="helps-icon">💑</div>
+                    <h3>Understand Marriage & Love</h3>
+                    <p>See your 7th house, Venus, Mars. Know delay reasons, compatible partner, when marriage can happen. No more confusion.</p>
                 </div>
-                <div class="problem-card">
-                    <svg class="lucide lucide-trending-down icon-large icon-gold" style=""
-                        class="lucide lucide-trending-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <polyline points="22 17 13.5 8.5 8.5 13.5 2 7" />
-                        <polyline points="16 17 22 17 22 11" />
-                    </svg>
-
-                    <h3>Financial instability?</h3>
+                <div class="helps-card">
+                    <div class="helps-icon">💼</div>
+                    <h3>Plan Career & Money</h3>
+                    <p>10th house and Saturn show career. 2nd, 8th, 11th show money. Know your strong periods. Make smart moves.</p>
                 </div>
-                <div class="problem-card">
-                    <svg class="lucide lucide-alert-triangle icon-large icon-gold" style=""
-                        class="lucide lucide-alert-triangle" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-                        <path d="M12 9v4" />
-                        <path d="M12 17h.01" />
-                    </svg>
-
-                    <h3>Sudden obstacles in life?</h3>
+                <div class="helps-card">
+                    <div class="helps-icon">🛡️</div>
+                    <h3>Fix Dosha & Weakness</h3>
+                    <p>Mangal dosha, Rahu, Shani—know what affects you. Get simple remedies. Reduce stress, improve results.</p>
                 </div>
             </div>
-            <p class="audience-conclusion">"If you want structured clarity instead of random predictions, this report is
-                for you."</p>
+        </div>
+    </section>
+
+    <!-- 3. Areas Covered -->
+    <section class="who-section" id="areas-covered">
+        <div class="container">
+            <h2 class="section-title">What We Cover in Your Report</h2>
+            <div class="areas-grid">
+                <div class="who-card">
+                    <h3>Relationships & Marriage</h3>
+                    <p>Compatibility, delay, and when to expect marriage.</p>
+                </div>
+                <div class="who-card">
+                    <h3>Career & Job</h3>
+                    <p>Best time for job change, exams, going abroad.</p>
+                </div>
+                <div class="who-card">
+                    <h3>Business & Money</h3>
+                    <p>Wealth timing, risk periods, stability.</p>
+                </div>
+                <div class="who-card">
+                    <h3>Love & Emotions</h3>
+                    <p>Planets and your love life, attachment patterns.</p>
+                </div>
+                <div class="who-card">
+                    <h3>Home & Property</h3>
+                    <p>Property timing, shifting, family peace.</p>
+                </div>
+                <div class="who-card">
+                    <h3>Health</h3>
+                    <p>Body and mind balance from your chart.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- 3. What You Will Get -->
     <section class="deliverables-section" id="what-you-get">
         <div class="container">
-            <h2 class="section-title">What You Will Get</h2>
-            <p class="section-subtitle">Everything you need to navigate life with clarity.</p>
-
+            <h2 class="section-title">What You Get in Your Report</h2>
             <div class="deliverables-grid">
                 <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Full Birth
-                                Chart</strong> (Lagna + Houses)</span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>Dosha & Dasha</strong> — Mangal, Shani, Rahu-Ketu and your current planetary period.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Planetary
-                                Positions</strong> Explained</span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>Yog & Strength</strong> — Important yogas and how they affect career, money, relationships.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Current
-                                Mahadasha & Antardasha</strong></span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>Remedies</strong> — Simple, easy-to-do suggestions based on your chart.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Career Growth
-                                Timeline</strong></span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>Numerology</strong> <em>(Optional)</em> — Name and birth number insight.</span>
                     </li>
                 </ul>
                 <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Marriage
-                                Analysis</strong></span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>1-Year Monthly Forecast</strong> — Month-wise prediction.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Money & Wealth
-                                Potential</strong></span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>Long-Term Trends</strong> — Major planetary shifts in coming years.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Dosha
-                                Analysis</strong> (Mangal, Rahu, Shani)</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron text-xl" style=""
-                            class="lucide lucide-check-circle-2" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-
-                        <span><strong>Remedies</strong> (Practical + Simple)</span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        <span><strong>House Strength Chart</strong> — Visual house strength.</span>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- 4. Meet Your Astrologer (Authority Video) -->
+    <!-- 4. Meet Your Astrologer -->
     <section class="founder-section">
         <div class="container">
-            <div class="founder-layout">
-                <div class="founder-video-container">
-                    <div class="video-placeholder"
-                        style="aspect-ratio: 1/1; max-width: 450px; padding: 0; border: none; background: transparent;">
-                        <img src="assets/karmic_solution_compressed.webp" alt="Karmic Solution"
-                            style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);"
-                            loading="lazy" width="600" height="600">
-                    </div>
-                </div>
+            <div class="founder-layout" style="max-width: 700px; margin: 0 auto; text-align: center;">
                 <div class="founder-content">
                     <div class="founder-badge">Meet Your Astrologer</div>
-                    <h2 class="founder-title">Clarity Over <span class="accent-text">Confusion</span></h2>
-                    <p class="founder-desc">"I've spent years decoding Vedic astrology, helping thousands find direction
-                        in career, marriage, and wealth. My goal isn't to scare you with complex terms—it's to give you
-                        practical, actionable insights based strictly on mathematical planetary alignments."</p>
+                    <h2 class="founder-title">Clear &amp; Simple <span class="accent-text">Reports</span></h2>
+                    <p class="founder-desc">I have studied Vedic astrology for years. I help people with career, marriage, and money questions. No scary words. No confusion. Just clear answers from your birth chart.</p>
 
                     <div class="founder-stats">
                         <div class="stat-item">
@@ -2189,7 +2331,7 @@
                         </div>
                         <div class="profile-info">
                             <h3 class="founder-name-highlight">AstroGuru Ashutosh</h3>
-                            <p class="founder-title-highlight">⭐ Expert Vedic Astrologer ⭐</p>
+                            <p class="founder-title-highlight">Vedic Astrologer</p>
                         </div>
                     </div>
                 </div>
@@ -2197,48 +2339,51 @@
         </div>
     </section>
 
-    <!-- 5. How It Works -->
+    <!-- 4. How Your Kundli Report Is Prepared -->
     <section class="process-section dark-section" id="how-it-works">
         <div class="container">
-            <h2 class="section-title text-light">How It Works</h2>
-            <div class="steps-layout">
+            <h2 class="section-title text-light">How We Make Your Report</h2>
+            <div class="steps-layout steps-five">
                 <div class="step-card dark-step-card">
                     <div class="step-number">1</div>
-                    <h4 class="step-title">Enter Details</h4>
-                    <p class="step-desc">Enter DOB, Time & Place securely.</p>
+                    <h4 class="step-title">You Enter Birth Details</h4>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step-card dark-step-card">
                     <div class="step-number">2</div>
-                    <h4 class="step-title">Expert Analysis</h4>
-                    <p class="step-desc">Ashutosh manually analyzes your birth chart.</p>
+                    <h4 class="step-title">We Make Your Birth Chart</h4>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step-card dark-step-card">
                     <div class="step-number">3</div>
-                    <h4 class="step-title">PDF Delivery</h4>
-                    <p class="step-desc">Receive your handcrafted PDF securely.</p>
+                    <h4 class="step-title">We Analyse Planets & Houses</h4>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-card dark-step-card">
+                    <div class="step-number">4</div>
+                    <h4 class="step-title">We Study Dasha & Timeline</h4>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-card dark-step-card">
+                    <div class="step-number">5</div>
+                    <h4 class="step-title">We Send PDF to Your Email</h4>
                 </div>
             </div>
+            <p class="process-note" style="text-align: center; margin-top: 32px; color: rgba(255,255,255,0.7); font-size: 1rem;">Every report is checked by our expert before sending.</p>
         </div>
     </section>
 
     <!-- 6. Differentiation -->
     <section class="diff-section">
         <div class="container">
-            <h2 class="section-title">Why We Are Different</h2>
+            <h2 class="section-title">Why Choose Us</h2>
             <div class="diff-split-grid">
                 <div class="diff-column neg-column">
                     <h4 class="diff-col-title">Other Astrologers</h4>
                     <ul class="diff-list">
-                        <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-                            </svg>
-                            <span>Not Generic Rashifal</span>
+                        <li><svg class="lucide lucide-x text-red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                            <span>Generic rashifal</span>
                         </li>
                         <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -2247,7 +2392,7 @@
                                 <path d="M18 6 6 18" />
                                 <path d="m6 6 12 12" />
                             </svg>
-                            <span>Not Fear-Based Predictions</span>
+                            <span>Fear-based predictions</span>
                         </li>
                         <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -2256,12 +2401,12 @@
                                 <path d="M18 6 6 18" />
                                 <path d="m6 6 12 12" />
                             </svg>
-                            <span>No High-Pressure Calls</span>
+                            <span>Pressure to buy more</span>
                         </li>
                     </ul>
                 </div>
                 <div class="diff-column pos-column">
-                    <h4 class="diff-col-title">Our Premium Report</h4>
+                    <h4 class="diff-col-title">What We Offer</h4>
                     <ul class="diff-list">
                         <li><svg class="lucide lucide-check text-green" style="" class="lucide lucide-check"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -2269,23 +2414,17 @@
                                 stroke-linejoin="round">
                                 <path d="M20 6 9 17l-5-5" />
                             </svg>
-                            <span>Structured, Data-Based Analysis</span>
+                            <span>Report made from your real chart</span>
                         </li>
-                        <li><svg class="lucide lucide-check text-green" style="" class="lucide lucide-check"
+                        <li><svg class="lucide lucide-check text-green"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                            <span>Clear & Simple Language</span>
+                                fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Easy words, no complex terms</span>
                         </li>
-                        <li><svg class="lucide lucide-check text-green" style="" class="lucide lucide-check"
+                        <li><svg class="lucide lucide-check text-green"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                            <span>No Drama – Practical Insight</span>
+                                fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                            <span>Direct answers, no fear</span>
                         </li>
                     </ul>
                 </div>
@@ -2293,7 +2432,7 @@
         </div>
     </section>
 
-    <!-- 7. Price Stacking -->
+    <!-- 7. Pricing -->
     <section class="price-stack-section dark-section" id="pricing">
         <div class="container">
             <h2 class="section-title text-light">Real Value Breakdown</h2>
@@ -2301,9 +2440,9 @@
                 <div class="stack-items">
                     <div class="stack-row"><span>Birth Chart Analysis</span> <span>₹499</span></div>
                     <div class="stack-row"><span>Dasha Timeline</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Marriage Section</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Career Section</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Remedies</span> <span>₹299</span></div>
+                    <div class="stack-row"><span>Marriage &amp; Relationship Analysis</span> <span>₹399</span></div>
+                    <div class="stack-row"><span>Career &amp; Finance Section</span> <span>₹399</span></div>
+                    <div class="stack-row"><span>Yog, Dosha &amp; Remedial Suggestions</span> <span>₹299</span></div>
                 </div>
                 <div class="stack-total">
                     <span class="total-label">Total Value</span>
@@ -2314,31 +2453,51 @@
                     <span class="offer-amount">₹349</span>
                 </div>
                 <button class="cta-button final-cta pulse-anim"
-                    onclick="window.location.href='https://superprofile.bio/vp/kundli-checkout'">
-                    <span class="cta-text">👉 Get My Personalized Kundli</span>
+                    onclick="trackCta('pricing','Proceed to Checkout')">
+                    <span class="cta-text">Proceed to Checkout</span>
                 </button>
+                <p class="pricing-note" style="text-align: center; margin-top: 20px; font-size: 0.95rem; color: var(--text-muted);">Delivery Time: 24–48 Hours &bull; Digital PDF Format</p>
             </div>
         </div>
     </section>
 
-    <!-- 8. Authority Section -->
-    <section class="authority-section">
+    <!-- 8. Testimonials -->
+    <section class="testimonials-section" id="reviews">
         <div class="container">
-            <h2 class="section-title">Trusted By Thousands</h2>
-            <p class="section-subtitle">Real people seeking real clarity. No fake testimonials.</p>
-
-            <div class="social-proof-grid">
-                <div class="proof-card img-placeholder">
-                    <div class="placeholder-text">Instagram Proof<br>(Screenshot here)</div>
+            <h2 class="section-title">What People Are Saying</h2>
+            <p class="section-subtitle">Grounded feedback from people who ordered the report.</p>
+        </div>
+        <div class="testimonials-mask" id="testimonialsMask">
+            <div class="testimonials-track" id="testimonialsTrack">
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The timeline section helped me understand when to make my career move. The explanations were clear and structured."</p>
+                    <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Rahul</div><div class="review-meta">Delhi</div></div></div>
                 </div>
-                <div class="proof-card img-placeholder">
-                    <div class="placeholder-text">Reels Views<br>(Screenshot here)</div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."</p>
+                    <div class="review-author"><div class="review-avatar">P</div><div><div class="review-name">Priya</div><div class="review-meta">Mumbai</div></div></div>
                 </div>
-                <div class="proof-card img-placeholder">
-                    <div class="placeholder-text">Live Sessions<br>(Screenshot here)</div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
+                    <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Amit</div><div class="review-meta">Bangalore</div></div></div>
                 </div>
-                <div class="proof-card img-placeholder">
-                    <div class="placeholder-text">WhatsApp Channel Count<br>(Screenshot here)</div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The timeline section helped me understand when to make my career move. The explanations were clear and structured."</p>
+                    <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Rahul</div><div class="review-meta">Delhi</div></div></div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."</p>
+                    <div class="review-author"><div class="review-avatar">P</div><div><div class="review-name">Priya</div><div class="review-meta">Mumbai</div></div></div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
+                    <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Amit</div><div class="review-meta">Bangalore</div></div></div>
                 </div>
             </div>
         </div>
@@ -2351,7 +2510,7 @@
             <div class="faq-accordion">
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What if I don't know my exact birth time?</span>
+                        <span>Is this software generated?</span>
                         <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2360,13 +2519,12 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>An approximate time works for a general overview, but for exact planetary periods (Dasha) and
-                            finer details, an accurate birth time is highly recommended.</p>
+                        <p>No. Charts are generated mathematically, but interpretation is manual.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Is this manual or automated?</span>
+                        <span>What if I don't know exact birth time?</span>
                         <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2375,14 +2533,12 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>Given the high level of detail, your report is 100% manually analyzed and crafted by
-                            AstroGuru Ashutosh. We do not use generic, automated software engines, ensuring perfection
-                            in every prediction.</p>
+                        <p>Approximate time can provide overview; exact time improves accuracy.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>When will I receive my report?</span>
+                        <span>How will I receive the report?</span>
                         <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2391,14 +2547,12 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>Because every single chart is analyzed manually for ultimate accuracy, please allow up to
-                            24-48 hours. Once complete, your highly personalized PDF will be sent directly to your
-                            provided contact details.</p>
+                        <p>PDF via email and optionally WhatsApp.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>Is my data safe?</span>
+                        <span>Is my data secure?</span>
                         <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2407,13 +2561,12 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>100% yes. We strictly use your birth details only to manually prepare your tailored report.
-                            We do not sell or share your data.</p>
+                        <p>Birth details are used only for report preparation.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">
-                        <span>What is the refund policy?</span>
+                        <span>Is consultation included?</span>
                         <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2422,12 +2575,17 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>Because this is a highly personalized, custom-made digital service requiring manual time and
-                            expertise, we do not offer refunds once the preparation has begun. If you experience
-                            technical issues receiving the file, our team will assist you.</p>
+                        <p>The report is a standalone PDF. One-on-one consultation can be discussed separately if needed.</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- 9. Urgency (Subtle) -->
+    <section class="urgency-section dark-section" style="padding: 48px 0;">
+        <div class="container">
+            <p class="urgency-text" style="text-align: center; font-size: 1.1rem; color: rgba(255,255,255,0.9);">Get your report now. Limited time price.</p>
         </div>
     </section>
 
@@ -2440,48 +2598,84 @@
     <!-- 10. Sticky CTA Bar -->
     <div class="sticky-cta-bar">
         <div class="sticky-container">
-            <span class="sticky-text">🔥 Get My Personalized Kundli – <span class="sticky-price">₹349</span></span>
+            <span class="sticky-text">Hurry — offer is only for today</span>
             <button class="cta-button sticky-btn pulse-anim"
-                onclick="window.location.href='https://superprofile.bio/vp/kundli-checkout'">Claim Now</button>
+                onclick="trackCta('sticky_bar','Get Your Report – ₹349')">Get Your Report – ₹349</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // FAQ Accordion Logic
+            // FAQ Accordion
             const faqItems = document.querySelectorAll('.faq-item');
-
             faqItems.forEach(item => {
                 const question = item.querySelector('.faq-question');
-
                 question.addEventListener('click', () => {
-                    // Check if this item is currently active
                     const isActive = item.classList.contains('active');
-
-                    // Close all items
                     faqItems.forEach(i => {
                         i.classList.remove('active');
                         const answer = i.querySelector('.faq-answer');
                         answer.style.maxHeight = '0px';
                         answer.style.padding = '0 24px';
                     });
-
-                    // Open this item if it wasn't already open
                     if (!isActive) {
                         item.classList.add('active');
                         const answer = item.querySelector('.faq-answer');
-                        // Calculate height dynamically
-                        const scrollHeight = answer.scrollHeight;
-                        answer.style.maxHeight = `${scrollHeight + 24}px`; // Add padding bottom
+                        answer.style.maxHeight = `${answer.scrollHeight + 24}px`;
                         answer.style.padding = '0 24px 24px 24px';
                     }
                 });
             });
 
-            // Handle initial state for the first item (optional, keeping all closed by default is fine)
+            // Testimonials: auto-scroll right-to-left, pause on hover, drag to move
+            const mask = document.getElementById('testimonialsMask');
+            const track = document.getElementById('testimonialsTrack');
+            if (mask && track) {
+                const scrollSpeed = 1;
+                const halfWidth = track.offsetWidth / 2;
+                let scrollInterval;
+                let isHovered = false;
+                let isDragging = false;
+                let startX, startScrollLeft;
+
+                function autoScroll() {
+                    if (!isHovered && !isDragging) {
+                        mask.scrollLeft += scrollSpeed;
+                        if (mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
+                    }
+                }
+
+                function startAutoScroll() {
+                    scrollInterval = setInterval(autoScroll, 30);
+                }
+
+                mask.addEventListener('mouseenter', () => {
+                    isHovered = true;
+                    clearInterval(scrollInterval);
+                });
+                mask.addEventListener('mouseleave', () => {
+                    isHovered = false;
+                    if (!isDragging) startAutoScroll();
+                });
+
+                mask.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    startX = e.pageX;
+                    startScrollLeft = mask.scrollLeft;
+                });
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    mask.scrollLeft = startScrollLeft - (e.pageX - startX);
+                });
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    if (!isHovered) startAutoScroll();
+                });
+
+                startAutoScroll();
+            }
         });
-
-
     </script>
 </body>
 
