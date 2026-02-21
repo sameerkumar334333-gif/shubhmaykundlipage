@@ -1204,7 +1204,6 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             -webkit-overflow-scrolling: touch;
-            pointer-events: none;
         }
 
         .testimonials-mask::-webkit-scrollbar {
@@ -2650,11 +2649,11 @@
                 });
             });
 
-            // Testimonials: loop auto-scroll only (no drag/touch move)
+            // Testimonials: loop auto-scroll only
             const mask = document.getElementById('testimonialsMask');
             const track = document.getElementById('testimonialsTrack');
             if (mask && track) {
-                const scrollSpeed = 1;
+                const scrollSpeed = 2;
                 let scrollInterval;
 
                 function getHalfWidth() {
@@ -2662,19 +2661,22 @@
                 }
 
                 function autoScroll() {
-                    const halfWidth = getHalfWidth();
+                    var hw = getHalfWidth();
+                    if (hw <= 0) return;
                     mask.scrollLeft += scrollSpeed;
-                    if (halfWidth > 0 && mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
+                    if (mask.scrollLeft >= hw) mask.scrollLeft = 0;
                 }
 
                 function startAutoScroll() {
                     if (scrollInterval) clearInterval(scrollInterval);
-                    scrollInterval = setInterval(autoScroll, 30);
+                    scrollInterval = setInterval(autoScroll, 25);
                 }
 
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => startAutoScroll());
+                // Start after layout (load + short delay so below-fold track has dimensions)
+                window.addEventListener('load', function() {
+                    setTimeout(startAutoScroll, 100);
                 });
+                if (document.readyState === 'complete') setTimeout(startAutoScroll, 100);
             }
         });
     </script>
