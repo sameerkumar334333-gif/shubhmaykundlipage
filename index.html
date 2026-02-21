@@ -1201,13 +1201,17 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: 24px 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            scrollbar-width: thin;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
         .testimonials-mask::-webkit-scrollbar {
-            display: none;
+            height: 6px;
+        }
+        .testimonials-mask::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
         }
 
         .testimonials-track {
@@ -1225,12 +1229,6 @@
             border-radius: var(--radius-lg);
             padding: 28px 24px;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .review-card:hover {
-            border-color: rgba(199, 169, 98, 0.4);
-            box-shadow: var(--shadow-md);
         }
 
         .review-stars {
@@ -2649,35 +2647,6 @@
                 });
             });
 
-            // Testimonials: loop auto-scroll only
-            const mask = document.getElementById('testimonialsMask');
-            const track = document.getElementById('testimonialsTrack');
-            if (mask && track) {
-                const scrollSpeed = 2;
-                let scrollInterval;
-
-                function getHalfWidth() {
-                    return Math.floor(track.scrollWidth / 2) || Math.floor(track.offsetWidth / 2);
-                }
-
-                function autoScroll() {
-                    var hw = getHalfWidth();
-                    if (hw <= 0) return;
-                    mask.scrollLeft += scrollSpeed;
-                    if (mask.scrollLeft >= hw) mask.scrollLeft = 0;
-                }
-
-                function startAutoScroll() {
-                    if (scrollInterval) clearInterval(scrollInterval);
-                    scrollInterval = setInterval(autoScroll, 25);
-                }
-
-                // Start after layout (load + short delay so below-fold track has dimensions)
-                window.addEventListener('load', function() {
-                    setTimeout(startAutoScroll, 100);
-                });
-                if (document.readyState === 'complete') setTimeout(startAutoScroll, 100);
-            }
         });
     </script>
 </body>
