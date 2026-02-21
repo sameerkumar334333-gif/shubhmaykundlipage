@@ -5,6 +5,17 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- GTM: dataLayer init (required for CTA tracking before GTM loads) -->
+    <script>window.dataLayer = window.dataLayer || [];</script>
+    <!-- GTM: deferred to window.load so FCP/LCP stay fast; LP → checkout on Cosmofeed -->
+    <script>
+    window.addEventListener('load',function(){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MGBML6GZ');
+    });
+    </script>
     <title>Personalized Kundli Report | Career, Marriage & Dasha Insights</title>
     <meta name="description"
         content="A 15–20 page report based on your birth details. Career, marriage, wealth, and dasha timelines—clear language, no hype. Prepared by a Vedic astrology specialist.">
@@ -20,15 +31,7 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=swap">
     </noscript>
-    <!-- dataLayer init - required for GTM + CTA tracking -->
-    <script>window.dataLayer = window.dataLayer || [];</script>
-    <!-- GTM deferred until after LCP (good for FCP/LCP) -->
-    <script>
-        window.addEventListener('load',function(){var w=window,d=document,s='script',l='dataLayer',i='GTM-MGBML6GZ';
-        w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-        var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);});
-    </script>
-    <!-- CTA click tracker - fires dataLayer event then redirects (250ms allows Meta/GA to send) -->
+    <!-- CTA click tracker - fires dataLayer event then redirects (250ms allows GTM tags to send) -->
     <script>
         function trackCta(location, label) {
             try {
@@ -2125,8 +2128,8 @@
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- 1. Hero Section -->
