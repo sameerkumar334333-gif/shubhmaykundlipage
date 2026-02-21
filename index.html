@@ -31,7 +31,10 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500&display=optional">
     </noscript>
-    <!-- CTA click tracker - fires dataLayer event then redirects (250ms allows GTM tags to send) -->
+    <!-- CTA tracking: GTM trigger options (Click - All Elements, Some Clicks):
+         • Click ID matches regex: ^cta-
+         • Click Classes contains: cta-button
+         • Click Element matches CSS: [data-cta], button.cta-button, [id^="cta-"] -->
     <script>
         function trackCta(location, label) {
             try {
@@ -2176,7 +2179,7 @@
                         <span class="mrp-impact"><span class="line-through">₹999</span></span>
                         <span class="price-amount-impact">₹349</span>
                     </div>
-                    <button id="cta-hero" class="cta-button impact-cta pulse-anim"
+                    <button id="cta-hero" class="cta-button impact-cta pulse-anim" data-cta="hero"
                         onclick="trackCta('hero','Order My Kundli Report')">
                         <span class="cta-text">Order My Kundli Report</span>
                     </button>
@@ -2191,7 +2194,7 @@
             <img src="assets/karmic_solution_compressed.webp" alt="Karmic Solution" loading="lazy"
                 style="max-width: 500px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); margin-bottom: 24px;"
                 width="600" height="600">
-            <button id="cta-karmic" class="cta-button pulse-anim" onclick="trackCta('karmic_section','Get My Kundli Report')">
+            <button id="cta-karmic" class="cta-button pulse-anim" data-cta="karmic" onclick="trackCta('karmic_section','Get My Kundli Report')">
                 Get My Kundli Report
             </button>
         </div>
@@ -2458,7 +2461,7 @@
                     <span class="offer-label">Today Only</span>
                     <span class="offer-amount">₹349</span>
                 </div>
-                <button id="cta-pricing" class="cta-button final-cta pulse-anim"
+                <button id="cta-pricing" class="cta-button final-cta pulse-anim" data-cta="pricing"
                     onclick="trackCta('pricing','Proceed to Checkout')">
                     <span class="cta-text">Proceed to Checkout</span>
                 </button>
@@ -2605,7 +2608,7 @@
     <div class="sticky-cta-bar">
         <div class="sticky-container">
             <span class="sticky-text">Hurry — offer is only for today</span>
-            <button id="cta-sticky" class="cta-button sticky-btn pulse-anim"
+            <button id="cta-sticky" class="cta-button sticky-btn pulse-anim" data-cta="sticky"
                 onclick="trackCta('sticky_bar','Get Your Report – ₹349')">Get Your Report – ₹349</button>
         </div>
     </div>
