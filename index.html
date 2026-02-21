@@ -5,6 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
     <!-- GTM: dataLayer init (required for CTA tracking before GTM loads) -->
     <script>window.dataLayer = window.dataLayer || [];</script>
     <!-- GTM: deferred to window.load so FCP/LCP stay fast; LP → checkout on Cosmofeed -->
@@ -2641,20 +2642,25 @@
             const track = document.getElementById('testimonialsTrack');
             if (mask && track) {
                 const scrollSpeed = 1;
-                const halfWidth = track.offsetWidth / 2;
                 let scrollInterval;
                 let isHovered = false;
                 let isDragging = false;
                 let startX, startScrollLeft;
 
+                function getHalfWidth() {
+                    return Math.floor(track.scrollWidth / 2) || Math.floor(track.offsetWidth / 2);
+                }
+
                 function autoScroll() {
                     if (!isHovered && !isDragging) {
+                        const halfWidth = getHalfWidth();
                         mask.scrollLeft += scrollSpeed;
-                        if (mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
+                        if (halfWidth > 0 && mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
                     }
                 }
 
                 function startAutoScroll() {
+                    if (scrollInterval) clearInterval(scrollInterval);
                     scrollInterval = setInterval(autoScroll, 30);
                 }
 
@@ -2682,7 +2688,10 @@
                     if (!isHovered) startAutoScroll();
                 });
 
-                startAutoScroll();
+                // Start after layout is ready (fix: offsetWidth was 0 at DOMContentLoaded)
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => startAutoScroll());
+                });
             }
         });
     </script>
