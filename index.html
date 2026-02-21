@@ -1201,20 +1201,14 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: 24px 0;
-            cursor: grab;
-            user-select: none;
             scrollbar-width: none;
             -ms-overflow-style: none;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-x;
+            pointer-events: none;
         }
 
         .testimonials-mask::-webkit-scrollbar {
             display: none;
-        }
-
-        .testimonials-mask:active {
-            cursor: grabbing;
         }
 
         .testimonials-track {
@@ -2656,64 +2650,27 @@
                 });
             });
 
-            // Testimonials: auto-scroll, pause on hover/touch, drag (desktop) or native swipe (mobile)
+            // Testimonials: loop auto-scroll only (no drag/touch move)
             const mask = document.getElementById('testimonialsMask');
             const track = document.getElementById('testimonialsTrack');
             if (mask && track) {
                 const scrollSpeed = 1;
                 let scrollInterval;
-                let isHovered = false;
-                let isDragging = false;
-                let isTouching = false;
-                let startX, startScrollLeft;
 
                 function getHalfWidth() {
                     return Math.floor(track.scrollWidth / 2) || Math.floor(track.offsetWidth / 2);
                 }
 
                 function autoScroll() {
-                    if (!isHovered && !isDragging && !isTouching) {
-                        const halfWidth = getHalfWidth();
-                        mask.scrollLeft += scrollSpeed;
-                        if (halfWidth > 0 && mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
-                    }
+                    const halfWidth = getHalfWidth();
+                    mask.scrollLeft += scrollSpeed;
+                    if (halfWidth > 0 && mask.scrollLeft >= halfWidth) mask.scrollLeft = 0;
                 }
 
                 function startAutoScroll() {
                     if (scrollInterval) clearInterval(scrollInterval);
                     scrollInterval = setInterval(autoScroll, 30);
                 }
-
-                mask.addEventListener('mouseenter', () => {
-                    isHovered = true;
-                    clearInterval(scrollInterval);
-                });
-                mask.addEventListener('mouseleave', () => {
-                    isHovered = false;
-                    if (!isDragging && !isTouching) startAutoScroll();
-                });
-
-                mask.addEventListener('mousedown', (e) => {
-                    isDragging = true;
-                    startX = e.pageX;
-                    startScrollLeft = mask.scrollLeft;
-                });
-                document.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    e.preventDefault();
-                    mask.scrollLeft = startScrollLeft - (e.pageX - startX);
-                });
-                document.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    if (!isHovered && !isTouching) startAutoScroll();
-                });
-
-                // Mobile: pause auto-scroll on touch so native swipe works
-                mask.addEventListener('touchstart', () => { isTouching = true; clearInterval(scrollInterval); }, { passive: true });
-                mask.addEventListener('touchend', () => {
-                    isTouching = false;
-                    if (!isHovered && !isDragging) setTimeout(startAutoScroll, 500);
-                }, { passive: true });
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => startAutoScroll());
