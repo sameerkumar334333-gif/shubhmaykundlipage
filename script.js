@@ -32,10 +32,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle initial state for the first item (optional, keeping all closed by default is fine)
 });
 
-// Smooth Scroll to Pricing
-function scrollToPricing() {
-    const pricingSection = document.getElementById('pricing');
-    if (pricingSection) {
-        pricingSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
