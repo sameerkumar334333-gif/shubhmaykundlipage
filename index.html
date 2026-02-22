@@ -5,9 +5,27 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="assets/images/favicon.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="assets/images/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
     <!-- GTM: dataLayer init (required for CTA tracking before GTM loads) -->
     <script>window.dataLayer = window.dataLayer || [];</script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+      (function(){
+        var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
+        var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
+        var _sid = sessionStorage.getItem('shubhmay_sid');
+        if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+        window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+        window._shubhmayTrack = function(et, pl) {
+          if (!window._shubhmaySupabase) return;
+          try { window._shubhmaySupabase.from('analytics_events').insert([{ session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language }]).then(function(){}); } catch(e){}
+        };
+        if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'index', title: 'kundli_lp' });
+      })();
+    </script>
     <!-- GTM: deferred to window.load so FCP/LCP stay fast; LP → checkout on Cosmofeed -->
     <script>
     window.addEventListener('load',function(){
@@ -46,6 +64,7 @@
                     cta_label: label || 'Get Kundli Report',
                     destination_url: 'https://superprofile.bio/vp/kundli-checkout'
                 });
+                if (window._shubhmayTrack) window._shubhmayTrack('cta_click', { cta_location: location, cta_label: label || 'Get Kundli Report', page: 'index' });
             } catch (e) { /* tracking fail-safe */ }
             setTimeout(function() { window.location.href = 'https://superprofile.bio/vp/kundli-checkout'; }, 250);
         }

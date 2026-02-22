@@ -21,6 +21,12 @@
   to = "/free-metal-finder-tool.html"
   status = 200
 
+# Admin panel
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
 # Optional: Add a 404 fallback page rule (Netlify automatically serves 404.html if present)
 # [[redirects]]
 #   from = "/*"

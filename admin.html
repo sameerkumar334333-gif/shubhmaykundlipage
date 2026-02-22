@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+  <title>ShubhMay Admin | Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #f59e0b;
+      --green: #22c55e;
+      --blue: #3b82f6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .header h1 { font-size: 1.25rem; font-weight: 600; }
+    .btn {
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #1e293b;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-ghost { background: transparent; color: var(--muted); }
+    .btn-ghost:hover { color: var(--text); }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+    .card h2 { font-size: 1rem; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+    .stat { padding: 16px; background: rgba(0,0,0,0.2); border-radius: 8px; }
+    .stat-val { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 360px;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+    .login-card h1 { font-size: 1.25rem; margin-bottom: 24px; text-align: center; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 6px; }
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .form-group input:focus { outline: none; border-color: var(--accent); }
+    .login-btn { width: 100%; padding: 12px; margin-top: 8px; }
+    .err { color: #ef4444; font-size: 0.875rem; margin-top: 8px; }
+    .loading { text-align: center; padding: 48px; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; }
+    .rashi-badge { display: inline-block; padding: 2px 8px; background: rgba(245,158,11,0.2); border-radius: 6px; font-size: 0.75rem; }
+    .filter-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-bar select {
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.875rem;
+    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab { padding: 8px 16px; background: transparent; color: var(--muted); border-radius: 8px; cursor: pointer; border: none; font-size: 0.9rem; }
+    .tab:hover { color: var(--text); }
+    .tab.active { background: rgba(245,158,11,0.2); color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="login-wrap" style="display:none;">
+    <div class="login-card">
+      <h1>ShubhMay Admin</h1>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn login-btn">Sign In</button>
+        <p id="loginErr" class="err"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboard" style="display:none;">
+    <div class="container">
+      <div class="header">
+        <h1>ShubhMay Analytics</h1>
+        <button type="button" class="btn btn-ghost" id="btnLogout">Logout</button>
+      </div>
+
+      <div class="card">
+        <h2>Overview</h2>
+        <div class="stat-grid" id="statGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="filter-bar">
+          <select id="filterEvent">
+            <option value="">All events</option>
+            <option value="page_view">Page views</option>
+            <option value="rashi_selected">Rashi selections</option>
+            <option value="cta_click">CTA / Upsell clicks</option>
+            <option value="step_view">Step views</option>
+          </select>
+          <select id="filterPage">
+            <option value="">All pages</option>
+            <option value="metal_finder">Metal Finder</option>
+            <option value="index">Kundli LP</option>
+          </select>
+          <button type="button" class="btn" id="btnRefresh">Refresh</button>
+        </div>
+        <h2>Recent events</h2>
+        <div id="eventsTableWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2>Rashi choices (Metal Finder)</h2>
+        <div id="rashiTableWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2>Upsell / CTA clicks by location</h2>
+        <div id="ctaTableWrap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loadScreen" class="loading">Loading…</div>
+
+  <script>
+    (function() {
+      var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
+      var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
+
+      var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+      function show(el) { el.style.display = ''; }
+      function hide(el) { el.style.display = 'none'; }
+
+      function checkAuth() {
+        supabase.auth.getSession().then(function(res) {
+          var session = res.data.session;
+          hide(document.getElementById('loadScreen'));
+          if (session) {
+            show(document.getElementById('dashboard'));
+            loadData();
+          } else {
+            show(document.getElementById('loginScreen'));
+          }
+        });
+      }
+
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var errEl = document.getElementById('loginErr');
+        errEl.textContent = '';
+        supabase.auth.signInWithPassword({
+          email: document.getElementById('loginEmail').value,
+          password: document.getElementById('loginPass').value
+        }).then(function(res) {
+          if (res.error) {
+            errEl.textContent = res.error.message || 'Login failed';
+            return;
+          }
+          hide(document.getElementById('loginScreen'));
+          show(document.getElementById('dashboard'));
+          loadData();
+        });
+      });
+
+      document.getElementById('btnLogout').addEventListener('click', function() {
+        supabase.auth.signOut().then(function() {
+          hide(document.getElementById('dashboard'));
+          show(document.getElementById('loginScreen'));
+        });
+      });
+
+      function loadData() {
+        loadStats();
+        loadEvents();
+        loadRashiBreakdown();
+        loadCtaBreakdown();
+      }
+
+      document.getElementById('btnRefresh').addEventListener('click', loadData);
+
+      function loadStats() {
+        var now = new Date();
+        var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+        var weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+        supabase.from('analytics_events').select('event_type, session_id, created_at', { count: 'exact' })
+          .gte('created_at', weekStart)
+          .then(function(res) {
+            var data = res.data || [];
+            var pageViews = data.filter(function(r) { return r.event_type === 'page_view'; }).length;
+            var uniqueSessions = new Set(data.map(function(r) { return r.session_id; })).size;
+            var rashiSelects = data.filter(function(r) { return r.event_type === 'rashi_selected'; }).length;
+            var ctaClicks = data.filter(function(r) { return r.event_type === 'cta_click'; }).length;
+            var todayViews = data.filter(function(r) {
+              return r.event_type === 'page_view' && r.created_at >= todayStart;
+            }).length;
+
+            document.getElementById('statGrid').innerHTML =
+              '<div class="stat"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views (7d)</div></div>' +
+              '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Unique sessions (7d)</div></div>' +
+              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi selections</div></div>' +
+              '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">Upsell / CTA clicks</div></div>' +
+              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Page views today</div></div>';
+          });
+      }
+
+      function loadEvents() {
+        var evFilter = document.getElementById('filterEvent').value;
+        var pageFilter = document.getElementById('filterPage').value;
+
+        var q = supabase.from('analytics_events')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(200);
+
+        if (evFilter) q = q.eq('event_type', evFilter);
+
+        q.then(function(res) {
+          var data = res.data || [];
+          if (pageFilter) data = data.filter(function(r) { return (r.payload && r.payload.page) === pageFilter; });
+          var rows = data.map(function(r) {
+            var pl = r.payload || {};
+            var extra = '';
+            if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' → ' + (pl.metal || '');
+            if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
+            if (r.event_type === 'page_view') extra = pl.page || '';
+            if (r.event_type === 'step_view') extra = pl.step_name || '';
+            return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + (r.session_id || '').slice(0, 12) + '…</td><td>' + (extra || '-') + '</td></tr>';
+          }).join('');
+          document.getElementById('eventsTableWrap').innerHTML = rows
+            ? '<table><thead><tr><th>Time</th><th>Event</th><th>Session</th><th>Details</th></tr></thead><tbody>' + rows + '</tbody></table>'
+            : '<p class="loading">No events yet</p>';
+        });
+      }
+
+      function loadRashiBreakdown() {
+        supabase.from('analytics_events')
+          .select('payload')
+          .eq('event_type', 'rashi_selected')
+          .then(function(res) {
+            var data = res.data || [];
+            var counts = {};
+            data.forEach(function(r) {
+              var rashi = (r.payload || {}).rashi || 'unknown';
+              counts[rashi] = (counts[rashi] || 0) + 1;
+            });
+            var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
+            var rows = sorted.map(function(x) {
+              return '<tr><td><span class="rashi-badge">' + x[0] + '</span></td><td>' + x[1] + '</td></tr>';
+            }).join('');
+            document.getElementById('rashiTableWrap').innerHTML = rows
+              ? '<table><thead><tr><th>Rashi</th><th>Count</th></tr></thead><tbody>' + rows + '</tbody></table>'
+              : '<p class="loading">No rashi selections yet</p>';
+          });
+      }
+
+      function loadCtaBreakdown() {
+        supabase.from('analytics_events')
+          .select('payload')
+          .eq('event_type', 'cta_click')
+          .then(function(res) {
+            var data = res.data || [];
+            var counts = {};
+            data.forEach(function(r) {
+              var pl = r.payload || {};
+              var loc = pl.cta_location || pl.cta_label || 'unknown';
+              counts[loc] = (counts[loc] || 0) + 1;
+            });
+            var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
+            var rows = sorted.map(function(x) {
+              return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>';
+            }).join('');
+            document.getElementById('ctaTableWrap').innerHTML = rows
+              ? '<table><thead><tr><th>CTA location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
+              : '<p class="loading">No CTA clicks yet</p>';
+          });
+      }
+
+      document.getElementById('filterEvent').addEventListener('change', loadEvents);
+      document.getElementById('filterPage').addEventListener('change', loadEvents);
+
+      checkAuth();
+    })();
+  </script>
+</body>
+</html>
