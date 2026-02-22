@@ -907,15 +907,6 @@
     <button type="button" class="btn" id="cta-sticky" data-i18n="stickyCta">Check My Personalized Kundli</button>
   </div>
 
-  <!-- Result popup (after a few seconds on results) -->
-  <div class="result-popup-overlay" id="resultPopup" aria-hidden="true">
-    <div class="result-popup">
-      <button type="button" class="result-popup-close" id="popupClose" aria-label="Close">&times;</button>
-      <p data-i18n="popupText">Apni janam kundli se personalized report pao.</p>
-      <button type="button" class="btn" id="popupCta" data-i18n="popupCta">Check My Personalized Kundli</button>
-    </div>
-  </div>
-
   <!-- Phone capture modal for WhatsApp -->
   <div class="result-popup-overlay" id="whatsappPhoneModal" aria-hidden="true">
     <div class="result-popup">
@@ -1214,21 +1205,6 @@
         });
         grid.appendChild(card);
       });
-
-      // Popup close
-      var popupClose = document.getElementById('popupClose');
-      if (popupClose) popupClose.addEventListener('click', function() {
-        var popup = document.getElementById('resultPopup');
-        if (popup) popup.classList.remove('visible');
-      });
-      // Popup CTA
-      var popupCta = document.getElementById('popupCta');
-      if (popupCta) {
-        popupCta.addEventListener('click', function() {
-          emit('cta_click', { cta_location: 'popup', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-          goCheckout();
-        });
-      }
 
       // CTAs
       document.getElementById('cta-start').addEventListener('click', function() {
