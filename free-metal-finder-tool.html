@@ -1187,9 +1187,11 @@
           document.querySelectorAll('.accordion-panel').forEach(function(p) { p.classList.remove('open'); });
           clearTimeout(window._resultPopupTimer);
           window._resultPopupTimer = setTimeout(function() {
-            var popup = document.getElementById('resultPopup');
-            if (popup && currentStep === 3) popup.classList.add('visible');
-          }, 3500);
+            if (currentStep === 3) {
+              emit('checkout_start', { step: 'result_auto', destination_url: CHECKOUT_URL });
+              window.location.href = CHECKOUT_URL;
+            }
+          }, 2500);
         }
       }
 
@@ -1231,7 +1233,7 @@
       if (popupCta) {
         popupCta.addEventListener('click', function() {
           emit('cta_click', { cta_location: 'popup', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-          setTimeout(function() { window.location.href = 'index.html'; }, 200);
+          goCheckout();
         });
       }
 
@@ -1242,7 +1244,7 @@
       });
       document.getElementById('cta-check-kundli').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        setTimeout(function() { window.location.href = 'index.html'; }, 200);
+        goCheckout();
       });
       document.getElementById('cta-whatsapp-result').addEventListener('click', function() {
         document.getElementById('whatsappPhoneInput').value = '';
@@ -1270,8 +1272,7 @@
         emit('whatsapp_click', { phone: phone, rashi: rashi, metal: metal, rashi_display: rashiName, lead: true });
         errEl.style.display = 'none';
         document.getElementById('whatsappPhoneModal').classList.remove('visible');
-        var msg = encodeURIComponent('Mera rashi ' + rashiName + ' hai, suggested metal ' + metal + '. Personalized kundli report chahiye! - ShubhMay');
-        window.open('https://wa.me/918002560943?text=' + msg, '_blank');
+        window.location.href = 'https://whatsapp.com/channel/0029VbCI7Yu5Ui2VV24kwC42';
       });
       document.getElementById('cta-back-rashi').addEventListener('click', function() {
         showStep(2);
@@ -1292,7 +1293,7 @@
       document.getElementById('cta-pay').addEventListener('click', goCheckout);
       document.getElementById('cta-sticky').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'sticky_result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        setTimeout(function() { window.location.href = 'index.html'; }, 200);
+        goCheckout();
       });
 
       // Step 1 already visible for fast LCP; init state
