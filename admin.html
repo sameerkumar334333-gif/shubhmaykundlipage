@@ -8,108 +8,84 @@
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
   <link rel="preconnect" href="https://yhxbwlhfjznajnnlduwt.supabase.co" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-  <title>ShubhMay Admin | Analytics</title>
+  <title>ShubhMay Admin | Analytics Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
       --bg: #0f172a;
-      --card: #1e293b;
+      --bg-card: #1e293b;
       --border: #334155;
       --text: #f1f5f9;
       --muted: #94a3b8;
       --accent: #f59e0b;
       --green: #22c55e;
+      --red: #ef4444;
       --blue: #3b82f6;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 28px;
     }
-    .header h1 { font-size: 1.25rem; font-weight: 600; }
+    .header h1 { font-size: 1.35rem; font-weight: 600; }
+    .header-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--muted); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .status-dot.ok { background: var(--green); }
+    .status-dot.err { background: var(--red); }
     .btn {
-      padding: 8px 16px;
-      background: var(--accent);
-      color: #1e293b;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 10px 18px; background: var(--accent); color: #1e293b;
+      border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem;
     }
     .btn:hover { opacity: 0.9; }
     .btn-ghost { background: transparent; color: var(--muted); }
     .btn-ghost:hover { color: var(--text); }
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .section {
+      background: var(--bg-card); border-radius: 12px; padding: 24px;
+      margin-bottom: 24px; border: 1px solid var(--border);
     }
-    .card h2 { font-size: 1rem; color: var(--muted); margin-bottom: 16px; font-weight: 500; }
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
-    .stat { padding: 16px; background: rgba(0,0,0,0.2); border-radius: 8px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .section-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+    .section-sub { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+    .stat {
+      background: rgba(0,0,0,0.25); border-radius: 10px; padding: 18px; border: 1px solid var(--border);
+    }
     .stat-val { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
-    .login-wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+    .tab-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .tab {
+      padding: 10px 18px; background: rgba(255,255,255,0.05); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500;
     }
+    .tab:hover { color: var(--text); border-color: var(--accent); }
+    .tab.active { background: rgba(245,158,11,0.15); color: var(--accent); border-color: var(--accent); }
+    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: rgba(0,0,0,0.3); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:hover { background: rgba(255,255,255,0.03); }
+    .rashi-badge { display: inline-block; padding: 4px 10px; background: rgba(245,158,11,0.2); border-radius: 6px; font-size: 0.8rem; }
+    .empty-msg { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.95rem; }
+    .err-msg { color: var(--red); font-size: 0.9rem; padding: 16px; background: rgba(239,68,68,0.1); border-radius: 8px; margin-bottom: 16px; }
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
     .login-card {
-      width: 100%;
-      max-width: 360px;
-      background: var(--card);
-      border-radius: 12px;
-      padding: 32px;
-      border: 1px solid var(--border);
+      width: 100%; max-width: 400px; background: var(--bg-card); border-radius: 12px;
+      padding: 36px; border: 1px solid var(--border);
     }
-    .login-card h1 { font-size: 1.25rem; margin-bottom: 24px; text-align: center; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 6px; }
+    .login-card h1 { font-size: 1.35rem; margin-bottom: 28px; text-align: center; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; }
     .form-group input {
-      width: 100%;
-      padding: 10px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 1rem;
+      width: 100%; padding: 12px 14px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 1rem;
     }
     .form-group input:focus { outline: none; border-color: var(--accent); }
-    .login-btn { width: 100%; padding: 12px; margin-top: 8px; }
-    .err { color: #ef4444; font-size: 0.875rem; margin-top: 8px; }
-    .loading { text-align: center; padding: 48px; color: var(--muted); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-    th { color: var(--muted); font-weight: 500; }
-    .rashi-badge { display: inline-block; padding: 2px 8px; background: rgba(245,158,11,0.2); border-radius: 6px; font-size: 0.75rem; }
-    .filter-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-    .filter-bar select {
-      padding: 8px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 0.875rem;
-    }
-    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-    .tab { padding: 8px 16px; background: transparent; color: var(--muted); border-radius: 8px; cursor: pointer; border: none; font-size: 0.9rem; }
-    .tab:hover { color: var(--text); }
-    .tab.active { background: rgba(245,158,11,0.2); color: var(--accent); }
+    .login-btn { width: 100%; padding: 14px; margin-top: 8px; }
+    .err { color: var(--red); font-size: 0.9rem; margin-top: 12px; }
+    .loading { text-align: center; padding: 40px; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -134,52 +110,82 @@
   <div id="dashboard" style="display:none;">
     <div class="container">
       <div class="header">
-        <h1>ShubhMay Analytics</h1>
+        <div>
+          <h1>Analytics Dashboard</h1>
+          <p class="header-meta">
+            <span id="connStatus"><span class="status-dot" id="statusDot"></span> <span id="statusText">Connecting…</span></span>
+            <span>•</span>
+            <span id="lastRefresh">—</span>
+          </p>
+        </div>
         <button type="button" class="btn btn-ghost" id="btnLogout">Logout</button>
       </div>
 
-      <div class="card">
-        <h2>Overview</h2>
-        <div class="stat-grid" id="statGrid"></div>
-      </div>
-
-      <div class="card">
-        <div class="filter-bar">
-          <select id="filterEvent">
-            <option value="">All events</option>
-            <option value="page_view">Page views</option>
-            <option value="rashi_selected">Rashi selections</option>
-            <option value="cta_click">CTA / Upsell clicks</option>
-            <option value="whatsapp_click">WhatsApp / Leads</option>
-            <option value="step_view">Step views</option>
-          </select>
-          <select id="filterPage">
-            <option value="">All pages</option>
-            <option value="metal_finder">Metal Finder</option>
-            <option value="index">Kundli LP</option>
-          </select>
-          <button type="button" class="btn" id="btnRefresh">Refresh</button>
+      <!-- Section: Overview -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Overview</h2>
+            <p class="section-sub">Last 7 days • Auto-refresh on load</p>
+          </div>
+          <button type="button" class="btn btn-sm" id="btnRefresh">↻ Refresh</button>
         </div>
-        <h2>Recent events</h2>
-        <div id="eventsTableWrap"></div>
-      </div>
+        <div id="statGrid" class="stat-row"></div>
+      </section>
 
-      <div class="card">
-        <h2>Rashi Clicks – Konse rashi par kitne clicks aaye</h2>
-        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">Har rashi card pe click = 1 entry. Sab data Supabase me save hota hai.</p>
+      <!-- Section: Rashi Clicks -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Rashi Clicks</h2>
+            <p class="section-sub">Konse rashi par kitne users ne click kiya</p>
+          </div>
+        </div>
         <div id="rashiTableWrap"></div>
-      </div>
+      </section>
 
-      <div class="card">
-        <h2>Upsell / CTA clicks by location</h2>
-        <div id="ctaTableWrap"></div>
-      </div>
-
-      <div class="card">
-        <h2>Leads (WhatsApp – Phone captured)</h2>
-        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">Send Result pe click → Number popup → Save + WhatsApp open. Sab Supabase me.</p>
+      <!-- Section: Leads (WhatsApp) -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Leads – WhatsApp</h2>
+            <p class="section-sub">Phone numbers captured • Send Result flow</p>
+          </div>
+        </div>
         <div id="leadsTableWrap"></div>
-      </div>
+      </section>
+
+      <!-- Section: CTA Clicks -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">CTA / Upsell Clicks</h2>
+            <p class="section-sub">Location-wise breakdown</p>
+          </div>
+        </div>
+        <div id="ctaTableWrap"></div>
+      </section>
+
+      <!-- Section: Event Stream -->
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Event Stream</h2>
+            <p class="section-sub">Recent activity • Filter by type</p>
+          </div>
+        </div>
+        <div class="tab-row" id="eventTabs">
+          <button type="button" class="tab active" data-filter="">All</button>
+          <button type="button" class="tab" data-filter="page_view">Page views</button>
+          <button type="button" class="tab" data-filter="rashi_selected">Rashi</button>
+          <button type="button" class="tab" data-filter="cta_click">CTA</button>
+          <button type="button" class="tab" data-filter="whatsapp_click">Leads</button>
+          <button type="button" class="tab" data-filter="step_view">Steps</button>
+        </div>
+        <div class="table-wrap">
+          <div id="eventsTableWrap"></div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -191,9 +197,20 @@
       var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
 
       var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      var eventFilter = '';
 
-      function show(el) { el.style.display = ''; }
-      function hide(el) { el.style.display = 'none'; }
+      function show(el) { if (el) el.style.display = ''; }
+      function hide(el) { if (el) el.style.display = 'none'; }
+      function setStatus(ok, msg) {
+        var d = document.getElementById('statusDot');
+        var t = document.getElementById('statusText');
+        if (d) d.className = 'status-dot ' + (ok ? 'ok' : 'err');
+        if (t) t.textContent = msg;
+      }
+      function setRefresh() {
+        var el = document.getElementById('lastRefresh');
+        if (el) el.textContent = 'Last refresh: ' + new Date().toLocaleTimeString();
+      }
 
       function checkAuth() {
         supabase.auth.getSession().then(function(res) {
@@ -245,36 +262,46 @@
         loadRashiBreakdown();
         loadCtaBreakdown();
         loadLeads();
+        setRefresh();
       }
 
-      document.getElementById('btnRefresh').addEventListener('click', loadData);
+      document.getElementById('btnRefresh').addEventListener('click', function() {
+        loadData();
+        document.getElementById('btnRefresh').textContent = '↻ Refreshing…';
+        setTimeout(function() { document.getElementById('btnRefresh').textContent = '↻ Refresh'; }, 800);
+      });
 
-      function showErr(msg) {
-        var g = document.getElementById('statGrid');
-        if (g) g.innerHTML = '<div class="stat" style="grid-column:1/-1;"><div class="stat-val" style="color:#ef4444;font-size:0.95rem;">' + msg + '</div><div class="stat-label">Add your user to admins table (see ADMIN_SETUP.md)</div></div>';
-      }
+      document.getElementById('eventTabs').addEventListener('click', function(e) {
+        var t = e.target.closest('.tab');
+        if (!t) return;
+        document.querySelectorAll('#eventTabs .tab').forEach(function(x) { x.classList.remove('active'); });
+        t.classList.add('active');
+        eventFilter = t.getAttribute('data-filter') || '';
+        loadEvents();
+      });
 
       function loadStats() {
         var now = new Date();
         var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
         var weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-        supabase.from('analytics_events').select('event_type, session_id, created_at, payload', { count: 'exact' })
+        supabase.from('analytics_events').select('event_type, session_id, created_at, payload')
           .gte('created_at', weekStart)
           .then(function(res) {
             if (res.error) {
-              showErr(res.error.message || 'Failed to load stats');
+              setStatus(false, 'Error: ' + (res.error.message || 'Failed'));
+              var g = document.getElementById('statGrid');
+              if (g) g.innerHTML = '<div class="err-msg" style="grid-column:1/-1;">' + res.error.message + '. Ensure your user is in admins table. Run supabase-admin-fix.sql</div>';
               return;
             }
+            setStatus(true, 'Connected');
             var data = res.data || [];
             var pageViews = data.filter(function(r) { return r.event_type === 'page_view'; }).length;
             var uniqueSessions = new Set(data.map(function(r) { return r.session_id || ''; }).filter(Boolean)).size;
             var rashiSelects = data.filter(function(r) { return r.event_type === 'rashi_selected'; }).length;
             var ctaClicks = data.filter(function(r) { return r.event_type === 'cta_click'; }).length;
             var leadsCount = data.filter(function(r) { return r.event_type === 'whatsapp_click'; }).length;
-            var todayViews = data.filter(function(r) {
-              return r.event_type === 'page_view' && r.created_at >= todayStart;
-            }).length;
+            var todayViews = data.filter(function(r) { return r.event_type === 'page_view' && r.created_at >= todayStart; }).length;
             var upsellRate = rashiSelects > 0 ? Math.round(100 * ctaClicks / rashiSelects) : 0;
             var rashiCounts = {};
             data.filter(function(r) { return r.event_type === 'rashi_selected'; }).forEach(function(r) {
@@ -282,39 +309,35 @@
               rashiCounts[k] = (rashiCounts[k] || 0) + 1;
             });
             var topRashi = Object.entries(rashiCounts).sort(function(a,b) { return b[1] - a[1]; })[0];
-            var topRashiHtml = topRashi ? '<div class="stat"><div class="stat-val" style="font-size:1.1rem;">' + topRashi[0] + '</div><div class="stat-label">Sabse jada select (' + topRashi[1] + ')</div></div>' : '';
+            var topRashiHtml = topRashi ? '<div class="stat"><div class="stat-val" style="font-size:1.1rem;">' + topRashi[0] + '</div><div class="stat-label">Top rashi (' + topRashi[1] + ')</div></div>' : '';
 
             document.getElementById('statGrid').innerHTML =
               '<div class="stat"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Unique sessions (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi clicks (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">Upsell / CTA clicks</div></div>' +
-              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Page views today</div></div>' +
-              '<div class="stat"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate (CTA/Rashi)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + leadsCount + '</div><div class="stat-label">Leads (WhatsApp)</div></div>' +
+              '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Sessions (7d)</div></div>' +
+              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi clicks</div></div>' +
+              '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">CTA clicks</div></div>' +
+              '<div class="stat"><div class="stat-val">' + leadsCount + '</div><div class="stat-label">Leads</div></div>' +
+              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Today</div></div>' +
+              '<div class="stat"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate</div></div>' +
               topRashiHtml;
           })
-          .catch(function(e) { showErr(e.message || 'Network error'); });
+          .catch(function(e) {
+            setStatus(false, 'Network error');
+            var g = document.getElementById('statGrid');
+            if (g) g.innerHTML = '<div class="err-msg" style="grid-column:1/-1;">' + (e.message || 'Network error') + '</div>';
+          });
       }
 
       function loadEvents() {
-        var evFilter = document.getElementById('filterEvent').value;
-        var pageFilter = document.getElementById('filterPage').value;
-
-        var q = supabase.from('analytics_events')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(200);
-
-        if (evFilter) q = q.eq('event_type', evFilter);
+        var q = supabase.from('analytics_events').select('*').order('created_at', { ascending: false }).limit(150);
+        if (eventFilter) q = q.eq('event_type', eventFilter);
 
         q.then(function(res) {
           if (res.error) {
-            document.getElementById('eventsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Failed to load') + '</p>';
+            document.getElementById('eventsTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
             return;
           }
           var data = res.data || [];
-          if (pageFilter) data = data.filter(function(r) { return (r.payload && r.payload.page) === pageFilter; });
           var rows = data.map(function(r) {
             var pl = r.payload || {};
             var extra = '';
@@ -323,99 +346,79 @@
             if (r.event_type === 'whatsapp_click') extra = (pl.phone ? '+91 ' + pl.phone + ' | ' : '') + (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '');
             if (r.event_type === 'page_view') extra = pl.page || '';
             if (r.event_type === 'step_view') extra = pl.step_name || '';
-            return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + (r.session_id || '').slice(0, 12) + '…</td><td>' + (extra || '-') + '</td></tr>';
+            return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + ((r.session_id || '').slice(0, 14)) + '</td><td>' + (extra || '—') + '</td></tr>';
           }).join('');
-          document.getElementById('eventsTableWrap').innerHTML = rows
+          document.getElementById('eventsTableWrap').innerHTML = data.length
             ? '<table><thead><tr><th>Time</th><th>Event</th><th>Session</th><th>Details</th></tr></thead><tbody>' + rows + '</tbody></table>'
-            : '<p class="loading">No events yet</p>';
+            : '<div class="empty-msg">No events found</div>';
         }).catch(function(e) {
-          document.getElementById('eventsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
+          document.getElementById('eventsTableWrap').innerHTML = '<div class="err-msg">' + (e.message || 'Error') + '</div>';
         });
       }
 
       function loadRashiBreakdown() {
-        supabase.from('analytics_events')
-          .select('payload')
-          .eq('event_type', 'rashi_selected')
+        supabase.from('analytics_events').select('payload').eq('event_type', 'rashi_selected')
           .then(function(res) {
             if (res.error) {
-              document.getElementById('rashiTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              document.getElementById('rashiTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
             var counts = {};
-            data.forEach(function(r) {
-              var rashi = (r.payload || {}).rashi || 'unknown';
-              counts[rashi] = (counts[rashi] || 0) + 1;
-            });
+            data.forEach(function(r) { var k = (r.payload || {}).rashi || 'unknown'; counts[k] = (counts[k] || 0) + 1; });
             var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
             var rows = sorted.map(function(x, i) {
-              var top = i === 0 ? ' <span style="color:var(--accent);font-size:0.7rem;">(sabse jada)</span>' : '';
+              var top = i === 0 ? ' <span style="color:var(--accent);font-size:0.75rem;">(top)</span>' : '';
               return '<tr><td><span class="rashi-badge">' + x[0] + '</span>' + top + '</td><td>' + x[1] + '</td></tr>';
             }).join('');
-            document.getElementById('rashiTableWrap').innerHTML = rows
-              ? '<table><thead><tr><th>Rashi</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
-              : '<p class="loading">No rashi selections yet</p>';
+            document.getElementById('rashiTableWrap').innerHTML = data.length
+              ? '<div class="table-wrap"><table><thead><tr><th>Rashi</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+              : '<div class="empty-msg">No rashi clicks yet</div>';
           }).catch(function(e) {
-            document.getElementById('rashiTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
+            document.getElementById('rashiTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
 
       function loadCtaBreakdown() {
-        supabase.from('analytics_events')
-          .select('payload')
-          .eq('event_type', 'cta_click')
+        supabase.from('analytics_events').select('payload').eq('event_type', 'cta_click')
           .then(function(res) {
             if (res.error) {
-              document.getElementById('ctaTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              document.getElementById('ctaTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
             var counts = {};
-            data.forEach(function(r) {
-              var pl = r.payload || {};
-              var loc = pl.cta_location || pl.cta_label || 'unknown';
-              counts[loc] = (counts[loc] || 0) + 1;
-            });
+            data.forEach(function(r) { var pl = r.payload || {}; var loc = pl.cta_location || pl.cta_label || 'unknown'; counts[loc] = (counts[loc] || 0) + 1; });
             var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
-            var rows = sorted.map(function(x) {
-              return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>';
-            }).join('');
-            document.getElementById('ctaTableWrap').innerHTML = rows
-              ? '<table><thead><tr><th>CTA location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
-              : '<p class="loading">No CTA clicks yet</p>';
+            var rows = sorted.map(function(x) { return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>'; }).join('');
+            document.getElementById('ctaTableWrap').innerHTML = data.length
+              ? '<div class="table-wrap"><table><thead><tr><th>CTA Location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+              : '<div class="empty-msg">No CTA clicks yet</div>';
           }).catch(function(e) {
-            document.getElementById('ctaTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
+            document.getElementById('ctaTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
 
       function loadLeads() {
-        supabase.from('analytics_events')
-          .select('*')
-          .eq('event_type', 'whatsapp_click')
-          .order('created_at', { ascending: false })
-          .limit(100)
+        supabase.from('analytics_events').select('*').eq('event_type', 'whatsapp_click').order('created_at', { ascending: false }).limit(100)
           .then(function(res) {
             if (res.error) {
-              document.getElementById('leadsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              document.getElementById('leadsTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
             var rows = data.map(function(r) {
               var pl = r.payload || {};
-              var ph = pl.phone ? ('+91 ' + pl.phone) : '-';
-              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + ph + '</td><td>' + (pl.rashi_display || pl.rashi || '-') + '</td><td>' + (pl.metal || '-') + '</td></tr>';
+              var ph = pl.phone ? ('+91 ' + pl.phone) : '—';
+              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + ph + '</td><td>' + (pl.rashi_display || pl.rashi || '—') + '</td><td>' + (pl.metal || '—') + '</td></tr>';
             }).join('');
             document.getElementById('leadsTableWrap').innerHTML = data.length
-              ? '<table><thead><tr><th>Time</th><th>Phone</th><th>Rashi</th><th>Metal</th></tr></thead><tbody>' + rows + '</tbody></table>'
-              : '<p class="loading">No leads yet</p>';
+              ? '<div class="table-wrap"><table><thead><tr><th>Time</th><th>Phone</th><th>Rashi</th><th>Metal</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+              : '<div class="empty-msg">No leads yet</div>';
           }).catch(function(e) {
-            document.getElementById('leadsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
+            document.getElementById('leadsTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
-
-      document.getElementById('filterEvent').addEventListener('change', loadEvents);
-      document.getElementById('filterPage').addEventListener('change', loadEvents);
 
       checkAuth();
     })();
