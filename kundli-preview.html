@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://yhxbwlhfjznajnnlduwt.supabase.co" crossorigin>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    (function(){
+      var _sid = sessionStorage.getItem('shubhmay_sid');
+      if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+      window._shubhmaySid = _sid;
+      try {
+        window._shubhmaySupabase = window.supabase ? window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY') : null;
+      } catch(e) { window._shubhmaySupabase = null; }
+      window._shubhmayTrack = function(et, pl) {
+        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language };
+        if (window._shubhmaySupabase) try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function(){}, function(){}); } catch(e){}
+      };
+      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'kundli_preview' });
+    })();
+  </script>
+  <title>Apni Kundli Preview | ShubhMay</title>
+  <meta name="description" content="Apni personalized kundli preview dekhiye. Birth chart analysis – ₹349.">
+  <style>
+    :root {
+      --saffron: #d97706;
+      --gold: #b45309;
+      --gold-bright: #fbbf24;
+      --gold-dark: #92400e;
+      --cream: #fefce8;
+      --cream-dark: #fef9c3;
+      --white: #ffffff;
+      --text-dark: #1c1917;
+      --text-muted: #57534e;
+      --shadow: 0 12px 32px rgba(180, 83, 9, 0.15);
+      --radius: 14px;
+      --radius-lg: 18px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-dark);
+      background: linear-gradient(160deg, var(--cream) 0%, var(--cream-dark) 50%, #fde68a 100%);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .navbar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--saffron) 100%);
+      box-shadow: 0 4px 20px rgba(180, 83, 9, 0.3);
+    }
+    .navbar-logo { height: 32px; }
+    .main {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 28px 20px 40px;
+      min-height: calc(100vh - 56px);
+    }
+    .panel {
+      display: none;
+      opacity: 0;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .panel.visible {
+      display: block;
+      opacity: 1;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      border: 1px solid rgba(180, 83, 9, 0.12);
+    }
+    .headline { font-size: 1.35rem; font-weight: 600; margin-bottom: 8px; }
+    .sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(180, 83, 9, 0.3);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--white);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #78350f;
+      background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fcd34d 100%);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(180, 83, 9, 0.25); }
+    .btn:active { transform: translateY(0); }
+    /* Preview sections */
+    .preview-sec { margin-bottom: 24px; }
+    .preview-sec h2 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 600; }
+    .preview-sec p { font-size: 1rem; line-height: 1.6; color: var(--text-dark); }
+    .trait-list { list-style: none; margin-top: 12px; }
+    .trait-list li {
+      padding: 10px 14px;
+      background: rgba(245, 158, 11, 0.12);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .trait-list li::before { content: '✓'; color: #16a34a; font-weight: 700; }
+    .fear-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-top: 12px;
+    }
+    .fear-box p { color: #991b1b; }
+    .blur-block {
+      height: 72px;
+      background: linear-gradient(135deg, rgba(180, 83, 9, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+    }
+    .blur-block span { font-size: 0.85rem; color: var(--text-muted); opacity: 0.7; }
+    .progress-wrap { margin: 24px 0; }
+    .progress-bar {
+      height: 10px;
+      background: rgba(180, 83, 9, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, var(--saffron), var(--gold-bright));
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+    .progress-text { font-size: 0.9rem; color: var(--text-muted); margin-top: 10px; text-align: center; }
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 24px 0 20px;
+      flex-wrap: wrap;
+    }
+    .price-old { font-size: 1.1rem; color: var(--text-muted); text-decoration: line-through; }
+    .price-new { font-size: 1.5rem; font-weight: 700; color: var(--gold-dark); }
+    .unlock-cta { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <img src="assets/shubhmay-logo.png" alt="ShubhMay" class="navbar-logo" loading="eager" onerror="this.style.display='none'">
+  </header>
+  <main class="main">
+    <!-- Step 1: Form -->
+    <section class="panel visible" id="formPanel">
+      <div class="card">
+        <h1 class="headline">Apni Kundli Preview Dekhiye</h1>
+        <p class="sub">Birth details se personalized analysis generate hoga.</p>
+        <form id="kundliForm">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" required placeholder="Aapka naam" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="dob">Date of Birth *</label>
+            <input type="date" id="dob" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tob">Time of Birth *</label>
+              <input type="time" id="tob" required>
+            </div>
+            <div class="form-group">
+              <label for="place">Birth Place *</label>
+              <input type="text" id="place" required placeholder="e.g. Mumbai" autocomplete="off">
+            </div>
+          </div>
+          <button type="submit" class="btn" id="btnGenerate">Generate Preview</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Step 2: Preview Result -->
+    <section class="panel" id="previewPanel">
+      <div class="card">
+        <h1 class="headline" id="previewTitle">Loading…</h1>
+        <p class="sub">Aapki kundli ka pehla hissa</p>
+
+        <!-- A: Identity -->
+        <div class="preview-sec">
+          <h2>Identity Validation</h2>
+          <p id="identityText"></p>
+          <ul class="trait-list" id="traitsList"></ul>
+        </div>
+
+        <!-- B: Fear Trigger -->
+        <div class="preview-sec">
+          <h2>Grah Sthiti</h2>
+          <p>Ek grah sthiti career aur paiso me rukavat ka sanket de rahi hai.</p>
+          <div class="fear-box">
+            <p><strong>Kya aapne pichle samay me delay ya pressure feel kiya hai?</strong></p>
+          </div>
+        </div>
+
+        <!-- C: Escalation -->
+        <div class="preview-sec">
+          <p>Aise yog ko ignore karne se progress slow ho sakti hai.</p>
+        </div>
+
+        <!-- D: Incomplete Lock -->
+        <div class="preview-sec">
+          <h2>Unlock Complete Analysis</h2>
+          <div class="blur-block"><span>Detailed Grah Dosh Analysis</span></div>
+          <div class="blur-block"><span>Exact Lucky Metal (Birth chart specific)</span></div>
+          <div class="blur-block"><span>Career Timing Window</span></div>
+          <div class="blur-block"><span>Relationship Stability Check</span></div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <p class="progress-text">Aap sirf 40% analysis dekh pa rahe hain.</p>
+          </div>
+        </div>
+
+        <!-- E: Unlock Offer -->
+        <div class="preview-sec">
+          <div class="price-row">
+            <span class="price-old">₹1499</span>
+            <span class="price-new">₹349</span>
+          </div>
+          <button type="button" class="btn unlock-cta" id="btnUnlock">Unlock Complete Personalized Kundli – ₹349</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      var CHECKOUT_URL = 'https://superprofile.bio/vp/kundli-checkout';
+      var TRAIT_POOL = [
+        ['Sahas aur determination high', 'Creative aur expressive nature'],
+        ['Emotional intelligence strong', 'Relationships me balance achha'],
+        ['Career me growth potential', 'Money management skills'],
+        ['Communication skills strong', 'Strategic thinking acchi'],
+        ['Vivek aur sochne ki taqat acchi', 'Decision-making ability strong']
+      ];
+
+      function emit(event, payload) {
+        try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(Object.assign({ event }, payload)); } catch(e){}
+        if (window._shubhmayTrack) window._shubhmayTrack(event, Object.assign({ page: 'kundli_preview' }, payload));
+      }
+
+      function pickTraits(name, dob) {
+        var n = (name || '').length;
+        var d = (dob || '').replace(/-/g, '');
+        var idx = ((n * 7) + parseInt(d.slice(-2), 10) || 0) % TRAIT_POOL.length;
+        return TRAIT_POOL[idx] || TRAIT_POOL[0];
+      }
+
+      document.getElementById('kundliForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = (document.getElementById('name').value || '').trim();
+        var dob = document.getElementById('dob').value;
+        var tob = document.getElementById('tob').value;
+        var place = (document.getElementById('place').value || '').trim();
+        if (!name || !dob || !tob || !place) return;
+
+        emit('kundli_preview_submit', { name: name, dob: dob, tob: tob, place: place });
+
+        var traits = pickTraits(name, dob);
+        var displayName = name.split(' ')[0] || name;
+
+        document.getElementById('previewTitle').textContent = displayName + ', aapki kundli preview';
+        document.getElementById('identityText').textContent = displayName + ', aapki kundli me buddhi aur leadership shakti strong hai.';
+        document.getElementById('traitsList').innerHTML = traits.map(function(t) { return '<li>' + t + '</li>'; }).join('');
+
+        document.getElementById('formPanel').classList.remove('visible');
+        document.getElementById('previewPanel').classList.add('visible');
+        document.getElementById('previewPanel').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      document.getElementById('btnUnlock').addEventListener('click', function() {
+        emit('checkout_start', { step: 'kundli_preview_unlock', destination_url: CHECKOUT_URL });
+        window.location.href = CHECKOUT_URL;
+      });
+    })();
+  </script>
+</body>
+</html>

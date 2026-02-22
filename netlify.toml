@@ -21,6 +21,12 @@
   to = "/free-metal-finder-tool.html"
   status = 200
 
+# Kundli Preview Funnel
+[[redirects]]
+  from = "/kundli-preview"
+  to = "/kundli-preview.html"
+  status = 200
+
 # Admin panel
 [[redirects]]
   from = "/admin"

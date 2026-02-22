@@ -1131,6 +1131,7 @@
 
       const STEP_NAMES = ['loader', 'hook', 'rashi_select', 'result', 'education', 'offer', 'success'];
       const CHECKOUT_URL = 'https://superprofile.bio/vp/kundli-checkout';
+      const PREVIEW_URL = 'kundli-preview.html';
       let currentStep = 0;
       let selectedRashi = null;
 
@@ -1183,6 +1184,10 @@
         emit('checkout_start', { step: 'offer', destination_url: CHECKOUT_URL });
         window.location.href = CHECKOUT_URL;
       }
+      function goToPreview() {
+        emit('cta_click', { cta_location: 'result_preview', destination_url: PREVIEW_URL });
+        window.location.href = PREVIEW_URL;
+      }
 
       // Build rashi grid
       var grid = document.getElementById('rashiGrid');
@@ -1213,7 +1218,7 @@
       });
       document.getElementById('cta-check-kundli').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        goCheckout();
+        goToPreview();
       });
       document.getElementById('cta-whatsapp-result').addEventListener('click', function() {
         document.getElementById('whatsappPhoneInput').value = '';
@@ -1262,7 +1267,7 @@
       document.getElementById('cta-pay').addEventListener('click', goCheckout);
       document.getElementById('cta-sticky').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'sticky_result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        goCheckout();
+        goToPreview();
       });
 
       // Step 1 already visible for fast LCP; init state
