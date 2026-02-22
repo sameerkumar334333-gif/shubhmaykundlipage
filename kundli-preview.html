@@ -340,6 +340,7 @@
       height: 200%;
       background: linear-gradient(105deg, transparent 40%, rgba(251, 191, 36, 0.06) 50%, transparent 60%);
       animation: shimmer 8s ease-in-out infinite;
+      pointer-events: none;
     }
 
     @keyframes shimmer {
@@ -1294,7 +1295,7 @@
               <h2 data-i18n="lockTitle">What You'll Unlock in Your Detailed Personalized Kundli Report</h2>
             </div>
 
-            <img src="assets/premium-kundli.webp" alt="Premium Kundli Report"
+            <img src="assets/premium_kundli.webp" alt="Premium Kundli Report"
               style="width: 100%; border-radius: var(--radius); margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(180, 83, 9, 0.2);">
 
             <div class="blur-grid" style="margin:0;">
@@ -1371,23 +1372,34 @@
   <script>
     (function () {
       var CHECKOUT_URL = 'https://superprofile.bio/vp/kundli-checkout';
-      var d = document.getElementById('dobDay');
-      var y = document.getElementById('dobYear');
-      var h = document.getElementById('tobHour');
-      var m = document.getElementById('tobMin');
-      if (d) {
-        for (var i = 1; i <= 31; i++) d.appendChild(document.createElement('option')).value = (i < 10 ? '0' : '') + i, d.lastChild.textContent = i;
+      function populateDropdown(id, start, end, pad) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var step = (id === 'tobMin') ? 5 : 1;
+        if (start < end) {
+          for (var i = start; i <= end; i += step) {
+            var val = (pad && i < 10) ? '0' + i : i.toString();
+            var opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = val;
+            el.appendChild(opt);
+          }
+        } else {
+          for (var i = start; i >= end; i -= step) {
+            var val = (pad && i < 10) ? '0' + i : i.toString();
+            var opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = val;
+            el.appendChild(opt);
+          }
+        }
       }
-      if (y) {
-        var yr = new Date().getFullYear();
-        for (var j = yr; j >= yr - 80; j--) y.appendChild(document.createElement('option')).value = j, y.lastChild.textContent = j;
-      }
-      if (h) {
-        for (var i = 1; i <= 12; i++) h.appendChild(document.createElement('option')).value = (i < 10 ? '0' : '') + i, h.lastChild.textContent = i;
-      }
-      if (m) {
-        for (var i = 0; i < 60; i += 5) m.appendChild(document.createElement('option')).value = (i < 10 ? '0' : '') + i, m.lastChild.textContent = (i < 10 ? '0' : '') + i;
-      }
+
+      populateDropdown('dobDay', 1, 31, true);
+      var yr = new Date().getFullYear();
+      populateDropdown('dobYear', yr, yr - 80, false);
+      populateDropdown('tobHour', 1, 12, true);
+      populateDropdown('tobMin', 0, 59, true);
 
       var PREVIEW_COPY = {
         hinglish: {
@@ -1549,34 +1561,58 @@
 
       var TRAITS = {
         hinglish: [
-          ['Career me exceptional growth potential hai', 'Strong leadership qualities aur samaj ko influence karne ki kshamta'],
-          ['Creative and unique approach to complex problems', 'Bade financial targets ko easily achieve karne ka yog'],
-          ['Strong intuition aur aage ki situations ko bhapne ki taqat', 'Apne business ya empire khada karne ka vishesh sahas'],
-          ['Decision-making ability me extreme clarity', 'Relationships aur high-level networking me kamaal ka success rate'],
-          ['Sahas aur determination normal se bohot high', 'Life me ek badi authority position haasil karne ka yog'],
-          ['Bohot tezi se nayi skills sikhne ki shamta', 'Wealth accumulation ka zabardast yog'],
-          ['Foreign travel ya waha set hone ki strong possibilities', 'Spiritual aur material dono level par balance banana'],
-          ['Hidden enemies par asani se vijay prapt karne ki taqat', 'Apne field me master aur respected professional banne ke indications']
+          'Career me exceptional growth potential hai',
+          'Strong leadership qualities aur samaj ko influence karne ki kshamta',
+          'Creative and unique approach to complex problems',
+          'Bade financial targets ko easily achieve karne ka yog',
+          'Strong intuition aur aage ki situations ko bhapne ki taqat',
+          'Apne business ya empire khada karne ka vishesh sahas',
+          'Decision-making ability me extreme clarity',
+          'Relationships aur high-level networking me kamaal ka success rate',
+          'Sahas aur determination normal se bohot high',
+          'Life me ek badi authority position haasil karne ka yog',
+          'Bohot tezi se nayi skills sikhne ki shamta',
+          'Wealth accumulation ka zabardast yog',
+          'Foreign travel ya waha set hone ki strong possibilities',
+          'Spiritual aur material dono level par balance banana',
+          'Hidden enemies par asani se vijay prapt karne ki taqat',
+          'Apne field me master aur respected professional banne ke indications'
         ],
         hi: [
-          ['करियर में अप्रत्याशित वृद्धि की अपार संभावनाएं हैं', 'मजबूत नेतृत्व क्षमता और समाज को प्रभावित करने की विशेष शक्ति'],
-          ['जटिल समस्याओं को सुलझाने का रचनात्मक और अनूठा दृष्टिकोण', 'बड़े आर्थिक लक्ष्यों को सरलता से प्राप्त करने का विशेष योग'],
-          ['मजबूत अंतर्ज्ञान और भविष्य की स्थितियों को पहले से भांपने की ताकत', 'अपना खुद का साम्राज्य या व्यवसाय स्थापित करने का अदम्य साहस'],
-          ['निर्णय लेने की क्षमता में अत्यधिक स्पष्टता', 'रिश्तों और उच्च-स्तरीय नेटवर्किंग में अद्भुत सफलता दर'],
-          ['सामान्य से बहुत अधिक साहस और दृढ़ संकल्प', 'जीवन में एक बड़े अधिकारिक पद (Authority) को प्राप्त करने का प्रबल योग'],
-          ['नई चीजों को अत्यंत शीघ्रता से सीखने की क्षमता', 'धन संचय (Wealth accumulation) का जबरदस्त योग'],
-          ['विदेश यात्रा या वहां बसने की मजबूत संभावनाएं', 'आध्यात्मिक और भौतिक दोनों स्तरों पर बेहतरीन संतुलन बनाए रखना'],
-          ['गुप्त शत्रुओं पर आसानी से विजय प्राप्त करने की ताकत', 'अपने क्षेत्र में एक निपुण और सम्मानित पेशेवर बनने के स्पष्ट संकेत']
+          'करियर में अप्रत्याशित वृद्धि की अपार संभावनाएं हैं',
+          'मजबूत नेतृत्व क्षमता और समाज को प्रभावित करने की विशेष शक्ति',
+          'जटिल समस्याओं को सुलझाने का रचनात्मक और अनूठा दृष्टिकोण',
+          'बड़े आर्थिक लक्ष्यों को सरलता से प्राप्त करने का विशेष योग',
+          'मजबूत अंतर्ज्ञान और भविष्य की स्थितियों को पहले से भांपने की ताकत',
+          'अपना खुद का साम्राज्य या व्यवसाय स्थापित करने का अदम्य साहस',
+          'निर्णय लेने की क्षमता में अत्यधिक स्पष्टता',
+          'रिश्तों और उच्च-स्तरीय नेटवर्किंग में अद्भुत सफलता दर',
+          'सामान्य से बहुत अधिक साहस और दृढ़ संकल्प',
+          'जीवन में एक बड़े अधिकारिक पद (Authority) को प्राप्त करने का प्रबल योग',
+          'नई चीजों को अत्यंत शीघ्रता से सीखने की क्षमता',
+          'धन संचय (Wealth accumulation) का जबरदस्त योग',
+          'विदेश यात्रा या वहां बसने की मजबूत संभावनाएं',
+          'आध्यात्मिक और भौतिक दोनों स्तरों पर बेहतरीन संतुलन बनाए रखना',
+          'गुप्त शत्रुओं पर आसानी से विजय प्राप्त करने की ताकत',
+          'अपने क्षेत्र में एक निपुण और सम्मानित पेशेवर बनने के स्पष्ट संकेत'
         ],
         en: [
-          ['Exceptional growth potential in your career path', 'Strong leadership qualities and the ability to influence society'],
-          ['A highly creative and unique approach to solving complex problems', 'Special planetary alignment for achieving massive financial targets'],
-          ['Powerful intuition and the foresight to anticipate future situations', 'Unmatched courage to build and establish your own empire'],
-          ['Extreme clarity in decision-making and thought processes', 'Incredible success rate in relationship building and high-level networking'],
-          ['Courage and determination that is much higher than average', 'Strong likelihood of attaining a significant position of authority in life'],
-          ['Remarkable ability to learn new things quickly and adapt', 'A tremendous planetary combination for wealth accumulation'],
-          ['Strong possibilities of foreign travel or settlement', 'Maintaining an excellent balance between spiritual and material realms'],
-          ['The inherent power to easily conquer hidden enemies', 'Clear indications of becoming a master and highly respected professional in your field']
+          'Exceptional growth potential in your career path',
+          'Strong leadership qualities and the ability to influence society',
+          'A highly creative and unique approach to solving complex problems',
+          'Special planetary alignment for achieving massive financial targets',
+          'Powerful intuition and the foresight to anticipate future situations',
+          'Unmatched courage to build and establish your own empire',
+          'Extreme clarity in decision-making and thought processes',
+          'Incredible success rate in relationship building and high-level networking',
+          'Courage and determination that is much higher than average',
+          'Strong likelihood of attaining a significant position of authority in life',
+          'Remarkable ability to learn new things quickly and adapt',
+          'A tremendous planetary combination for wealth accumulation',
+          'Strong possibilities of foreign travel or settlement',
+          'Maintaining an excellent balance between spiritual and material realms',
+          'The inherent power to easily conquer hidden enemies',
+          'Clear indications of becoming a master and highly respected professional in your field'
         ]
       };
 
@@ -1596,10 +1632,14 @@
         if (!tList) return [];
 
         var idx1 = num % tList.length;
-        var idx2 = (num + (name.length > 0 ? name.charCodeAt(0) : 1)) % tList.length;
-        if (idx1 === idx2) idx2 = (idx1 + 1) % tList.length;
+        var idx2 = (num * 3 + 7) % tList.length;
+        var idx3 = (num * 11 + 13) % tList.length;
 
-        return [tList[idx1][0], tList[idx2][1]];
+        if (idx1 === idx2) idx2 = (idx2 + 1) % tList.length;
+        if (idx2 === idx3) idx3 = (idx3 + 1) % tList.length;
+        if (idx1 === idx3) idx3 = (idx3 + 2) % tList.length;
+
+        return [tList[idx1], tList[idx2], tList[idx3]];
       }
 
       function setLang(lang) {
