@@ -8,32 +8,37 @@
   <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="assets/images/favicon-16x16.png" type="image/png" sizes="16x16">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://yhxbwlhfjznajnnlduwt.supabase.co" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <title>Find Your Metal | ShubhMay – Personalized Kundli</title>
   <meta name="description" content="Kya aap sahi dhatu pehen rahe ho? Apni rashi ke hisaab se right ear metal jaanen. Janam kundli se exact report – ₹349.">
   <script>window.dataLayer = window.dataLayer || [];</script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     (function(){
-      var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
-      var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
       var _sid = sessionStorage.getItem('shubhmay_sid');
       if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
-      window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+      window._shubhmaySid = _sid;
+      window._shubhmayQueue = [];
       window._shubhmayTrack = function(et, pl) {
-        if (!window._shubhmaySupabase) return;
-        try {
-          window._shubhmaySupabase.from('analytics_events').insert([{
-            session_id: _sid,
-            page_url: location.href,
-            referrer: document.referrer || null,
-            event_type: et,
-            payload: pl || {},
-            user_agent: navigator.userAgent,
-            language: navigator.language
-          }]).then(function(){});
-        } catch(e){}
+        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language };
+        if (window._shubhmaySupabase) {
+          try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function(){}); } catch(e){}
+        } else { window._shubhmayQueue.push(ev); }
       };
-      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'metal_finder' });
+      function initSupabase() {
+        if (window.supabase) {
+          window._shubhmaySupabase = window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY');
+          window._shubhmayTrack('page_view', { page: 'metal_finder' });
+          while (window._shubhmayQueue.length) {
+            var q = window._shubhmayQueue.shift();
+            try { window._shubhmaySupabase.from('analytics_events').insert([q]).then(function(){}); } catch(e){}
+          }
+        }
+      }
+      function loadSupabase() { var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js'; s.onload=initSupabase; (document.head||document.documentElement).appendChild(s); }
+      if ('requestIdleCallback' in window) requestIdleCallback(loadSupabase, { timeout: 2500 });
+      else setTimeout(loadSupabase, 100);
     })();
   </script>
   <script>
@@ -145,6 +150,7 @@
       transform: translateY(0);
       animation: fadeInUp 0.35s ease forwards;
     }
+    .step-panel.visible.initial { animation: none; }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -571,7 +577,7 @@
 
 <body>
   <nav class="navbar" aria-label="Brand">
-    <img src="assets/shubhmay-logo.png" alt="" class="navbar-logo" onerror="this.style.display='none'">
+    <img src="assets/shubhmay-logo.png" alt="" class="navbar-logo" loading="lazy" decoding="async" onerror="this.style.display='none'">
     <span class="navbar-label" data-i18n="navLabel">Free Metal Finder Tool</span>
     <div class="lang-select">
       <button type="button" class="lang-btn active" data-lang="hi">हिंदी</button>
@@ -579,8 +585,8 @@
     </div>
   </nav>
   <main class="wrapper">
-    <!-- Step 0: Loader -->
-    <section class="step-panel" data-step="0" aria-label="Loading">
+    <!-- Step 0: Loader (hidden by default, LCP = Step 1) -->
+    <section class="step-panel" data-step="0" aria-label="Loading" aria-hidden="true">
       <div class="card">
         <div class="loader-wrap" id="loaderWrap">
           <span class="loader-dot"></span>
@@ -590,8 +596,8 @@
       </div>
     </section>
 
-    <!-- Step 1: Hook – no upsell -->
-    <section class="step-panel" data-step="1" aria-labelledby="step1-title">
+    <!-- Step 1: Hook – visible immediately, no animation for fast LCP -->
+    <section class="step-panel visible initial" data-step="1" aria-labelledby="step1-title" aria-hidden="false">
       <div class="card">
         <h1 class="headline" id="step1-title" data-i18n="step1Title">Apna sahi kundal metal jaanen</h1>
         <p class="sub" data-i18n="step1Sub">Right ear mein Gold, Silver ya Copper—rashi ke hisaab se sahi dhatu pehenne se energy balance hoti hai. Ye quick guide se aap apni rashi ka metal jaan sakte ho.</p>
@@ -914,7 +920,8 @@
         try {
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push(Object.assign({ event }, data));
-          if (window._shubhmayTrack) window._shubhmayTrack(event, data);
+          var payload = Object.assign({ page: 'metal_finder' }, data);
+          if (window._shubhmayTrack) window._shubhmayTrack(event, payload);
         } catch (e) {}
       }
 
@@ -984,7 +991,7 @@
       if (popupCta) {
         popupCta.addEventListener('click', function() {
           emit('cta_click', { cta_location: 'popup', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-          window.location.href = 'index.html';
+          setTimeout(function() { window.location.href = 'index.html'; }, 200);
         });
       }
 
@@ -995,7 +1002,7 @@
       });
       document.getElementById('cta-check-kundli').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        window.location.href = 'index.html';
+        setTimeout(function() { window.location.href = 'index.html'; }, 200);
       });
       document.getElementById('cta-back-rashi').addEventListener('click', function() {
         showStep(2);
@@ -1007,12 +1014,11 @@
       document.getElementById('cta-pay').addEventListener('click', goCheckout);
       document.getElementById('cta-sticky').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'sticky_result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        window.location.href = 'index.html';
+        setTimeout(function() { window.location.href = 'index.html'; }, 200);
       });
 
-      // Step 0: loader, auto-advance <500ms
-      showStep(0);
-      setTimeout(function() { showStep(1); }, 400);
+      // Step 1 already visible for fast LCP; init state
+      currentStep = 1;
     })();
   </script>
 </body>

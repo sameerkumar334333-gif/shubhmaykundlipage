@@ -6,6 +6,8 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://yhxbwlhfjznajnnlduwt.supabase.co" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <title>ShubhMay Admin | Analytics</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
@@ -201,11 +203,14 @@
       document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
         var errEl = document.getElementById('loginErr');
+        var btn = document.querySelector('#loginForm button[type="submit"]');
         errEl.textContent = '';
+        if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
         supabase.auth.signInWithPassword({
           email: document.getElementById('loginEmail').value,
           password: document.getElementById('loginPass').value
         }).then(function(res) {
+          if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
           if (res.error) {
             errEl.textContent = res.error.message || 'Login failed';
             return;
@@ -213,6 +218,9 @@
           hide(document.getElementById('loginScreen'));
           show(document.getElementById('dashboard'));
           loadData();
+        }).catch(function(err) {
+          if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
+          errEl.textContent = err.message || 'Network error';
         });
       });
 
@@ -232,6 +240,11 @@
 
       document.getElementById('btnRefresh').addEventListener('click', loadData);
 
+      function showErr(msg) {
+        var g = document.getElementById('statGrid');
+        if (g) g.innerHTML = '<div class="stat" style="grid-column:1/-1;"><div class="stat-val" style="color:#ef4444;font-size:0.95rem;">' + msg + '</div><div class="stat-label">Add your user to admins table (see ADMIN_SETUP.md)</div></div>';
+      }
+
       function loadStats() {
         var now = new Date();
         var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
@@ -240,22 +253,29 @@
         supabase.from('analytics_events').select('event_type, session_id, created_at', { count: 'exact' })
           .gte('created_at', weekStart)
           .then(function(res) {
+            if (res.error) {
+              showErr(res.error.message || 'Failed to load stats');
+              return;
+            }
             var data = res.data || [];
             var pageViews = data.filter(function(r) { return r.event_type === 'page_view'; }).length;
-            var uniqueSessions = new Set(data.map(function(r) { return r.session_id; })).size;
+            var uniqueSessions = new Set(data.map(function(r) { return r.session_id || ''; }).filter(Boolean)).size;
             var rashiSelects = data.filter(function(r) { return r.event_type === 'rashi_selected'; }).length;
             var ctaClicks = data.filter(function(r) { return r.event_type === 'cta_click'; }).length;
             var todayViews = data.filter(function(r) {
               return r.event_type === 'page_view' && r.created_at >= todayStart;
             }).length;
+            var upsellRate = rashiSelects > 0 ? Math.round(100 * ctaClicks / rashiSelects) : 0;
 
             document.getElementById('statGrid').innerHTML =
               '<div class="stat"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views (7d)</div></div>' +
               '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Unique sessions (7d)</div></div>' +
               '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi selections</div></div>' +
               '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">Upsell / CTA clicks</div></div>' +
-              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Page views today</div></div>';
-          });
+              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Page views today</div></div>' +
+              '<div class="stat"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate (CTA/Rashi)</div></div>';
+          })
+          .catch(function(e) { showErr(e.message || 'Network error'); });
       }
 
       function loadEvents() {
@@ -270,6 +290,10 @@
         if (evFilter) q = q.eq('event_type', evFilter);
 
         q.then(function(res) {
+          if (res.error) {
+            document.getElementById('eventsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Failed to load') + '</p>';
+            return;
+          }
           var data = res.data || [];
           if (pageFilter) data = data.filter(function(r) { return (r.payload && r.payload.page) === pageFilter; });
           var rows = data.map(function(r) {
@@ -284,6 +308,8 @@
           document.getElementById('eventsTableWrap').innerHTML = rows
             ? '<table><thead><tr><th>Time</th><th>Event</th><th>Session</th><th>Details</th></tr></thead><tbody>' + rows + '</tbody></table>'
             : '<p class="loading">No events yet</p>';
+        }).catch(function(e) {
+          document.getElementById('eventsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
         });
       }
 
@@ -292,6 +318,10 @@
           .select('payload')
           .eq('event_type', 'rashi_selected')
           .then(function(res) {
+            if (res.error) {
+              document.getElementById('rashiTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              return;
+            }
             var data = res.data || [];
             var counts = {};
             data.forEach(function(r) {
@@ -305,6 +335,8 @@
             document.getElementById('rashiTableWrap').innerHTML = rows
               ? '<table><thead><tr><th>Rashi</th><th>Count</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<p class="loading">No rashi selections yet</p>';
+          }).catch(function(e) {
+            document.getElementById('rashiTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
           });
       }
 
@@ -313,6 +345,10 @@
           .select('payload')
           .eq('event_type', 'cta_click')
           .then(function(res) {
+            if (res.error) {
+              document.getElementById('ctaTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              return;
+            }
             var data = res.data || [];
             var counts = {};
             data.forEach(function(r) {
@@ -327,6 +363,8 @@
             document.getElementById('ctaTableWrap').innerHTML = rows
               ? '<table><thead><tr><th>CTA location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<p class="loading">No CTA clicks yet</p>';
+          }).catch(function(e) {
+            document.getElementById('ctaTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
           });
       }
 
