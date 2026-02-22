@@ -14,31 +14,23 @@
   <title>Find Your Metal | ShubhMay – Personalized Kundli</title>
   <meta name="description" content="Kya aap sahi dhatu pehen rahe ho? Apni rashi ke hisaab se right ear metal jaanen. Janam kundli se exact report – ₹349.">
   <script>window.dataLayer = window.dataLayer || [];</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     (function(){
       var _sid = sessionStorage.getItem('shubhmay_sid');
       if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
       window._shubhmaySid = _sid;
       window._shubhmayQueue = [];
+      try {
+        window._shubhmaySupabase = window.supabase ? window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY') : null;
+      } catch(e) { window._shubhmaySupabase = null; }
       window._shubhmayTrack = function(et, pl) {
         var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language };
         if (window._shubhmaySupabase) {
-          try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function(){}); } catch(e){}
+          try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function(){}, function(err){ console.warn('Track err:', err); }); } catch(e){ window._shubhmayQueue.push(ev); }
         } else { window._shubhmayQueue.push(ev); }
       };
-      function initSupabase() {
-        if (window.supabase) {
-          window._shubhmaySupabase = window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY');
-          window._shubhmayTrack('page_view', { page: 'metal_finder' });
-          while (window._shubhmayQueue.length) {
-            var q = window._shubhmayQueue.shift();
-            try { window._shubhmaySupabase.from('analytics_events').insert([q]).then(function(){}); } catch(e){}
-          }
-        }
-      }
-      function loadSupabase() { var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js'; s.onload=initSupabase; (document.head||document.documentElement).appendChild(s); }
-      if ('requestIdleCallback' in window) requestIdleCallback(loadSupabase, { timeout: 2500 });
-      else setTimeout(loadSupabase, 100);
+      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'metal_finder' });
     })();
   </script>
   <script>
@@ -67,6 +59,7 @@
       --radius: 14px;
       --radius-lg: 18px;
       --transition: 0.25s ease;
+      --green: #22c55e;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -420,13 +413,161 @@
       border-left: 4px solid var(--saffron);
       margin: 20px 0 12px;
     }
-    .step3-cta-block {
+    .step3-cta-block, .result-cta-block {
       background: rgba(255, 255, 255, 0.8);
       border-radius: var(--radius);
       padding: 24px;
       margin-top: 24px;
       border: 1px solid rgba(180, 83, 9, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
+    .result-experience { width: 100%; max-width: 420px; }
+    .result-sec {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(180, 83, 9, 0.15);
+      box-shadow: var(--shadow-sm);
+      opacity: 0;
+      animation: resultFadeIn 0.5s ease forwards;
+    }
+    .result-sec-1 { animation-delay: 0.05s; }
+    .result-sec-2 { animation-delay: 0.15s; }
+    .result-sec-3 { animation-delay: 0.25s; }
+    .result-sec-4 { animation-delay: 0.35s; }
+    .result-sec-5 { animation-delay: 0.45s; }
+    @keyframes resultFadeIn { to { opacity: 1; } }
+    .result-identity-hook {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .result-subtext {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .result-traits {
+      list-style: none;
+    }
+    .result-traits li {
+      padding: 6px 0 6px 24px;
+      position: relative;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+    .result-traits li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--saffron);
+      font-weight: 700;
+    }
+    .result-metal-heading { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 12px; font-weight: 500; }
+    .result-metal-glow {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      padding: 16px 24px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+      border-radius: var(--radius);
+      text-align: center;
+      border: 1px solid rgba(180, 83, 9, 0.2);
+      animation: metalGlow 2s ease-in-out infinite;
+    }
+    @keyframes metalGlow {
+      0%, 100% { box-shadow: 0 0 12px rgba(251, 191, 36, 0.3); }
+      50% { box-shadow: 0 0 24px rgba(251, 191, 36, 0.5); }
+    }
+    .result-metal-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; text-align: center; }
+    .accordion { margin: 0; }
+    .accordion-trigger {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(180, 83, 9, 0.06);
+      border: 1px solid rgba(180, 83, 9, 0.15);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: left;
+      cursor: pointer;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion-trigger::after {
+      content: '+';
+      font-size: 1.2rem;
+      color: var(--saffron);
+      transition: transform 0.25s ease;
+    }
+    .accordion-trigger[aria-expanded="true"]::after { transform: rotate(45deg); }
+    .accordion-trigger:hover { background: rgba(180, 83, 9, 0.1); }
+    .accordion-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .accordion-panel.open { max-height: 150px; }
+    .accordion-text {
+      padding: 12px 16px 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .result-curiosity-head { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; }
+    .result-curiosity-sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
+    .progress-wrap { margin-top: 8px; }
+    .progress-bar {
+      height: 8px;
+      background: rgba(180, 83, 9, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--saffron), var(--gold-bright));
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .progress-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+    .result-cta-head { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; }
+    .result-benefits {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+    .result-benefits li {
+      padding: 8px 0 8px 24px;
+      position: relative;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+    .result-benefits li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 700;
+    }
+    .result-reassure { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
+    .result-back { margin-top: 16px; }
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+      color: #fff !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-whatsapp::before { display: none; }
     .comparison-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -537,6 +678,7 @@
     .result-popup-overlay.visible { display: flex; }
     @keyframes popupFade { from { opacity: 0; } to { opacity: 1; } }
     .result-popup {
+      position: relative;
       background: var(--white);
       border-radius: var(--radius-lg);
       padding: 28px 24px;
@@ -548,6 +690,25 @@
     }
     @keyframes popupSlide { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .result-popup p { margin-bottom: 20px; color: var(--text-dark); font-size: 1rem; }
+    .result-popup-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: rgba(0,0,0,0.08);
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      line-height: 1;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .result-popup-close:hover { background: rgba(0,0,0,0.12); color: var(--text-dark); }
     .page-benefits {
       margin-top: 48px;
       padding: 32px 24px 24px;
@@ -618,24 +779,57 @@
       </div>
     </section>
 
-    <!-- Step 3: Rashi Result – upsell bridge -->
-    <section class="step-panel" data-step="3" aria-labelledby="step3-title">
-      <div class="card step3-upsell">
-        <h2 class="headline" id="step3-title" data-i18n="step3Title">Aapki Rashi ke hisaab se…</h2>
-        <div class="step3-result-box">
-          <div class="result-card">
-            <div class="result-rashi" id="resultRashiName"></div>
-            <div class="result-metal-wrap"><span class="result-metal" id="resultMetal"></span></div>
+    <!-- Step 3: Rashi Result Experience – high-converting -->
+    <section class="step-panel" data-step="3" aria-labelledby="result-identity-hook">
+      <div class="result-experience">
+        <!-- Section 1: Personal Identity Hook -->
+        <div class="result-sec result-sec-1">
+          <h1 class="result-identity-hook" id="result-identity-hook"></h1>
+          <p class="result-subtext">Is rashi ke log alag soch rakhte hain…</p>
+          <ul class="result-traits" id="resultTraits"></ul>
+        </div>
+        <!-- Section 2: General Metal Result -->
+        <div class="result-sec result-sec-2">
+          <h2 class="result-metal-heading">General Guide ke hisaab se aapke liye:</h2>
+          <div class="result-metal-glow" id="resultMetalGlow"></div>
+          <p class="result-metal-note">Ye rashi-based recommendation hai.</p>
+        </div>
+        <!-- Section 3: Interest Escalation – Accordion -->
+        <div class="result-sec result-sec-3">
+          <div class="accordion" role="region">
+            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="1">Kya aap jaante hain?</button>
+            <div class="accordion-panel" id="accordion1"><p class="accordion-text" id="accordion1Text">Har rashi wale ke liye metal same nahi hota.</p></div>
+            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="2">Kyun change hota hai?</button>
+            <div class="accordion-panel" id="accordion2"><p class="accordion-text">Janam samay, lagna aur grah sthiti metal ko impact karte hain.</p></div>
+            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="3">Galat metal ka asar?</button>
+            <div class="accordion-panel" id="accordion3"><p class="accordion-text">Energy imbalance, delay, ya expected result na milna.</p></div>
           </div>
         </div>
-        <div class="step3-note-box">
-          <p class="step3-note" data-i18n="step3Note">⚠ Ye sirf rashi-based guide hai. Final metal janam kundli ke hisaab se change ho sakta hai.</p>
+        <!-- Section 4: Curiosity Peak -->
+        <div class="result-sec result-sec-4">
+          <h2 class="result-curiosity-head">Aapka Exact Metal Different bhi ho sakta hai.</h2>
+          <p class="result-curiosity-sub">Sirf janam kundli ke analysis se final dhatu decide hota hai.</p>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+            <p class="progress-label">Aap 70% result dekh chuke hain.</p>
+          </div>
         </div>
-        <p class="step3-gap" data-i18n="step3Gap">Sirf 1 minute me apni exact birth-based metal aur poori kundli analysis dekhiye.</p>
-        <div class="step3-cta-block">
-          <button type="button" class="btn" id="cta-check-kundli" data-cta="result" data-i18n="step3Cta">Check My Personalized Kundli</button>
+        <!-- Section 5: Soft Conversion Push -->
+        <div class="result-sec result-sec-5">
+          <h2 class="result-cta-head">Apni Personalized Kundli Check Karein</h2>
+          <ul class="result-benefits">
+            <li>Exact Lucky Metal (Right ear specific)</li>
+            <li>Grah strength analysis</li>
+            <li>Career & Finance direction</li>
+            <li>10-year overview</li>
+          </ul>
+          <div class="result-cta-block">
+            <button type="button" class="btn" id="cta-check-kundli" data-cta="result">Check My Personalized Kundli – ₹349</button>
+            <button type="button" class="btn btn-whatsapp" id="cta-whatsapp-result" data-i18n="step3Whatsapp">Send This Result on WhatsApp</button>
+          </div>
+          <p class="result-reassure">Report WhatsApp + Email par milegi • 24–48 hours</p>
         </div>
-        <button type="button" class="btn btn-secondary" id="cta-back-rashi" data-i18n="step3Back">Back / Change Rashi</button>
+        <button type="button" class="btn btn-secondary result-back" id="cta-back-rashi" data-i18n="step3Back">Back / Change Rashi</button>
       </div>
     </section>
 
@@ -716,6 +910,7 @@
   <!-- Result popup (after a few seconds on results) -->
   <div class="result-popup-overlay" id="resultPopup" aria-hidden="true">
     <div class="result-popup">
+      <button type="button" class="result-popup-close" id="popupClose" aria-label="Close">&times;</button>
       <p data-i18n="popupText">Apni janam kundli se personalized report pao.</p>
       <button type="button" class="btn" id="popupCta" data-i18n="popupCta">Check My Personalized Kundli</button>
     </div>
@@ -723,6 +918,20 @@
 
   <script>
     (function() {
+      var RASHI_TRAITS = {
+        mesh: ['Bold nature', 'Leadership quality', 'Energy high'],
+        vrishabh: ['Stable mindset', 'Artistic sense', 'Patience strong'],
+        mithun: ['Tez dimaag', 'Communication strong', 'Dual nature'],
+        kark: ['Emotional depth', 'Intuition strong', 'Family-oriented'],
+        singh: ['Confident', 'Creative', 'Natural leader'],
+        kanya: ['Detail-oriented', 'Analytical', 'Practical'],
+        tula: ['Balanced thinking', 'Diplomatic', 'Aesthetic sense'],
+        vrishchik: ['Deep focus', 'Transformation', 'Passionate'],
+        dhanu: ['Philosophical', 'Optimistic', 'Adventurous'],
+        makar: ['Disciplined', 'Ambitious', 'Practical'],
+        kumbh: ['Innovative', 'Independent', 'Humanitarian'],
+        meen: ['Intuitive', 'Compassionate', 'Creative']
+      };
       const RASHI_METAL_MAP = {
         mesh: { metal: 'Gold' },
         vrishabh: { metal: 'Silver' },
@@ -791,6 +1000,7 @@
           step3Note: '⚠ Ye sirf rashi-based guide hai. Final metal janam kundli ke hisaab se change ho sakta hai.',
           step3Gap: 'Sirf 1 minute me apni exact birth-based metal aur poori kundli analysis dekhiye.',
           step3Cta: 'Check My Personalized Kundli',
+          step3Whatsapp: 'Send This Result on WhatsApp',
           step3Reassure: 'Report WhatsApp + Email par milegi • 24–48 hours',
           step3Back: 'Back / Change Rashi',
           step4Title: 'Aapka janam samay, nakshatra, grah—sab combine karke hi exact answer aata hai.',
@@ -840,6 +1050,7 @@
           step3Note: '⚠ This is only a rashi-based guide. Final metal can change based on your janam kundli.',
           step3Gap: 'Get your exact birth-based metal and full kundli analysis in just 1 minute.',
           step3Cta: 'Check My Personalized Kundli',
+          step3Whatsapp: 'Send This Result on WhatsApp',
           step3Reassure: 'Report on WhatsApp + Email • 24–48 hours',
           step3Back: 'Back / Change Rashi',
           step4Title: 'Exact answer comes when birth time, nakshatra, and planets combine—just for you.',
@@ -896,12 +1107,16 @@
           var nameEl = card.querySelector('.rashi-name');
           if (nameEl && key && RASHI_NAMES[lang]) nameEl.textContent = RASHI_NAMES[lang][key] || nameEl.textContent;
         });
-        if (selectedRashi && RASHI_METAL_MAP[selectedRashi]) {
+        if (selectedRashi && RASHI_METAL_MAP[selectedRashi] && currentStep === 3) {
           var r = RASHI_METAL_MAP[selectedRashi];
-          var rn = document.getElementById('resultRashiName');
-          var rm = document.getElementById('resultMetal');
-          if (rn) rn.textContent = RASHI_NAMES[lang] && RASHI_NAMES[lang][selectedRashi] ? RASHI_NAMES[lang][selectedRashi] : selectedRashi;
-          if (rm) rm.textContent = METAL_NAMES[lang] && METAL_NAMES[lang][r.metal] ? METAL_NAMES[lang][r.metal] : r.metal;
+          var rn = getRashiName(selectedRashi);
+          var rm = getMetalName(r.metal);
+          var identityEl = document.getElementById('result-identity-hook');
+          var metalGlowEl = document.getElementById('resultMetalGlow');
+          var accordion1El = document.getElementById('accordion1Text');
+          if (identityEl) identityEl.textContent = 'Aap ' + rn + ' se hain';
+          if (metalGlowEl) metalGlowEl.textContent = rm;
+          if (accordion1El) accordion1El.textContent = 'Har ' + rn + ' rashi wale ke liye metal same nahi hota.';
         }
       }
 
@@ -943,14 +1158,21 @@
 
         if (n === 3 && selectedRashi && RASHI_METAL_MAP[selectedRashi]) {
           var r = RASHI_METAL_MAP[selectedRashi];
-          var card = document.querySelector('.step-panel[data-step="3"] .result-card');
-          if (card) {
-            card.classList.remove('result-animate');
-            card.offsetHeight;
-            card.classList.add('result-animate');
+          var rashiName = getRashiName(selectedRashi);
+          var metalName = getMetalName(r.metal);
+          var identityEl = document.getElementById('result-identity-hook');
+          var traitsEl = document.getElementById('resultTraits');
+          var metalGlowEl = document.getElementById('resultMetalGlow');
+          var accordion1El = document.getElementById('accordion1Text');
+          if (identityEl) identityEl.textContent = 'Aap ' + rashiName + ' se hain';
+          if (traitsEl) {
+            var traits = RASHI_TRAITS[selectedRashi] || ['Unique', 'Special', 'Individual'];
+            traitsEl.innerHTML = traits.map(function(t) { return '<li>' + t + '</li>'; }).join('');
           }
-          document.getElementById('resultRashiName').textContent = getRashiName(selectedRashi);
-          document.getElementById('resultMetal').textContent = getMetalName(r.metal);
+          if (metalGlowEl) metalGlowEl.textContent = metalName;
+          if (accordion1El) accordion1El.textContent = 'Har ' + rashiName + ' rashi wale ke liye metal same nahi hota.';
+          document.querySelectorAll('.accordion-trigger').forEach(function(t) { t.setAttribute('aria-expanded', 'false'); });
+          document.querySelectorAll('.accordion-panel').forEach(function(p) { p.classList.remove('open'); });
           clearTimeout(window._resultPopupTimer);
           window._resultPopupTimer = setTimeout(function() {
             var popup = document.getElementById('resultPopup');
@@ -986,6 +1208,12 @@
         grid.appendChild(card);
       });
 
+      // Popup close
+      var popupClose = document.getElementById('popupClose');
+      if (popupClose) popupClose.addEventListener('click', function() {
+        var popup = document.getElementById('resultPopup');
+        if (popup) popup.classList.remove('visible');
+      });
       // Popup CTA
       var popupCta = document.getElementById('popupCta');
       if (popupCta) {
@@ -1004,8 +1232,25 @@
         emit('cta_click', { cta_location: 'result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
         setTimeout(function() { window.location.href = 'index.html'; }, 200);
       });
+      document.getElementById('cta-whatsapp-result').addEventListener('click', function() {
+        var rashi = selectedRashi || '';
+        var metal = (selectedRashi && RASHI_METAL_MAP[selectedRashi]) ? RASHI_METAL_MAP[selectedRashi].metal : '';
+        var rashiName = rashi ? getRashiName(rashi) : '';
+        emit('whatsapp_click', { rashi: rashi, metal: metal, rashi_display: rashiName, lead: true });
+        var msg = encodeURIComponent('Mera rashi ' + rashiName + ' hai, suggested metal ' + metal + '. Personalized kundli report chahiye! - ShubhMay');
+        window.open('https://wa.me/918002560943?text=' + msg, '_blank');
+      });
       document.getElementById('cta-back-rashi').addEventListener('click', function() {
         showStep(2);
+      });
+      document.querySelectorAll('.accordion-trigger').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = this.getAttribute('data-accordion');
+          var panel = document.getElementById('accordion' + id);
+          var open = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !open);
+          if (panel) panel.classList.toggle('open', !open);
+        });
       });
       document.getElementById('cta-proceed').addEventListener('click', function() {
         emit('cta_click', { cta_location: 'education', cta_label: 'Show My Report', step_index: 4 });

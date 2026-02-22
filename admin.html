@@ -150,6 +150,7 @@
             <option value="page_view">Page views</option>
             <option value="rashi_selected">Rashi selections</option>
             <option value="cta_click">CTA / Upsell clicks</option>
+            <option value="whatsapp_click">WhatsApp / Leads</option>
             <option value="step_view">Step views</option>
           </select>
           <select id="filterPage">
@@ -164,13 +165,19 @@
       </div>
 
       <div class="card">
-        <h2>Rashi choices (Metal Finder)</h2>
+        <h2>Rashi Clicks – Konse rashi par kitne clicks aaye</h2>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">Har rashi card pe click = 1 entry. Sab data Supabase me save hota hai.</p>
         <div id="rashiTableWrap"></div>
       </div>
 
       <div class="card">
         <h2>Upsell / CTA clicks by location</h2>
         <div id="ctaTableWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2>Leads (WhatsApp – Send Result)</h2>
+        <div id="leadsTableWrap"></div>
       </div>
     </div>
   </div>
@@ -236,6 +243,7 @@
         loadEvents();
         loadRashiBreakdown();
         loadCtaBreakdown();
+        loadLeads();
       }
 
       document.getElementById('btnRefresh').addEventListener('click', loadData);
@@ -262,6 +270,7 @@
             var uniqueSessions = new Set(data.map(function(r) { return r.session_id || ''; }).filter(Boolean)).size;
             var rashiSelects = data.filter(function(r) { return r.event_type === 'rashi_selected'; }).length;
             var ctaClicks = data.filter(function(r) { return r.event_type === 'cta_click'; }).length;
+            var leadsCount = data.filter(function(r) { return r.event_type === 'whatsapp_click'; }).length;
             var todayViews = data.filter(function(r) {
               return r.event_type === 'page_view' && r.created_at >= todayStart;
             }).length;
@@ -277,10 +286,11 @@
             document.getElementById('statGrid').innerHTML =
               '<div class="stat"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views (7d)</div></div>' +
               '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Unique sessions (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi selections</div></div>' +
+              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi clicks (7d)</div></div>' +
               '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">Upsell / CTA clicks</div></div>' +
               '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Page views today</div></div>' +
               '<div class="stat"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate (CTA/Rashi)</div></div>' +
+              '<div class="stat"><div class="stat-val">' + leadsCount + '</div><div class="stat-label">Leads (WhatsApp)</div></div>' +
               topRashiHtml;
           })
           .catch(function(e) { showErr(e.message || 'Network error'); });
@@ -309,6 +319,7 @@
             var extra = '';
             if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' → ' + (pl.metal || '');
             if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
+            if (r.event_type === 'whatsapp_click') extra = (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '') + ' (lead)';
             if (r.event_type === 'page_view') extra = pl.page || '';
             if (r.event_type === 'step_view') extra = pl.step_name || '';
             return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + (r.session_id || '').slice(0, 12) + '…</td><td>' + (extra || '-') + '</td></tr>';
@@ -342,7 +353,7 @@
               return '<tr><td><span class="rashi-badge">' + x[0] + '</span>' + top + '</td><td>' + x[1] + '</td></tr>';
             }).join('');
             document.getElementById('rashiTableWrap').innerHTML = rows
-              ? '<table><thead><tr><th>Rashi</th><th>Selects</th></tr></thead><tbody>' + rows + '</tbody></table>'
+              ? '<table><thead><tr><th>Rashi</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<p class="loading">No rashi selections yet</p>';
           }).catch(function(e) {
             document.getElementById('rashiTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
@@ -374,6 +385,30 @@
               : '<p class="loading">No CTA clicks yet</p>';
           }).catch(function(e) {
             document.getElementById('ctaTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
+          });
+      }
+
+      function loadLeads() {
+        supabase.from('analytics_events')
+          .select('*')
+          .eq('event_type', 'whatsapp_click')
+          .order('created_at', { ascending: false })
+          .limit(100)
+          .then(function(res) {
+            if (res.error) {
+              document.getElementById('leadsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (res.error.message || 'Error') + '</p>';
+              return;
+            }
+            var data = res.data || [];
+            var rows = data.map(function(r) {
+              var pl = r.payload || {};
+              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + (pl.rashi_display || pl.rashi || '-') + '</td><td>' + (pl.metal || '-') + '</td><td>' + (r.session_id || '').slice(0, 14) + '</td></tr>';
+            }).join('');
+            document.getElementById('leadsTableWrap').innerHTML = data.length
+              ? '<table><thead><tr><th>Time</th><th>Rashi</th><th>Metal</th><th>Session</th></tr></thead><tbody>' + rows + '</tbody></table>'
+              : '<p class="loading">No leads yet</p>';
+          }).catch(function(e) {
+            document.getElementById('leadsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';
           });
       }
 
