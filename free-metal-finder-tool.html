@@ -1185,13 +1185,6 @@
           if (accordion1El) accordion1El.textContent = 'Har ' + rashiName + ' rashi wale ke liye metal same nahi hota.';
           document.querySelectorAll('.accordion-trigger').forEach(function(t) { t.setAttribute('aria-expanded', 'false'); });
           document.querySelectorAll('.accordion-panel').forEach(function(p) { p.classList.remove('open'); });
-          clearTimeout(window._resultPopupTimer);
-          window._resultPopupTimer = setTimeout(function() {
-            if (currentStep === 3) {
-              emit('checkout_start', { step: 'result_auto', destination_url: CHECKOUT_URL });
-              window.location.href = CHECKOUT_URL;
-            }
-          }, 2500);
         }
       }
 
