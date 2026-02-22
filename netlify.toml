@@ -10,6 +10,17 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer-when-downgrade"
 
+# Free Metal Finder Tool - serve at /metal and /free-metal-finder-tool
+[[redirects]]
+  from = "/metal"
+  to = "/free-metal-finder-tool.html"
+  status = 200
+
+[[redirects]]
+  from = "/free-metal-finder-tool"
+  to = "/free-metal-finder-tool.html"
+  status = 200
+
 # Optional: Add a 404 fallback page rule (Netlify automatically serves 404.html if present)
 # [[redirects]]
 #   from = "/*"
