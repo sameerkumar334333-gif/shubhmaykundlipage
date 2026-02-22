@@ -176,7 +176,8 @@
       </div>
 
       <div class="card">
-        <h2>Leads (WhatsApp – Send Result)</h2>
+        <h2>Leads (WhatsApp – Phone captured)</h2>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">Send Result pe click → Number popup → Save + WhatsApp open. Sab Supabase me.</p>
         <div id="leadsTableWrap"></div>
       </div>
     </div>
@@ -319,7 +320,7 @@
             var extra = '';
             if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' → ' + (pl.metal || '');
             if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
-            if (r.event_type === 'whatsapp_click') extra = (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '') + ' (lead)';
+            if (r.event_type === 'whatsapp_click') extra = (pl.phone ? '+91 ' + pl.phone + ' | ' : '') + (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '');
             if (r.event_type === 'page_view') extra = pl.page || '';
             if (r.event_type === 'step_view') extra = pl.step_name || '';
             return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + (r.session_id || '').slice(0, 12) + '…</td><td>' + (extra || '-') + '</td></tr>';
@@ -402,10 +403,11 @@
             var data = res.data || [];
             var rows = data.map(function(r) {
               var pl = r.payload || {};
-              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + (pl.rashi_display || pl.rashi || '-') + '</td><td>' + (pl.metal || '-') + '</td><td>' + (r.session_id || '').slice(0, 14) + '</td></tr>';
+              var ph = pl.phone ? ('+91 ' + pl.phone) : '-';
+              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + ph + '</td><td>' + (pl.rashi_display || pl.rashi || '-') + '</td><td>' + (pl.metal || '-') + '</td></tr>';
             }).join('');
             document.getElementById('leadsTableWrap').innerHTML = data.length
-              ? '<table><thead><tr><th>Time</th><th>Rashi</th><th>Metal</th><th>Session</th></tr></thead><tbody>' + rows + '</tbody></table>'
+              ? '<table><thead><tr><th>Time</th><th>Phone</th><th>Rashi</th><th>Metal</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<p class="loading">No leads yet</p>';
           }).catch(function(e) {
             document.getElementById('leadsTableWrap').innerHTML = '<p class="loading" style="color:#ef4444;">' + (e.message || 'Error') + '</p>';

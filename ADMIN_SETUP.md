@@ -25,13 +25,22 @@ Replace `YOUR-USER-UUID-HERE` with the copied UUID.
 
 Log in with the email and password you created in step 2.
 
+## 4. (Optional) Run supabase-fix-recursion.sql
+
+If you see "infinite recursion" error: run `supabase-fix-recursion.sql` in SQL Editor.
+
+## 5. (Optional) Run supabase-update.sql
+
+For faster queries: run `supabase-update.sql` to add indexes.
+
 ## Events tracked
 
 | Event            | Description                                      |
 |------------------|--------------------------------------------------|
 | `page_view`      | User landed on metal finder or index             |
-| `rashi_selected` | User chose a rashi (with metal)                  |
+| `rashi_selected` | User chose a rashi (payload: rashi, metal)       |
 | `cta_click`      | User clicked any upsell/CTA button               |
+| `whatsapp_click` | WhatsApp lead – phone captured (payload: phone, rashi, metal) |
 | `step_view`      | User viewed a step in the metal finder wizard    |
 
 ## Security

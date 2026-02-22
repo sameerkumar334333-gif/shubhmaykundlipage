@@ -916,6 +916,18 @@
     </div>
   </div>
 
+  <!-- Phone capture modal for WhatsApp -->
+  <div class="result-popup-overlay" id="whatsappPhoneModal" aria-hidden="true">
+    <div class="result-popup">
+      <button type="button" class="result-popup-close" id="whatsappModalClose" aria-label="Close">&times;</button>
+      <h3 style="font-size:1.1rem;margin-bottom:8px;">Apna WhatsApp number dijiye</h3>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:16px;">Result WhatsApp par share karne ke liye number chahiye.</p>
+      <input type="tel" id="whatsappPhoneInput" placeholder="10 digit number (e.g. 9876543210)" maxlength="10" pattern="[0-9]{10}" style="width:100%;padding:12px 16px;border:1px solid rgba(180,83,9,0.3);border-radius:var(--radius);font-size:1rem;margin-bottom:12px;">
+      <p id="whatsappPhoneErr" style="font-size:0.8rem;color:#ef4444;margin-bottom:8px;display:none;"></p>
+      <button type="button" class="btn btn-whatsapp" id="whatsappModalSubmit">Send on WhatsApp</button>
+    </div>
+  </div>
+
   <script>
     (function() {
       var RASHI_TRAITS = {
@@ -1233,10 +1245,31 @@
         setTimeout(function() { window.location.href = 'index.html'; }, 200);
       });
       document.getElementById('cta-whatsapp-result').addEventListener('click', function() {
+        document.getElementById('whatsappPhoneInput').value = '';
+        document.getElementById('whatsappPhoneErr').style.display = 'none';
+        document.getElementById('whatsappPhoneModal').classList.add('visible');
+      });
+      document.getElementById('whatsappModalClose').addEventListener('click', function() {
+        document.getElementById('whatsappPhoneModal').classList.remove('visible');
+      });
+      document.getElementById('whatsappPhoneModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('visible');
+      });
+      document.getElementById('whatsappModalSubmit').addEventListener('click', function() {
+        var inp = document.getElementById('whatsappPhoneInput');
+        var errEl = document.getElementById('whatsappPhoneErr');
+        var phone = (inp.value || '').replace(/\D/g, '');
+        if (phone.length !== 10) {
+          errEl.textContent = 'Sahi 10 digit number enter karein';
+          errEl.style.display = 'block';
+          return;
+        }
         var rashi = selectedRashi || '';
         var metal = (selectedRashi && RASHI_METAL_MAP[selectedRashi]) ? RASHI_METAL_MAP[selectedRashi].metal : '';
         var rashiName = rashi ? getRashiName(rashi) : '';
-        emit('whatsapp_click', { rashi: rashi, metal: metal, rashi_display: rashiName, lead: true });
+        emit('whatsapp_click', { phone: phone, rashi: rashi, metal: metal, rashi_display: rashiName, lead: true });
+        errEl.style.display = 'none';
+        document.getElementById('whatsappPhoneModal').classList.remove('visible');
         var msg = encodeURIComponent('Mera rashi ' + rashiName + ' hai, suggested metal ' + metal + '. Personalized kundli report chahiye! - ShubhMay');
         window.open('https://wa.me/918002560943?text=' + msg, '_blank');
       });
