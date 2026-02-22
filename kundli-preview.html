@@ -763,6 +763,7 @@
       color: var(--navy);
       font-weight: 500;
       line-height: 1.5;
+      margin-bottom: 32px;
     }
 
     /* Blur blocks */
@@ -1039,16 +1040,25 @@
       text-align: center;
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
       z-index: 200;
-      transform: translateY(100%);
-      transition: transform 0.4s ease;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
     }
 
     .sticky-cta-bar.show {
-      transform: translateY(0);
+      display: flex;
+      animation: slideUp 0.4s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
     }
 
     .sticky-bar-text {
@@ -1296,7 +1306,7 @@
           </div>
 
           <!-- D: Incomplete Lock -> Enhanced Deliverables -->
-          <div class="sec-card">
+          <div class="sec-card" style="margin-top: 32px;">
             <div class="sec-head">
               <span class="icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" stroke-width="2">
@@ -1310,6 +1320,10 @@
               <h2 data-i18n="lockTitle">What You'll Get In Your Detailed Personalized Kundli Report</h2>
             </div>
             <p style="margin-bottom:16px;" data-i18n="lockSub">Detailed 15-20 page PDF report includes:</p>
+
+            <img src="assets/premium-kundli.webp" alt="Premium Kundli Report"
+              style="width: 100%; border-radius: var(--radius); margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(180, 83, 9, 0.2);">
+
             <div class="blur-grid" style="margin:0;">
               <div class="deliverable-block" style="margin-bottom:12px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
@@ -1573,6 +1587,62 @@
       };
 
       var currentLang = 'hinglish';
+
+      var TRAITS = {
+        hinglish: [
+          ['Career me exceptional growth potential hai', 'Strong leadership qualities aur samaj ko influence karne ki kshamta'],
+          ['Creative and unique approach to complex problems', 'Bade financial targets ko easily achieve karne ka yog'],
+          ['Strong intuition aur aage ki situations ko bhapne ki taqat', 'Apne business ya empire khada karne ka vishesh sahas'],
+          ['Decision-making ability me extreme clarity', 'Relationships aur high-level networking me kamaal ka success rate'],
+          ['Sahas aur determination normal se bohot high', 'Life me ek badi authority position haasil karne ka yog'],
+          ['Bohot tezi se nayi skills sikhne ki shamta', 'Wealth accumulation ka zabardast yog'],
+          ['Foreign travel ya waha set hone ki strong possibilities', 'Spiritual aur material dono level par balance banana'],
+          ['Hidden enemies par asani se vijay prapt karne ki taqat', 'Apne field me master aur respected professional banne ke indications']
+        ],
+        hi: [
+          ['करियर में अप्रत्याशित वृद्धि की अपार संभावनाएं हैं', 'मजबूत नेतृत्व क्षमता और समाज को प्रभावित करने की विशेष शक्ति'],
+          ['जटिल समस्याओं को सुलझाने का रचनात्मक और अनूठा दृष्टिकोण', 'बड़े आर्थिक लक्ष्यों को सरलता से प्राप्त करने का विशेष योग'],
+          ['मजबूत अंतर्ज्ञान और भविष्य की स्थितियों को पहले से भांपने की ताकत', 'अपना खुद का साम्राज्य या व्यवसाय स्थापित करने का अदम्य साहस'],
+          ['निर्णय लेने की क्षमता में अत्यधिक स्पष्टता', 'रिश्तों और उच्च-स्तरीय नेटवर्किंग में अद्भुत सफलता दर'],
+          ['सामान्य से बहुत अधिक साहस और दृढ़ संकल्प', 'जीवन में एक बड़े अधिकारिक पद (Authority) को प्राप्त करने का प्रबल योग'],
+          ['नई चीजों को अत्यंत शीघ्रता से सीखने की क्षमता', 'धन संचय (Wealth accumulation) का जबरदस्त योग'],
+          ['विदेश यात्रा या वहां बसने की मजबूत संभावनाएं', 'आध्यात्मिक और भौतिक दोनों स्तरों पर बेहतरीन संतुलन बनाए रखना'],
+          ['गुप्त शत्रुओं पर आसानी से विजय प्राप्त करने की ताकत', 'अपने क्षेत्र में एक निपुण और सम्मानित पेशेवर बनने के स्पष्ट संकेत']
+        ],
+        en: [
+          ['Exceptional growth potential in your career path', 'Strong leadership qualities and the ability to influence society'],
+          ['A highly creative and unique approach to solving complex problems', 'Special planetary alignment for achieving massive financial targets'],
+          ['Powerful intuition and the foresight to anticipate future situations', 'Unmatched courage to build and establish your own empire'],
+          ['Extreme clarity in decision-making and thought processes', 'Incredible success rate in relationship building and high-level networking'],
+          ['Courage and determination that is much higher than average', 'Strong likelihood of attaining a significant position of authority in life'],
+          ['Remarkable ability to learn new things quickly and adapt', 'A tremendous planetary combination for wealth accumulation'],
+          ['Strong possibilities of foreign travel or settlement', 'Maintaining an excellent balance between spiritual and material realms'],
+          ['The inherent power to easily conquer hidden enemies', 'Clear indications of becoming a master and highly respected professional in your field']
+        ]
+      };
+
+      function hashString(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+          hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return Math.abs(hash);
+      }
+
+      function pickTraits(name, dob, tob, place) {
+        var str = (name || '').trim().toLowerCase() + (dob || '') + (tob || '') + (place || '').trim().toLowerCase();
+        var num = hashString(str);
+
+        var tList = TRAITS[currentLang] || TRAITS['hinglish'];
+        if (!tList) return [];
+
+        var idx1 = num % tList.length;
+        var idx2 = (num + (name.length > 0 ? name.charCodeAt(0) : 1)) % tList.length;
+        if (idx1 === idx2) idx2 = (idx1 + 1) % tList.length;
+
+        return [tList[idx1][0], tList[idx2][1]];
+      }
+
       function setLang(lang) {
         currentLang = lang;
         document.querySelectorAll('.lang-btn').forEach(function (b) {
@@ -1588,6 +1658,33 @@
             }
           }
         });
+
+        var formPanel = document.getElementById('formPanel');
+        if (formPanel && !formPanel.classList.contains('visible')) {
+          var name = (document.getElementById('name').value || '').trim();
+          var dobYear = document.getElementById('dobYear').value;
+          var dobMonth = document.getElementById('dobMonth').value;
+          var dobDay = document.getElementById('dobDay').value;
+          var dob = dobYear && dobMonth && dobDay ? dobYear + '-' + dobMonth + '-' + dobDay : '';
+          var th = document.getElementById('tobHour').value;
+          var tm = document.getElementById('tobMin').value;
+          var tap = document.getElementById('tobAmPm').value;
+          var tob = th && tm && tap ? th + ':' + tm + ' ' + tap : '';
+          var place = (document.getElementById('place').value || '').trim();
+
+          var traits = pickTraits(name, dob, tob, place);
+          var displayName = name.split(' ')[0] || name;
+
+          var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || PREVIEW_COPY['hinglish']['titleCheck'];
+          var identTextTemplate = PREVIEW_COPY[currentLang]['identText'] || PREVIEW_COPY['hinglish']['identText'];
+
+          var previewTitle = document.getElementById('previewTitle');
+          if (previewTitle) previewTitle.textContent = checkTitleTemplate.replace('{name}', displayName);
+          var idText = document.getElementById('identityText');
+          if (idText) idText.textContent = identTextTemplate.replace('{name}', displayName);
+          var tListEl = document.getElementById('traitsList');
+          if (tListEl) tListEl.innerHTML = traits.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+        }
       }
 
       document.querySelectorAll('.lang-btn').forEach(function (btn) {
@@ -1597,24 +1694,9 @@
       });
       setLang('hinglish');
 
-      var TRAIT_POOL = [
-        ['Career me exponential growth potential', 'Leadership qualities aur samaj ko guide karne ki kshamta'],
-        ['Creative and unique approach to problems', 'Bade financial targets ko achieve karne ka dum'],
-        ['Strong intuition aur aage ki sochne ki taqat', 'Apne dum par empire khada karne ka sahas'],
-        ['Decision-making ability me clarity', 'Relationships aur networking me kamaal ka success rate'],
-        ['Sahas aur determination bohot high', 'Life me ek badi position haasil karne ka yog']
-      ];
-
       function emit(event, payload) {
         try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(Object.assign({ event }, payload)); } catch (e) { }
         if (window._shubhmayTrack) window._shubhmayTrack(event, Object.assign({ page: 'kundli_preview' }, payload));
-      }
-
-      function pickTraits(name, dob) {
-        var n = (name || '').length;
-        var d = (dob || '').replace(/-/g, '');
-        var idx = ((n * 7) + parseInt(d.slice(-2), 10) || 0) % TRAIT_POOL.length;
-        return TRAIT_POOL[idx] || TRAIT_POOL[0];
       }
 
       document.getElementById('kundliForm').addEventListener('submit', function (e) {
@@ -1633,7 +1715,7 @@
 
         emit('kundli_preview_submit', { name: name, dob: dob, tob: tob, place: place });
 
-        var traits = pickTraits(name, dob);
+        var traits = pickTraits(name, dob, tob, place);
         var displayName = name.split(' ')[0] || name;
 
         var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || PREVIEW_COPY['hinglish']['titleCheck'];
@@ -1646,6 +1728,9 @@
         document.getElementById('formPanel').classList.remove('visible');
         document.getElementById('previewPanel').classList.add('visible');
         document.getElementById('previewPanel').scrollIntoView({ behavior: 'smooth' });
+
+        var stickyBar = document.getElementById('stickyBar');
+        if (stickyBar) stickyBar.classList.add('show');
       });
 
       document.getElementById('btnUnlock').addEventListener('click', function () {
@@ -1703,23 +1788,6 @@
       document.addEventListener('click', function (e) {
         if (e.target !== placeInput && e.target !== suggestionsBox) {
           suggestionsBox.style.display = 'none';
-        }
-      });
-
-      // Sticky Bar toggle logic
-      var stickyBar = document.getElementById('stickyBar');
-      window.addEventListener('scroll', function () {
-        var previewPanel = document.getElementById('previewPanel');
-        if (previewPanel && previewPanel.classList.contains('visible')) {
-          var triggerEl = document.querySelector('.critical-blockage-box');
-          if (triggerEl) {
-            var rect = triggerEl.getBoundingClientRect();
-            if (rect.top < window.innerHeight / 2) {
-              stickyBar.classList.add('show');
-            } else {
-              stickyBar.classList.remove('show');
-            }
-          }
         }
       });
 
