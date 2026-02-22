@@ -27,7 +27,18 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at timestamptz DEFAULT now()
 );
 
--- 3. RLS policies
+-- 3. Helper function (avoids infinite recursion in admins policy)
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (SELECT 1 FROM public.admins WHERE user_id = auth.uid())
+$$;
+
+-- 4. RLS policies
 ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
 
@@ -36,23 +47,16 @@ DROP POLICY IF EXISTS "Allow insert analytics" ON analytics_events;
 CREATE POLICY "Allow insert analytics" ON analytics_events
   FOR INSERT WITH CHECK (true);
 
--- Only admins can SELECT (authenticated users in admins table)
+-- Only admins can SELECT (uses is_admin() to avoid recursion)
 DROP POLICY IF EXISTS "Admins can read analytics" ON analytics_events;
 CREATE POLICY "Admins can read analytics" ON analytics_events
-  FOR SELECT USING (
-    auth.uid() IS NOT NULL AND
-    EXISTS (SELECT 1 FROM admins WHERE admins.user_id = auth.uid())
-  );
+  FOR SELECT USING (auth.uid() IS NOT NULL AND public.is_admin());
 
--- Admins table: only admins can read it (to check who is admin)
 DROP POLICY IF EXISTS "Admins can read admins" ON admins;
 CREATE POLICY "Admins can read admins" ON admins
-  FOR SELECT USING (
-    auth.uid() IS NOT NULL AND
-    EXISTS (SELECT 1 FROM admins a WHERE a.user_id = auth.uid())
-  );
+  FOR SELECT USING (auth.uid() IS NOT NULL AND public.is_admin());
 
--- 4. Add your first admin
+-- 5. Add your first admin
 -- Step A: Supabase Dashboard > Authentication > Users > Add user (create with email + password)
 -- Step B: Copy the user's UUID from the Users table
 -- Step C: Run this (replace with your UUID and email):
