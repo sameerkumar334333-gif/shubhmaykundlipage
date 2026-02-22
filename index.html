@@ -13,27 +13,28 @@
     <script>window.dataLayer = window.dataLayer || [];</script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script>
-      (function(){
-        var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
-        var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
-        var _sid = sessionStorage.getItem('shubhmay_sid');
-        if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
-        window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
-        window._shubhmayTrack = function(et, pl) {
-          if (!window._shubhmaySupabase) return;
-          try { window._shubhmaySupabase.from('analytics_events').insert([{ session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language }]).then(function(){}); } catch(e){}
-        };
-        if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'index', title: 'kundli_lp' });
-      })();
+        (function () {
+            var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
+            var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
+            var _sid = sessionStorage.getItem('shubhmay_sid');
+            if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+            window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+            window._shubhmayTrack = function (et, pl) {
+                if (!window._shubhmaySupabase) return;
+                try { window._shubhmaySupabase.from('analytics_events').insert([{ session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language }]).then(function () { }); } catch (e) { }
+            };
+            if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'index', title: 'kundli_lp' });
+        })();
     </script>
     <!-- GTM: deferred to window.load so FCP/LCP stay fast; LP → checkout on Cosmofeed -->
     <script>
-    window.addEventListener('load',function(){
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-        j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MGBML6GZ');
-    });
+        window.addEventListener('load', function () {
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-MGBML6GZ');
+        });
     </script>
     <title>Personalized Kundli Report | Career, Marriage & Dasha Insights</title>
     <meta name="description"
@@ -66,7 +67,7 @@
                 });
                 if (window._shubhmayTrack) window._shubhmayTrack('cta_click', { cta_location: location, cta_label: label || 'Get Kundli Report', page: 'index' });
             } catch (e) { /* tracking fail-safe */ }
-            setTimeout(function() { window.location.href = 'https://superprofile.bio/vp/kundli-checkout'; }, 250);
+            setTimeout(function () { window.location.href = 'https://superprofile.bio/vp/kundli-checkout'; }, 250);
         }
     </script>
     <style>
@@ -1228,6 +1229,7 @@
         .testimonials-mask::-webkit-scrollbar {
             height: 6px;
         }
+
         .testimonials-mask::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 3px;
@@ -2159,72 +2161,329 @@
                 display: none !important;
             }
         }
+
+        .metal-result-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+            border: 1px solid var(--matte-gold);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            margin: 0 auto 40px auto;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            max-width: 680px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .metal-highlight {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border: 1px dashed rgba(199, 169, 98, 0.5);
+            margin-bottom: 32px;
+            display: inline-block;
+            min-width: 250px;
+        }
+
+        .fear-alert-box {
+            background: rgba(229, 90, 90, 0.15);
+            border: 1px solid rgba(229, 90, 90, 0.4);
+            padding: 24px 32px;
+            border-radius: var(--radius-md);
+            margin-bottom: 32px;
+            text-align: left;
+            position: relative;
+        }
+
+        .fear-alert-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #e55a5a;
+            border-top-left-radius: var(--radius-md);
+            border-bottom-left-radius: var(--radius-md);
+        }
+
+        .snapshot-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 850px;
+            margin: 0 auto 40px auto;
+            text-align: left;
+            position: relative;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .trait-card {
+            background: rgba(68, 166, 106, 0.05);
+            border: 1px solid rgba(68, 166, 106, 0.2);
+            padding: 24px;
+            border-radius: var(--radius-md);
+        }
+
+        .critical-blockage-box {
+            background: linear-gradient(180deg, rgba(229, 90, 90, 0.08) 0%, rgba(229, 90, 90, 0.15) 100%);
+            border: 2px dashed #e55a5a;
+            padding: 40px 32px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(229, 90, 90, 0.1);
+        }
+
+        .critical-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #e55a5a;
+            color: white;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e55a5a, #b33939) !important;
+            color: white !important;
+            box-shadow: 0 8px 24px rgba(229, 90, 90, 0.4) !important;
+            border: 1px solid #ff7676 !important;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 30px rgba(229, 90, 90, 0.6) !important;
+            background: linear-gradient(135deg, #ff6b6b, #cc4444) !important;
+        }
+
+        @media (max-width: 768px) {
+
+            .metal-result-card,
+            .snapshot-card {
+                padding: 24px 20px;
+            }
+
+            .fear-alert-box {
+                padding: 20px 24px;
+            }
+
+            .critical-blockage-box {
+                padding: 32px 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- 1. Hero Section -->
-    <section class="hero-section dark-section">
-        <!-- Upgraded Advanced Backgrounds -->
+
+    <!-- 1. FUNNEL PHASE 1: METAL FINDER RESULT & PHASE 2: SNAPSHOT -->
+    <section class="hero-section dark-section" style="padding-top: 60px;">
         <div class="hero-bg-gradient"></div>
         <div class="hero-bg-pattern"></div>
         <div class="hero-bg-overlay watermark"></div>
 
-        <div class="container hero-content">
-            <div class="hero-grid">
+        <div class="container hero-content" style="position: relative; z-index: 10;">
 
-                <!-- Left Column (Text & Offer) -->
-                <div class="hero-text-col">
-                    <h1 class="headline">Personalized <span class="accent-text">Kundli Report</span></h1>
-
-                    <p class="subheadline" style="color: rgba(255,255,255,0.8);">Full birth chart report. Career, marriage, money, dasha and remedies. Based on your exact date, time and place of birth.</p>
-
-                    <!-- Authority Strip -->
-                    <div class="hero-trust-chips">
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Vedic Chart Analysis</span></div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Expert Reviewed</span></div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron" style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Sent to Your Email</span></div>
-                    </div>
+            <!-- Phase 1: Metal Result -->
+            <div class="metal-result-card">
+                <div
+                    style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(to right, var(--saffron), var(--matte-gold));">
                 </div>
 
-                <!-- Right Column (Product Image) -->
-                <div class="hero-visual-col">
-                    <div class="hero-mockup-wrapper mockup-img-container">
-                        <img src="assets/premium_kundli.webp" alt="Personalized Kundli Report" class="hero-png-img"
-                            fetchpriority="high" width="600" height="600" decoding="async" loading="eager">
-                    </div>
+                <div
+                    style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px;">
+                    <svg class="lucide lucide-check-circle-2 icon-green" xmlns="http://www.w3.org/2000/svg" width="32"
+                        height="32" viewBox="0 0 24 24" fill="none" stroke="#44a66a" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+                    <h2 style="font-size: 1.6rem; color: var(--matte-gold); margin: 0; letter-spacing: 1px;">CALCULATION
+                        COMPLETE</h2>
                 </div>
 
+                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.9); margin-bottom: 24px;">Based on your
+                    astrological birth details, your most auspicious metal is:</p>
+
+                <div class="metal-highlight">
+                    <h1 class="headline"
+                        style="font-size: 3.5rem; margin-bottom: 0; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.4); line-height: 1;">
+                        SILVER</h1>
+                    <p style="color: var(--saffron-bright); font-size: 1rem; margin-top: 12px; font-weight: 500;">
+                        (Attracts wealth, clarity, and peace for your moon sign)</p>
+                </div>
+
+                <!-- Fear Hook -->
+                <div class="fear-alert-box">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                            stroke="#e55a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-alert-triangle">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                            <path d="M12 9v4" />
+                            <path d="M12 17h.01" />
+                        </svg>
+                        <h3
+                            style="color: #fc7272; font-size: 1.25rem; margin: 0; font-family: var(--font-heading); font-weight: 700;">
+                            URGENT ALERT</h3>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; line-height: 1.6; margin: 0;">
+                        While analyzing your planets for this metal, our system detected a <strong>critical planetary
+                            blockage</strong> in your Kundli. This unseen Dosha is a major reason for unexplained delays
+                        in wealth, career, or relationships.
+                    </p>
+                </div>
+
+                <a href="#snapshot" class="cta-button pulse-anim"
+                    style="width: 100%; padding: 18px; font-size: 1.15rem; box-shadow: 0 10px 25px rgba(242, 159, 88, 0.2);">View
+                    Your Free Kundli Snapshot Below ↓</a>
             </div>
 
-            <!-- Price & CTA at bottom -->
-            <div class="hero-price-bottom">
-                <div class="impact-price-wrapper">
-                    <div class="impact-price-box">
-                        <span class="mrp-impact"><span class="line-through">₹999</span></span>
-                        <span class="price-amount-impact">₹349</span>
+            <!-- Phase 2: Free Snapshot -->
+            <div id="snapshot" class="snapshot-card">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 class="headline" style="font-size: 2.5rem; margin-bottom: 12px;">Your Free Kundli <span
+                            class="accent-text">Snapshot</span></h2>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem;">Generated from your provided birth
+                        details</p>
+                </div>
+
+                <div class="snapshot-grid">
+                    <!-- Positive Trait 1 -->
+                    <div class="trait-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="#44a66a" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trending-up">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                <polyline points="16 7 22 7 22 13" />
+                            </svg>
+                            <h3
+                                style="color: #44a66a; font-size: 1.15rem; margin: 0; font-family: var(--font-heading);">
+                                High Raj Yoga Potential</h3>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.5; margin: 0;">Your
+                            chart shows exceptionally strong placements for intelligence and financial growth. You are
+                            destined for a position of respect and significant wealth accumulation.</p>
                     </div>
-                    <button id="cta-hero" class="cta-button impact-cta pulse-anim" data-cta="hero"
-                        onclick="trackCta('hero','Order My Kundli Report')">
-                        <span class="cta-text">Order My Kundli Report</span>
-                    </button>
+
+                    <!-- Positive Trait 2 -->
+                    <div class="trait-card">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="#44a66a" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-heart">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                            </svg>
+                            <h3
+                                style="color: #44a66a; font-size: 1.15rem; margin: 0; font-family: var(--font-heading);">
+                                Loyal Partnership Driver</h3>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 1rem; line-height: 1.5; margin: 0;">Your 7th
+                            house indicators show a deep craving for long-term emotional stability and a fiercely loyal
+                            spouse. You are fundamentally designed for a fulfilling marriage.</p>
+                    </div>
+                </div>
+
+                <!-- Phase 2b: Critical Blockage -->
+                <div class="critical-blockage-box" id="detailed-kundli">
+                    <div class="critical-badge">Severe Obstacle Detected</div>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none"
+                        stroke="#e55a5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-bottom: 20px; opacity: 0.9;">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+
+                    <h3
+                        style="color: #fff; font-size: 1.8rem; margin-bottom: 16px; font-family: var(--font-heading); font-weight: 700;">
+                        Why Are Your Best Results Being Delayed?</h3>
+
+                    <p
+                        style="color: rgba(255,255,255,0.9); font-size: 1.1rem; line-height: 1.7; margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
+                        Despite your massive potential (shown above), our algorithm detected a <strong>hostile planet
+                            transit/Dosha</strong> currently active in your chart.
+                        This invisible friction is exactly why you might be experiencing <span
+                            style="color: #fc7272; font-weight: 700;">unexplained career stagnation, anxiety, or
+                            relationship hurdles.</span>
+                    </p>
+
+                    <div
+                        style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                        <p style="color: var(--saffron-bright); font-size: 1rem; margin: 0; font-style: italic;">
+                            "A free automated snapshot cannot reveal which specific planet is attacking your success,
+                            nor can it provide the exact Vedic remedy."
+                        </p>
+                    </div>
+
+                    <a href="#offer" class="cta-button btn-danger pulse-anim-light"
+                        style="width: 100%; max-width: 450px; padding: 20px 24px; font-size: 1.2rem; font-weight: 800;"
+                        data-cta="snapshot_upgrade"
+                        onclick="document.getElementById('offer').scrollIntoView({behavior: 'smooth'}); return false;">
+                        Reveal & Fix My Blockages Now
+                    </a>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 16px;">Requires
+                        comprehensive manual analysis by our Vedic Expert</p>
                 </div>
             </div>
+
+            <!-- Phase 3: Transition to existing long form sales page -->
+            <div id="offer" style="text-align: center; padding-top: 40px; margin-bottom: 40px;">
+                <h2 style="font-size: 2.2rem; color: #fff; margin-bottom: 16px;">The Only Way to Uncover the Full Truth
+                </h2>
+                <p
+                    style="color: var(--saffron-bright); font-size: 1.1rem; max-width: 600px; margin: 0 auto; margin-bottom: 32px;">
+                    Order a comprehensive, manual Kundli analysis to find your blockages and their exact remedies.</p>
+
+                <div class="impact-price-wrapper" style="max-width: 600px; margin: 0 auto;">
+                    <div class="impact-price-box" style="background: rgba(255,255,255,0.05);">
+                        <div
+                            style="margin-bottom: 12px; display: inline-block; background: rgba(242, 159, 88, 0.15); color: var(--saffron); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
+                            Limited Availability: Only 5 Manual Reports Left Today
+                        </div>
+                        <div class="price-content">
+                            <span class="mrp-impact"><span class="line-through">₹999</span></span>
+                            <span class="price-amount-impact">₹499</span>
+                        </div>
+                        <button id="cta-hero" class="cta-button impact-cta pulse-anim" data-cta="hero"
+                            onclick="trackCta('hero','Order Detailed Kundli Report')">
+                            <span class="cta-text">Order Detailed Personalized Kundli</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
-
     <!-- 1b. Karmic Solution Image + CTA -->
     <section class="karmic-image-section" style="padding: 48px 0; background: var(--cream);">
         <div class="container" style="text-align: center;">
             <img src="assets/karmic_solution_compressed.webp" alt="Karmic Solution" loading="lazy"
                 style="max-width: 500px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); margin-bottom: 24px;"
                 width="600" height="600">
-            <button id="cta-karmic" class="cta-button pulse-anim" data-cta="karmic" onclick="trackCta('karmic_section','Get My Kundli Report')">
+            <button id="cta-karmic" class="cta-button pulse-anim" data-cta="karmic"
+                onclick="trackCta('karmic_section','Get My Kundli Report')">
                 Get My Kundli Report
             </button>
         </div>
@@ -2233,8 +2492,11 @@
     <!-- 2. Emotional Hook Section -->
     <section class="agitation-section dark-section">
         <div class="container">
-            <h2 class="section-title text-light">Make Your Life Better in Every Way</h2>
-            <p class="section-subtitle" style="color: rgba(255,255,255,0.8); max-width: 720px;">Your Kundli report looks at your past, present and future. We study your birth chart, planets, DOB and houses. Our expert gives you answers for love, career, marriage and business. No guesswork.</p>
+            <h2 class="section-title text-light">Clear The Hurdles In Your Destiny</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8); max-width: 720px;">Your Detailed
+                Personalized Kundli report dives deep into your past, present and future. We hand-analyze your birth
+                chart, planets, DOB and houses to uncover exactly what's blocking your progress, and provide clear
+                answers and remedies. No guesswork.</p>
         </div>
     </section>
 
@@ -2247,22 +2509,26 @@
                 <div class="helps-card">
                     <div class="helps-icon">📅</div>
                     <h3>Know Your Right Time</h3>
-                    <p>Dasha tells you which planet is running your life now. Know the best years for job change, marriage, business start. Act when stars support you.</p>
+                    <p>Dasha tells you which planet is running your life now. Know the best years for job change,
+                        marriage, business start. Act when stars support you.</p>
                 </div>
                 <div class="helps-card">
                     <div class="helps-icon">💑</div>
                     <h3>Understand Marriage & Love</h3>
-                    <p>See your 7th house, Venus, Mars. Know delay reasons, compatible partner, when marriage can happen. No more confusion.</p>
+                    <p>See your 7th house, Venus, Mars. Know delay reasons, compatible partner, when marriage can
+                        happen. No more confusion.</p>
                 </div>
                 <div class="helps-card">
                     <div class="helps-icon">💼</div>
                     <h3>Plan Career & Money</h3>
-                    <p>10th house and Saturn show career. 2nd, 8th, 11th show money. Know your strong periods. Make smart moves.</p>
+                    <p>10th house and Saturn show career. 2nd, 8th, 11th show money. Know your strong periods. Make
+                        smart moves.</p>
                 </div>
                 <div class="helps-card">
                     <div class="helps-icon">🛡️</div>
                     <h3>Fix Dosha & Weakness</h3>
-                    <p>Mangal dosha, Rahu, Shani—know what affects you. Get simple remedies. Reduce stress, improve results.</p>
+                    <p>Mangal dosha, Rahu, Shani—know what affects you. Get simple remedies. Reduce stress, improve
+                        results.</p>
                 </div>
             </div>
         </div>
@@ -2307,27 +2573,64 @@
             <h2 class="section-title">What You Get in Your Report</h2>
             <div class="deliverables-grid">
                 <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                        <span><strong>Dosha & Dasha</strong> — Mangal, Shani, Rahu-Ketu and your current planetary period.</span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                        <span><strong>Dosha & Dasha</strong> — Mangal, Shani, Rahu-Ketu and your current planetary
+                            period.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                        <span><strong>Yog & Strength</strong> — Important yogas and how they affect career, money, relationships.</span>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                        <span><strong>Yog & Strength</strong> — Important yogas and how they affect career, money,
+                            relationships.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         <span><strong>Remedies</strong> — Simple, easy-to-do suggestions based on your chart.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         <span><strong>Numerology</strong> <em>(Optional)</em> — Name and birth number insight.</span>
                     </li>
                 </ul>
                 <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         <span><strong>1-Year Monthly Forecast</strong> — Month-wise prediction.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         <span><strong>Long-Term Trends</strong> — Major planetary shifts in coming years.</span>
                     </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         <span><strong>House Strength Chart</strong> — Visual house strength.</span>
                     </li>
                 </ul>
@@ -2342,7 +2645,9 @@
                 <div class="founder-content">
                     <div class="founder-badge">Meet Your Astrologer</div>
                     <h2 class="founder-title">Clear &amp; Simple <span class="accent-text">Reports</span></h2>
-                    <p class="founder-desc">I have studied Vedic astrology for years. I help people with career, marriage, and money questions. No scary words. No confusion. Just clear answers from your birth chart.</p>
+                    <p class="founder-desc">I have studied Vedic astrology for years. I help people with career,
+                        marriage, and money questions. No scary words. No confusion. Just clear answers from your birth
+                        chart.</p>
 
                     <div class="founder-stats">
                         <div class="stat-item">
@@ -2408,7 +2713,9 @@
                     <h4 class="step-title">We Send PDF to Your Email</h4>
                 </div>
             </div>
-            <p class="process-note" style="text-align: center; margin-top: 32px; color: rgba(255,255,255,0.7); font-size: 1rem;">Every report is checked by our expert before sending.</p>
+            <p class="process-note"
+                style="text-align: center; margin-top: 32px; color: rgba(255,255,255,0.7); font-size: 1rem;">Every
+                report is checked by our expert before sending.</p>
         </div>
     </section>
 
@@ -2420,8 +2727,12 @@
                 <div class="diff-column neg-column">
                     <h4 class="diff-col-title">Other Astrologers</h4>
                     <ul class="diff-list">
-                        <li><svg class="lucide lucide-x text-red" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                        <li><svg class="lucide lucide-x text-red" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
                             <span>Generic rashifal</span>
                         </li>
                         <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
@@ -2455,14 +2766,16 @@
                             </svg>
                             <span>Report made from your real chart</span>
                         </li>
-                        <li><svg class="lucide lucide-check text-green"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                        <li><svg class="lucide lucide-check text-green" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6 9 17l-5-5" />
+                            </svg>
                             <span>Easy words, no complex terms</span>
                         </li>
-                        <li><svg class="lucide lucide-check text-green"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                        <li><svg class="lucide lucide-check text-green" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6 9 17l-5-5" />
+                            </svg>
                             <span>Direct answers, no fear</span>
                         </li>
                     </ul>
@@ -2489,13 +2802,15 @@
                 </div>
                 <div class="stack-offer">
                     <span class="offer-label">Today Only</span>
-                    <span class="offer-amount">₹349</span>
+                    <span class="offer-amount">₹499</span>
                 </div>
                 <button id="cta-pricing" class="cta-button final-cta pulse-anim" data-cta="pricing"
                     onclick="trackCta('pricing','Proceed to Checkout')">
                     <span class="cta-text">Proceed to Checkout</span>
                 </button>
-                <p class="pricing-note" style="text-align: center; margin-top: 20px; font-size: 0.95rem; color: var(--text-muted);">Delivery Time: 24–48 Hours &bull; Digital PDF Format</p>
+                <p class="pricing-note"
+                    style="text-align: center; margin-top: 20px; font-size: 0.95rem; color: var(--text-muted);">Delivery
+                    Time: 24–48 Hours &bull; Digital PDF Format</p>
             </div>
         </div>
     </section>
@@ -2510,33 +2825,73 @@
             <div class="testimonials-track" id="testimonialsTrack">
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The timeline section helped me understand when to make my career move. The explanations were clear and structured."</p>
-                    <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Rahul</div><div class="review-meta">Delhi</div></div></div>
+                    <p class="review-text">"The timeline section helped me understand when to make my career move. The
+                        explanations were clear and structured."</p>
+                    <div class="review-author">
+                        <div class="review-avatar">R</div>
+                        <div>
+                            <div class="review-name">Rahul</div>
+                            <div class="review-meta">Delhi</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."</p>
-                    <div class="review-author"><div class="review-avatar">P</div><div><div class="review-name">Priya</div><div class="review-meta">Mumbai</div></div></div>
+                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."
+                    </p>
+                    <div class="review-author">
+                        <div class="review-avatar">P</div>
+                        <div>
+                            <div class="review-name">Priya</div>
+                            <div class="review-meta">Mumbai</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
                     <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
-                    <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Amit</div><div class="review-meta">Bangalore</div></div></div>
+                    <div class="review-author">
+                        <div class="review-avatar">A</div>
+                        <div>
+                            <div class="review-name">Amit</div>
+                            <div class="review-meta">Bangalore</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The timeline section helped me understand when to make my career move. The explanations were clear and structured."</p>
-                    <div class="review-author"><div class="review-avatar">R</div><div><div class="review-name">Rahul</div><div class="review-meta">Delhi</div></div></div>
+                    <p class="review-text">"The timeline section helped me understand when to make my career move. The
+                        explanations were clear and structured."</p>
+                    <div class="review-author">
+                        <div class="review-avatar">R</div>
+                        <div>
+                            <div class="review-name">Rahul</div>
+                            <div class="review-meta">Delhi</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."</p>
-                    <div class="review-author"><div class="review-avatar">P</div><div><div class="review-name">Priya</div><div class="review-meta">Mumbai</div></div></div>
+                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."
+                    </p>
+                    <div class="review-author">
+                        <div class="review-avatar">P</div>
+                        <div>
+                            <div class="review-name">Priya</div>
+                            <div class="review-meta">Mumbai</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="review-card">
                     <div class="review-stars">★★★★★</div>
                     <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
-                    <div class="review-author"><div class="review-avatar">A</div><div><div class="review-name">Amit</div><div class="review-meta">Bangalore</div></div></div>
+                    <div class="review-author">
+                        <div class="review-avatar">A</div>
+                        <div>
+                            <div class="review-name">Amit</div>
+                            <div class="review-meta">Bangalore</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2614,7 +2969,8 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>The report is a standalone PDF. One-on-one consultation can be discussed separately if needed.</p>
+                        <p>The report is a standalone PDF. One-on-one consultation can be discussed separately if
+                            needed.</p>
                     </div>
                 </div>
             </div>
@@ -2624,7 +2980,8 @@
     <!-- 9. Urgency (Subtle) -->
     <section class="urgency-section dark-section" style="padding: 48px 0;">
         <div class="container">
-            <p class="urgency-text" style="text-align: center; font-size: 1.1rem; color: rgba(255,255,255,0.9);">Get your report now. Limited time price.</p>
+            <p class="urgency-text" style="text-align: center; font-size: 1.1rem; color: rgba(255,255,255,0.9);">Get
+                your report now. Limited time price.</p>
         </div>
     </section>
 
@@ -2637,9 +2994,9 @@
     <!-- 10. Sticky CTA Bar -->
     <div class="sticky-cta-bar">
         <div class="sticky-container">
-            <span class="sticky-text">Hurry — offer is only for today</span>
+            <span class="sticky-text">Urgent: Clear your blockages. Offer ends today</span>
             <button id="cta-sticky" class="cta-button sticky-btn pulse-anim" data-cta="sticky"
-                onclick="trackCta('sticky_bar','Get Your Report – ₹349')">Get Your Report – ₹349</button>
+                onclick="trackCta('sticky_bar','Get Your Report – ₹499')">Get Your Report – ₹499</button>
         </div>
     </div>
 
