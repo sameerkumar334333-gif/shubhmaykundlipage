@@ -774,48 +774,36 @@
       margin: 20px 0;
     }
 
-    .blur-block {
-      height: 80px;
-      background: linear-gradient(135deg, rgba(30, 58, 95, 0.08) 0%, rgba(180, 83, 9, 0.06) 100%);
+    .locked-block {
+      height: auto;
+      min-height: 64px;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 4px;
       border-radius: var(--radius);
+    }
+
+    .locked-block .locked-title {
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: 1px dashed rgba(180, 83, 9, 0.2);
-      filter: blur(5px);
-      user-select: none;
-      pointer-events: none;
-      position: relative;
-      overflow: hidden;
+      gap: 8px;
     }
 
-    .blur-block::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(-45deg,
-          transparent,
-          transparent 8px,
-          rgba(255, 255, 255, 0.03) 8px,
-          rgba(255, 255, 255, 0.03) 16px);
-      animation: lockShimmer 4s linear infinite;
+    .locked-block .locked-title span {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #7f1d1d;
     }
 
-    @keyframes lockShimmer {
-      0% {
-        transform: translateX(-100%);
-      }
-
-      100% {
-        transform: translateX(100%);
-      }
-    }
-
-    .blur-block span {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      opacity: 0.8;
-      z-index: 1;
+    .locked-block .locked-sub {
+      font-size: 0.75rem;
+      color: #b91c1c;
+      margin-left: 24px;
     }
 
     .deliverable-block {
@@ -1258,13 +1246,66 @@
                 insights require detailed astrologer verification.</p>
             </div>
             <div class="blur-grid" style="margin:0;">
-              <div class="deliverable-block blur-block"><span data-i18n="lbl1">Exact Dosha Name</span></div>
-              <div class="deliverable-block blur-block"><span data-i18n="lbl2">Severity Level</span></div>
-              <div class="deliverable-block blur-block"><span data-i18n="lbl3">Grah Impact Area</span></div>
-              <div class="deliverable-block blur-block"><span data-i18n="lbl4">Lucky Metal (Birth Chart Based)</span>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl1">Exact Dosha Name</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
               </div>
-              <div class="deliverable-block blur-block"><span data-i18n="lbl5">Effective Remedies & Timing</span></div>
-              <div class="deliverable-block blur-block"><span data-i18n="lbl6">1-Year Risk Timeline</span></div>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl2">Severity Level</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
+              </div>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl3">Grah Impact Area</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
+              </div>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl4">Lucky Metal (Birth Chart Based)</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
+              </div>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl5">Effective Remedies & Timing</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
+              </div>
+              <div class="locked-block">
+                <div class="locked-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span data-i18n="lbl6">1-Year Risk Timeline</span>
+                </div>
+                <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
+              </div>
             </div>
           </div>
 
@@ -1435,6 +1476,7 @@
           lbl4: 'Lucky Metal (Birth Chart Based)',
           lbl5: 'Effective Remedies & Timing',
           lbl6: '1-Year Risk Timeline',
+          lblVer: 'Needs astrologer manual verification',
           hrHead: '🧿 Why 24 Hours?',
           hrDesc: 'Your detailed kundli report is manually verified by our astrologer. Grah strength cross-check, dasha timing, and personalized remedies are prepared individually before delivery.',
           hrDel: 'Delivered via WhatsApp + Email within 24 hours.',
@@ -1486,6 +1528,7 @@
           lbl4: 'भाग्यशाली धातु (जन्म कुंडली आधारित)',
           lbl5: 'असरदार उपाय और सही समय',
           lbl6: '1-वर्ष का जोखिम (Risk) टाइमलाइन',
+          lblVer: 'ज्योतिषी के मैनुअल सत्यापन की आवश्यकता है',
           hrHead: '🧿 24 घंटे क्यों?',
           hrDesc: 'आपकी विस्तृत कुंडली रिपोर्ट हमारे ज्योतिषी द्वारा मैन्युअल रूप से जांची जाती है। ग्रहों की ताकत, दशा का समय और आपके लिए व्यक्तिगत उपाय भेजने से पहले व्यक्तिगत रूप से तैयार किए जाते हैं।',
           hrDel: 'WhatsApp + Email द्वारा 24 घंटे में प्राप्त करें।',
@@ -1537,6 +1580,7 @@
           lbl4: 'Lucky Metal (Birth Chart Based)',
           lbl5: 'Effective Remedies & Timing',
           lbl6: '1-Year Risk Timeline',
+          lblVer: 'Needs astrologer manual verification',
           hrHead: '🧿 Why 24 Hours?',
           hrDesc: 'Your detailed kundli report is manually verified by our astrologer. Grah strength cross-check, dasha timing, and personalized remedies are prepared individually before delivery.',
           hrDel: 'Delivered via WhatsApp + Email within 24 hours.',
