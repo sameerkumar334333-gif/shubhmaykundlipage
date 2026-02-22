@@ -1633,11 +1633,11 @@
           var traits = pickTraits(name, dob, tob, place);
           var displayName = name.split(' ')[0] || name;
 
-          var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || PREVIEW_COPY['hinglish']['titleCheck'];
+          var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || '';
           var identTextTemplate = PREVIEW_COPY[currentLang]['identText'] || PREVIEW_COPY['hinglish']['identText'];
 
           var previewTitle = document.getElementById('previewTitle');
-          if (previewTitle) previewTitle.textContent = checkTitleTemplate.replace('{name}', displayName);
+          if (previewTitle && checkTitleTemplate) previewTitle.textContent = checkTitleTemplate.replace('{name}', displayName);
           var idText = document.getElementById('identityText');
           if (idText) idText.textContent = identTextTemplate.replace('{name}', displayName);
           var tListEl = document.getElementById('traitsList');
@@ -1676,12 +1676,17 @@
         var traits = pickTraits(name, dob, tob, place);
         var displayName = name.split(' ')[0] || name;
 
-        var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || PREVIEW_COPY['hinglish']['titleCheck'];
+        var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || '';
         var identTextTemplate = PREVIEW_COPY[currentLang]['identText'] || PREVIEW_COPY['hinglish']['identText'];
 
-        document.getElementById('previewTitle').textContent = checkTitleTemplate.replace('{name}', displayName);
-        document.getElementById('identityText').textContent = identTextTemplate.replace('{name}', displayName);
-        document.getElementById('traitsList').innerHTML = traits.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+        var pt = document.getElementById('previewTitle');
+        if (pt && checkTitleTemplate) pt.textContent = checkTitleTemplate.replace('{name}', displayName);
+
+        var idt = document.getElementById('identityText');
+        if (idt) idt.textContent = identTextTemplate.replace('{name}', displayName);
+
+        var tList = document.getElementById('traitsList');
+        if (tList) tList.innerHTML = traits.map(function (t) { return '<li>' + t + '</li>'; }).join('');
 
         document.getElementById('formPanel').classList.remove('visible');
         document.getElementById('previewPanel').classList.add('visible');
