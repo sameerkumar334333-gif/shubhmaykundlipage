@@ -1102,10 +1102,21 @@
           </div>
           <form id="kundliForm">
             <div class="form-section">
-              <div class="form-section-title" data-i18n="secName">Name</div>
-              <div class="form-group">
-                <label for="name" data-i18n="lblName">Aapka naam</label>
-                <input type="text" id="name" required placeholder="e.g. Rahul" autocomplete="name" data-i18n="lblName">
+              <div class="form-section-title" data-i18n="secName">Name & Gender</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="name" data-i18n="lblName">Aapka naam</label>
+                  <input type="text" id="name" required placeholder="e.g. Rahul" autocomplete="name"
+                    data-i18n="lblName">
+                </div>
+                <div class="form-group">
+                  <label for="gender" data-i18n="lblGender">Gender</label>
+                  <select id="gender" required>
+                    <option value="" data-i18n="selGen">Select</option>
+                    <option value="Male" data-i18n="genM">Male</option>
+                    <option value="Female" data-i18n="genF">Female</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div class="form-section">
@@ -1447,8 +1458,12 @@
           step1Ind: 'Step 1 of 2',
           h1Title: 'Check your Kundali',
           h1Sub: 'Birth chart se apna sachha future aur kundli details dekhen.',
-          secName: 'Name',
+          secName: 'Name & Gender',
           lblName: 'Aapka naam',
+          lblGender: 'Gender',
+          selGen: 'Select',
+          genM: 'Male',
+          genF: 'Female',
           secDob: 'Date of Birth',
           lblDay: 'Day',
           lblMonth: 'Month',
@@ -1499,8 +1514,12 @@
           step1Ind: 'स्टेप 1',
           h1Title: 'अपनी कुंडली चेक करें',
           h1Sub: 'अपनी जन्म कुंडली से अपना असली भविष्य और विवरण जानें।',
-          secName: 'नाम',
+          secName: 'नाम और लिंग',
           lblName: 'आपका नाम',
+          lblGender: 'लिंग',
+          selGen: 'चुनें',
+          genM: 'पुरुष',
+          genF: 'महिला',
           secDob: 'जन्म तिथि',
           lblDay: 'दिन',
           lblMonth: 'महीना',
@@ -1551,8 +1570,12 @@
           step1Ind: 'Step 1 of 2',
           h1Title: 'Check your Kundali',
           h1Sub: 'Discover your true future and kundli details from your birth chart.',
-          secName: 'Name',
+          secName: 'Name & Gender',
           lblName: 'Your Name',
+          lblGender: 'Gender',
+          selGen: 'Select',
+          genM: 'Male',
+          genF: 'Female',
           secDob: 'Date of Birth',
           lblDay: 'Day',
           lblMonth: 'Month',
@@ -1705,6 +1728,7 @@
         var formPanel = document.getElementById('formPanel');
         if (formPanel && !formPanel.classList.contains('visible')) {
           var name = (document.getElementById('name').value || '').trim();
+          var gender = (document.getElementById('gender').value || '').trim();
           var dobYear = document.getElementById('dobYear').value;
           var dobMonth = document.getElementById('dobMonth').value;
           var dobDay = document.getElementById('dobDay').value;
@@ -1745,6 +1769,7 @@
       document.getElementById('kundliForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var name = (document.getElementById('name').value || '').trim();
+        var gender = (document.getElementById('gender').value || '').trim();
         var day = document.getElementById('dobDay').value;
         var month = document.getElementById('dobMonth').value;
         var year = document.getElementById('dobYear').value;
@@ -1754,9 +1779,9 @@
         var place = (document.getElementById('place').value || '').trim();
         var dob = year && month && day ? year + '-' + month + '-' + day : '';
         var tob = th && tm && tap ? th + ':' + tm + ' ' + tap : '';
-        if (!name || !dob || !tob || !place) return;
+        if (!name || !gender || !dob || !tob || !place) return;
 
-        emit('kundli_preview_submit', { name: name, dob: dob, tob: tob, place: place });
+        emit('kundli_preview_submit', { name: name, gender: gender, dob: dob, tob: tob, place: place });
 
         var traits = pickTraits(name, dob, tob, place);
         var displayName = name.split(' ')[0] || name;
