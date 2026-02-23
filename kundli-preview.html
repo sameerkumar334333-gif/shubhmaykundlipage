@@ -40,20 +40,24 @@
     });
   </script>
   <title>Apni Kundli Check Karein | ShubhMay – ज्योतिष</title>
-  <meta name="description" content="Apni Kundli Check Karein aur jaane apna future. Vedic astrology analysis – ₹499.">
+  <meta name="description" content="Apni Kundli Check Karein aur jaane apna future. Vedic astrology analysis – ₹399.">
   <style>
     :root {
-      --saffron: #d97706;
-      --gold: #b45309;
-      --gold-bright: #fbbf24;
-      --gold-dark: #92400e;
-      --navy: #1e3a5f;
-      --navy-light: #2d4a6f;
-      --cream: #fefce8;
-      --cream-dark: #fef9c3;
-      --white: #ffffff;
-      --text-dark: #1c1917;
-      --text-muted: #57534e;
+      --deep-maroon: #2d080e;
+      --dark-maroon: #1f0509;
+      --light-maroon: #4d0e19;
+      --cream: #fbf9f3;
+      --cream-light: #ffffff;
+      --matte-gold: #c7a962;
+      --dark-gold: #a68a48;
+      --saffron: #f29f58;
+      --saffron-bright: #ffb873;
+      --text-dark: #2a2522;
+      --text-muted: #6b635e;
+      --text-light: #fefcfb;
+      --navy: #2d080e;
+      /* Re-using maroon for logic consistency */
+      --navy-light: #4d0e19;
       --radius: 14px;
       --radius-lg: 20px;
       --font-display: 'Outfit', sans-serif;
@@ -73,102 +77,11 @@
     body {
       font-family: var(--font-body);
       color: var(--text-dark);
-      background: #0c0f1a;
+      background-color: var(--dark-maroon);
+      background-image: radial-gradient(circle at top right, var(--light-maroon), var(--dark-maroon) 70%);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
-    }
-
-    /* Cosmic background with stars */
-    .cosmos-bg {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, #1a2744 0%, #0f1629 40%, #0c0f1a 100%);
-      z-index: 0;
-    }
-
-    .stars {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(251, 191, 36, 0.8);
-      border-radius: 50%;
-      animation: twinkle 3s ease-in-out infinite;
-    }
-
-    .star:nth-child(1) {
-      left: 5%;
-      top: 15%;
-      animation-delay: 0s;
-    }
-
-    .star:nth-child(2) {
-      left: 12%;
-      top: 25%;
-      animation-delay: 0.5s;
-    }
-
-    .star:nth-child(3) {
-      left: 88%;
-      top: 20%;
-      animation-delay: 1s;
-    }
-
-    .star:nth-child(4) {
-      left: 75%;
-      top: 35%;
-      animation-delay: 0.2s;
-    }
-
-    .star:nth-child(5) {
-      left: 25%;
-      top: 60%;
-      animation-delay: 1.2s;
-    }
-
-    .star:nth-child(6) {
-      left: 90%;
-      top: 55%;
-      animation-delay: 0.8s;
-    }
-
-    .star:nth-child(7) {
-      left: 50%;
-      top: 30%;
-      animation-delay: 0.4s;
-    }
-
-    .star:nth-child(8) {
-      left: 8%;
-      top: 70%;
-      animation-delay: 1.5s;
-    }
-
-    .star:nth-child(9) {
-      left: 92%;
-      top: 75%;
-      animation-delay: 0.6s;
-    }
-
-    @keyframes twinkle {
-
-      0%,
-      100% {
-        opacity: 0.3;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.3);
-      }
     }
 
     .page-content {
@@ -184,9 +97,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 22, 41, 0.9) 100%);
+      background: linear-gradient(180deg, var(--deep-maroon) 0%, var(--dark-maroon) 100%);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+      border-bottom: 2px solid var(--light-maroon);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -200,7 +113,7 @@
 
     .om-symbol {
       font-size: 1.8rem;
-      color: var(--gold-bright);
+      color: var(--matte-gold);
       animation: omPulse 4s ease-in-out infinite;
     }
 
@@ -213,7 +126,7 @@
 
       50% {
         opacity: 1;
-        filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
+        filter: drop-shadow(0 0 8px rgba(199, 169, 98, 0.5));
       }
     }
 
@@ -231,7 +144,7 @@
 
     .navbar-sub {
       font-size: 0.7rem;
-      color: rgba(251, 191, 36, 0.7);
+      color: var(--matte-gold);
       letter-spacing: 0.15em;
       text-transform: uppercase;
       margin-top: 1px;
@@ -960,11 +873,13 @@
 
     .info-chip {
       padding: 8px 14px;
-      background: rgba(245, 158, 11, 0.12);
       border-radius: 20px;
       font-size: 0.8rem;
-      color: var(--gold-dark);
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #92400e;
+      background: #fef3c7;
+      border: 1px solid rgba(180, 83, 9, 0.4);
     }
 
     .skip-cta {
@@ -1074,13 +989,6 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <div class="cosmos-bg"></div>
-  <div class="stars">
-    <span class="star"></span><span class="star"></span><span class="star"></span>
-    <span class="star"></span><span class="star"></span><span class="star"></span>
-    <span class="star"></span><span class="star"></span><span class="star"></span>
-  </div>
-
   <div class="page-content">
     <header class="navbar">
       <div class="navbar-inner"
@@ -1221,11 +1129,14 @@
 
           <!-- 1. TOP STATUS STRIP -->
           <div class="preview-header">
-            <span class="badge"
-              style="background: rgba(34, 197, 94, 0.15); color: #15803d; border: 1px solid rgba(34,197,94,0.3); font-weight:700;"
-              data-i18n="pStatBadge">⚡ Instant Grah Scan Completed</span>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-top:8px; line-height:1.4;"
-              data-i18n="pStatSub">This is an automated surface-level preview based on your birth data.</p>
+            <h2 data-i18n="pHead"
+              style="font-family: var(--font-display); font-size: 1.55rem; color: var(--navy); font-weight: 700; letter-spacing: 0.01em; margin-bottom: 6px;">
+              Basic Kundali Report
+            </h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.45;" data-i18n="pStatSub">
+              Yah sirf aapki janam kundli ka upar‑upar se ek chhota sa preview hai. Asli vistrit report hamare jyotishi
+              manually dekh kar banate hain.
+            </p>
           </div>
 
           <!-- 2. SHORT POSITIVE OPENING -->
@@ -1257,18 +1168,23 @@
             style="background: rgba(180, 83, 9, 0.05); border-left: 3px solid var(--saffron); border-radius: 4px; padding: 12px 16px; margin: 16px 0;">
             <strong data-i18n="valTrig" style="color: var(--navy); font-size:0.95rem; display:block;">Kya aapne pichle
               1–2 saal me delay, pressure ya unexpected rukavat feel ki hai?</strong>
+            <p data-i18n="valYes"
+              style="margin-top:8px; font-size:0.85rem; color:var(--text-muted); line-height:1.45;">
+              Agar haan, toh aapko apni personalized kundli report banwani chahiye.
+            </p>
           </div>
 
           <!-- 5. LOCKED PREVIEW BLOCK -->
           <div class="sec-card" style="margin-bottom: 24px;">
-            <div class="progress-card" style="margin:0 0 16px 0; padding:16px;">
-              <p style="font-size:0.85rem; font-weight:700; color:var(--gold-dark); margin-bottom:8px; text-align:left;"
-                data-i18n="pBarLbl">Automated Analysis Loaded: 42%</p>
-              <div class="progress-bar-wrap" style="margin-bottom:8px;">
-                <div class="progress-fill" style="width:42%;"></div>
-              </div>
-              <p style="font-size:0.8rem; color:var(--text-muted); text-align:left;" data-i18n="pBarSub">Remaining
-                insights require detailed astrologer verification.</p>
+            <div
+              style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
+              <h3 data-i18n="notBasicHead"
+                style="font-family: var(--font-display); font-size: 1.05rem; color: var(--navy); margin:0;">
+                What not in basic kundali
+              </h3>
+              <span
+                style="font-size:0.78rem; color: var(--text-muted); background: rgba(180,83,9,0.06); border:1px solid rgba(180,83,9,0.12); padding:4px 10px; border-radius:999px;"
+                data-i18n="notBasicTag">Locked</span>
             </div>
             <div class="blur-grid" style="margin:0;">
               <div class="locked-block">
@@ -1332,18 +1248,6 @@
                 <div class="locked-sub" data-i18n="lblVer">Need astrologer manual verification</div>
               </div>
             </div>
-          </div>
-
-          <!-- 6. HUMAN REVIEW EXPLANATION -->
-          <div class="info-banner"
-            style="background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; text-align: left; border-radius: 8px; font-size:0.85rem; padding: 16px; margin-bottom: 24px;">
-            <strong style="color: #0f172a; display:block; margin-bottom:4px; font-size:0.95rem;" data-i18n="hrHead">🧿
-              Why 24 Hours?</strong>
-            <span data-i18n="hrDesc" style="display:block; margin-bottom:12px; line-height:1.5;">Your detailed kundli
-              report is manually verified by our astrologer. Grah strength cross-check, dasha timing, and personalized
-              remedies are prepared individually before delivery.</span>
-            <strong data-i18n="hrDel" style="font-size:0.85rem; color:#475569; display:block;">Delivered via WhatsApp +
-              Email within 24 hours.</strong>
           </div>
 
           <!-- 7. VALUE STACK SECTION -->
@@ -1412,25 +1316,38 @@
               Today’s manual analysis capacity is almost full.
             </div>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;" data-i18n="offSub">Limited-time
-              offer – 77% off</p>
+              offer – 73% off</p>
             <div class="price-row" style="margin-bottom: 20px;">
               <span class="price-old">₹1499</span>
-              <span class="price-new">₹499</span>
+              <span class="price-new">₹399</span>
             </div>
             <button type="button" class="btn unlock-cta" id="btnUnlock" data-i18n="btnUnlock"
-              style="background:var(--saffron); color:white;">Unlock Full Kundli – ₹499</button>
+              style="background:var(--saffron); color:white;">Get My Exact Lucky Metal & Full Kundli – ₹399</button>
             <button type="button" class="skip-cta" id="btnSkipPreview" data-i18n="btnSkip">Directly go to
               checkout</button>
+          </div>
+
+          <!-- HUMAN REVIEW EXPLANATION (near upsell) -->
+          <div class="info-banner"
+            style="background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; text-align: left; border-radius: 8px; font-size:0.85rem; padding: 16px; margin-top: 14px;">
+            <strong style="color: #0f172a; display:block; margin-bottom:4px; font-size:0.95rem;" data-i18n="hrHead">🧿
+              Kaise taiyar hoti hai report?</strong>
+            <span data-i18n="hrDesc" style="display:block; margin-bottom:6px; line-height:1.5;">Detailed kundli report
+              hamare jyotishi manually banate hain — grah bal, dasha timing aur upay sab aapke hisaab se dekhe jaate
+              hain.</span>
+            <strong data-i18n="hrDel" style="font-size:0.85rem; color:#475569; display:block;">Report WhatsApp + Email
+              par bheji jati hai.</strong>
           </div>
         </div>
       </section>
       <!-- Sticky Urgency Bar -->
       <div class="sticky-cta-bar" id="stickyBar">
         <div class="sticky-bar-text">
-          <strong data-i18n="stickHead">Fix Your Doshas Today</strong>
+          <strong data-i18n="stickHead">Get Your Lucky Metal Today</strong>
           <span data-i18n="stickSub" style="display:none;"></span>
         </div>
-        <button type="button" class="sticky-bar-btn" id="btnStickyUnlock" data-i18n="btnSticky">Buy Now ₹499</button>
+        <button type="button" class="sticky-bar-btn" id="btnStickyUnlock" data-i18n="btnSticky">Get Metal & Kundli
+          ₹399</button>
       </div>
 
   </div>
@@ -1494,11 +1411,15 @@
           pStatBadge: '⚡ Instant Grah Scan Completed',
           pStatSub: 'This is an automated surface-level preview based on your birth data.',
           identText: '{name}, aapki kundli me ambition aur leadership ka strong yog dikh raha hai.',
-          doshTitle: '⚠ Strong Negative Yog Detected',
-          doshSub: 'Kundli me ek aisa grah-sanyog dikh raha hai jo career aur financial growth me rukavat create kar sakta hai. Agar is yog ko samay par samjha na jaye toh progress delay ho sakti hai.',
+          doshTitle: '⚠ Koi kathin yog ka sanket',
+          doshSub: 'Kundli me ek aisa grah sanyog dikh raha hai jo career aur paison ki growth me rukavat la sakta hai. Agar is yog ko samay par samjha na jaye toh pragati dheemi ho sakti hai.',
           valTrig: 'Kya aapne pichle 1–2 saal me delay, pressure ya unexpected rukavat feel ki hai?',
-          pBarLbl: 'Automated Analysis Loaded: 42%',
-          pBarSub: 'Remaining insights require detailed astrologer verification.',
+          valYes: 'Agar haan, toh aapko apni personalized kundli report banwani chahiye.',
+          pHead: 'Basic Kundali Report',
+          notBasicHead: 'What not in basic kundali',
+          notBasicTag: 'Locked',
+          metalHead: '',
+          metalSub: '',
           lbl1: 'Exact Dosha Name',
           lbl2: 'Severity Level',
           lbl3: 'Grah Impact Area',
@@ -1506,9 +1427,9 @@
           lbl5: 'Effective Remedies & Timing',
           lbl6: '1-Year Risk Timeline',
           lblVer: 'Needs astrologer manual verification',
-          hrHead: '🧿 Why 24 Hours?',
-          hrDesc: 'Your detailed kundli report is manually verified by our astrologer. Grah strength cross-check, dasha timing, and personalized remedies are prepared individually before delivery.',
-          hrDel: 'Delivered via WhatsApp + Email within 24 hours.',
+          hrHead: '🧿 Kaise taiyar hoti hai report?',
+          hrDesc: 'Detailed kundli report hamare jyotishi manually banate hain — grah bal, dasha timing aur upay sab aapke hisaab se check kiya jata hai.',
+          hrDel: 'Report WhatsApp + Email par bheji jati hai.',
           lockTitle: 'What You\'ll Unlock in Your Detailed Personalized Kundli Report',
           v1: 'Complete Dosha & Dasha Breakdown',
           v2: 'Exact Severity Analysis',
@@ -1517,12 +1438,12 @@
           v5: 'Career & Wealth Roadmap',
           v6: '12-Month Forecast',
           scarLimit: 'Today’s manual analysis capacity is almost full.',
-          offSub: 'Limited-time offer – 77% off',
-          btnUnlock: 'Unlock Full Kundli – ₹499',
+          offSub: 'Limited-time offer – 73% off',
+          btnUnlock: 'Unlock Full Kundli – ₹399',
           btnSkip: 'Directly go to checkout',
           stickHead: 'Fix Your Doshas Today',
           stickSub: '',
-          btnSticky: 'Buy Now ₹499'
+          btnSticky: 'Buy Now ₹399'
         },
         hi: {
           step1Ind: 'स्टेप 1',
@@ -1553,8 +1474,12 @@
           doshTitle: '⚠ मजबूत नकारात्मक योग का संकेत',
           doshSub: 'कुंडली में एक ऐसा ग्रह संयोग दिख रहा है जो करियर और आर्थिक उन्नति में रुकावट पैदा कर सकता है। अगर इसे समय पर न समझा जाए तो प्रगति धीमी हो सकती है।',
           valTrig: 'क्या आपने पिछले 1–2 साल में काम में देरी, दबाव या अकारण रुकावट महसूस की है?',
-          pBarLbl: 'स्वचालित विश्लेषण लोड हुआ: 42%',
-          pBarSub: 'शेष जानकारी के लिए ज्योतिषी द्वारा विस्तृत सत्यापन की आवश्यकता है।',
+          valYes: 'अगर हाँ, तो आपको अपनी पर्सनलाइज़्ड कुंडली रिपोर्ट बनवानी चाहिए।',
+          pHead: 'बेसिक कुंडली रिपोर्ट',
+          notBasicHead: 'बेसिक कुंडली में क्या नहीं मिलता',
+          notBasicTag: 'लॉक्ड',
+          metalHead: '',
+          metalSub: '',
           lbl1: 'सटीक दोष का नाम',
           lbl2: 'गंभीरता का स्तर',
           lbl3: 'प्रभावित होने वाला क्षेत्र',
@@ -1562,9 +1487,9 @@
           lbl5: 'असरदार उपाय और सही समय',
           lbl6: '1-वर्ष का जोखिम (Risk) टाइमलाइन',
           lblVer: 'ज्योतिषी के मैनुअल सत्यापन की आवश्यकता है',
-          hrHead: '🧿 24 घंटे क्यों?',
-          hrDesc: 'आपकी विस्तृत कुंडली रिपोर्ट हमारे ज्योतिषी द्वारा मैन्युअल रूप से जांची जाती है। ग्रहों की ताकत, दशा का समय और आपके लिए व्यक्तिगत उपाय भेजने से पहले व्यक्तिगत रूप से तैयार किए जाते हैं।',
-          hrDel: 'WhatsApp + Email द्वारा 24 घंटे में प्राप्त करें।',
+          hrHead: '🧿 रिपोर्ट कैसे तैयार होती है?',
+          hrDesc: 'आपकी विस्तृत कुंडली रिपोर्ट हमारे ज्योतिषी खुद देखकर बनाते हैं। ग्रहों की स्थिति, दशा का समय और आपके लिए उचित उपाय सब कुछ ध्यान से लिखा जाता है।',
+          hrDel: 'रिपोर्ट WhatsApp + Email पर भेजी जाती है।',
           lockTitle: 'आपकी व्यक्तिगत विस्तृत कुंडली रिपोर्ट में आपको क्या मिलेगा',
           v1: 'संपूर्ण दोष और दशा विश्लेषण',
           v2: 'सटीकता से परेशानी की गंभीरता का विश्लेषण',
@@ -1573,12 +1498,12 @@
           v5: 'करियर और धन का रोडमैप',
           v6: 'अगले 12 महीनों का भविष्यफल',
           scarLimit: 'आज की मैन्युअल रिपोर्ट क्षमता लगभग भर चुकी है।',
-          offSub: 'सीमित समय का ऑफर – 77% छूट',
-          btnUnlock: 'पूरी कुंडली खोलें – ₹499',
+          offSub: 'सीमित समय का ऑफर – 73% छूट',
+          btnUnlock: 'पूरी कुंडली खोलें – ₹399',
           btnSkip: 'सीधे चेकआउट पर जाएं',
           stickHead: 'आज ही अपना दोष ठीक करें',
           stickSub: '',
-          btnSticky: 'अभी खरीदें ₹499'
+          btnSticky: 'अभी खरीदें ₹399'
         },
         en: {
           step1Ind: 'Step 1 of 2',
@@ -1603,14 +1528,18 @@
           chip1: '100% Free Check',
           chip2: 'Vedic Method',
           chip3: '2 mins',
-          pStatBadge: '⚡ Instant Grah Scan Completed',
-          pStatSub: 'This is an automated surface-level preview based on your birth data.',
+          pStatBadge: 'Prarambhik grah sthiti ka sanket',
+          pStatSub: 'This is a small top‑level preview based on your birth chart. The detailed report is always checked and written by an astrologer.',
           identText: '{name}, your kundli shows a strong indication of ambition and leadership.',
-          doshTitle: '⚠ Strong Negative Yog Detected',
-          doshSub: 'There is a planetary combination in your kundli that might create hurdles in career and financial growth. If not addressed in time, progress could be delayed.',
+          doshTitle: '⚠ Indication of a challenging yog',
+          doshSub: 'There is a planetary combination in your kundli that can slow down career and financial growth. If not understood in time, progress may feel slower than expected.',
           valTrig: 'Have you felt delays, pressure, or unexpected roadblocks in the last 1–2 years?',
-          pBarLbl: 'Automated Analysis Loaded: 42%',
-          pBarSub: 'Remaining insights require detailed astrologer verification.',
+          valYes: 'If yes, you should get a personalized kundli report made.',
+          pHead: 'Basic Kundli Report',
+          notBasicHead: 'What’s not in the basic kundli',
+          notBasicTag: 'Locked',
+          metalHead: '',
+          metalSub: '',
           lbl1: 'Exact Dosha Name',
           lbl2: 'Severity Level',
           lbl3: 'Grah Impact Area',
@@ -1618,9 +1547,9 @@
           lbl5: 'Effective Remedies & Timing',
           lbl6: '1-Year Risk Timeline',
           lblVer: 'Needs astrologer manual verification',
-          hrHead: '🧿 Why 24 Hours?',
-          hrDesc: 'Your detailed kundli report is manually verified by our astrologer. Grah strength cross-check, dasha timing, and personalized remedies are prepared individually before delivery.',
-          hrDel: 'Delivered via WhatsApp + Email within 24 hours.',
+          hrHead: '🧿 How is the report prepared?',
+          hrDesc: 'Our astrologer personally checks your chart – planet strength, dasha timing and remedies are written specifically for you.',
+          hrDel: 'Report is shared on WhatsApp + Email.',
           lockTitle: 'What You’ll Unlock In Your Detailed Personalized Kundli Report',
           v1: 'Complete Dosha & Dasha Breakdown',
           v2: 'Exact Severity Analysis',
@@ -1629,12 +1558,12 @@
           v5: 'Career & Wealth Roadmap',
           v6: '12-Month Forecast',
           scarLimit: 'Today’s manual analysis capacity is almost full.',
-          offSub: 'Limited-time offer – 77% off',
-          btnUnlock: 'Unlock Full Kundli – ₹499',
+          offSub: 'Limited-time offer – 73% off',
+          btnUnlock: 'Unlock Full Kundli – ₹399',
           btnSkip: 'Directly go to checkout',
           stickHead: 'Fix Your Doshas Today',
           stickSub: '',
-          btnSticky: 'Buy Now ₹499'
+          btnSticky: 'Buy Now ₹399'
         }
       };
 
@@ -1832,6 +1761,21 @@
         emit('checkout_start', { step: 'kundli_preview_sticky', destination_url: CHECKOUT_URL });
         window.location.href = CHECKOUT_URL;
       });
+
+      // Funnel Enhancement: URL Parsing
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var urlRashi = params.get('rashi');
+        if (urlRashi) {
+          // If Rashi comes from previous tool, we can show a small "Connected" message
+          var formHero = document.querySelector('.form-hero p');
+          if (formHero) {
+            var rashiNames = { mesh: 'Mesh', vrishabh: 'Vrishabh', mithun: 'Mithun', kark: 'Kark', singh: 'Singh', kanya: 'Kanya', tula: 'Tula', vrishchik: 'Vrishchik', dhanu: 'Dhanu', makar: 'Makar', kumbh: 'Kumbh', meen: 'Meen' };
+            var rn = rashiNames[urlRashi] || urlRashi;
+            formHero.innerHTML = '<span style="color:var(--saffron);font-weight:700;">' + rn + ' Rashi detected.</span> Your exact lucky metal depends on your nakshatra and time of birth. Provide birth details below for the exact metal match and full kundli.';
+          }
+        }
+      } catch (e) { }
     })();
   </script>
 </body>
