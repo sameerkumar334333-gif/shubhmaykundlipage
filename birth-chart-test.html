@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birth Chart Calculator | ShubhMay</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .chart-tool-container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(10, 12, 16, 0.95);
+            border: 1px solid var(--border-color, #30363d);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .chart-tool-container h1 {
+            color: var(--accent-gold, #c7a962);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted, #8b949e);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color, #30363d);
+            border-radius: 8px;
+            color: var(--text-primary, #ffffff);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-gold, #c7a962);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-gold, #c7a962);
+            color: #2d080e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .submit-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        #chart-result {
+            display: none;
+            background: #fdfbf7;
+            /* Slight cream background for the chart to stand out */
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #c7a962;
+        }
+
+        /* The Prokerala SVG comes without specific responsive sizes, we need to constrain it */
+        #chart-result svg {
+            width: 100%;
+            height: auto;
+            max-width: 600px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" style="position:static;">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🕉️</span>
+                <span class="logo-text">ShubhMay</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="chart-tool-container">
+        <h1>Vedic Birth Chart Calculator</h1>
+        <p style="color: #8b949e; margin-bottom: 2rem;">Generate your accurate North Indian Rasi Chart instantly using
+            the Sandbox API.</p>
+
+        <form id="chartForm">
+            <div class="input-grid">
+                <div class="form-group">
+                    <label>Date of Birth (MUST BE 01/01/2000 FOR SANDBOX)</label>
+                    <input type="date" id="dob" required value="2000-01-01">
+                </div>
+                <div class="form-group">
+                    <label>Time of Birth</label>
+                    <input type="time" id="tob" required value="10:30">
+                </div>
+                <div class="form-group">
+                    <label>Latitude (e.g. 19.0760 for Mumbai)</label>
+                    <input type="text" id="lat" required value="19.0760">
+                </div>
+                <div class="form-group">
+                    <label>Longitude (e.g. 72.8777 for Mumbai)</label>
+                    <input type="text" id="lon" required value="72.8777">
+                </div>
+            </div>
+
+            <button type="submit" id="generateBtn" class="submit-btn">Cast My Chart</button>
+        </form>
+
+        <div id="error-msg" style="color:red; margin-bottom: 1rem; display:none;"></div>
+
+        <div id="chart-result">
+            <h3 style="color:#2d080e; margin-bottom:20px; font-family:'Playfair Display', serif;">Your Natal Chart (Rasi
+                Chakra)</h3>
+            <div id="svg-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chartForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('generateBtn');
+            const resultBox = document.getElementById('chart-result');
+            const errorBox = document.getElementById('error-msg');
+            const svgContainer = document.getElementById('svg-container');
+
+            btn.disabled = true;
+            btn.innerText = "Calculating Planet Positions...";
+            errorBox.style.display = 'none';
+            resultBox.style.display = 'none';
+
+            // Construct exact datetime Format Prokerala expects: 2004-02-12T04:26:21+05:30
+            const dob = document.getElementById('dob').value;
+            const tob = document.getElementById('tob').value;
+            // Sandbox rule bypass using standard IST +05:30
+            const datetime = `${dob}T${tob}:00+05:30`;
+
+            const coordinates = `${document.getElementById('lat').value},${document.getElementById('lon').value}`;
+
+            try {
+                const res = await fetch(`/.netlify/functions/get-birth-chart?datetime=${encodeURIComponent(datetime)}&coordinates=${encodeURIComponent(coordinates)}`);
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    svgContainer.innerHTML = data.svg; // Insert the pure SVG string into the container
+                    resultBox.style.display = 'block';
+                } else {
+                    errorBox.innerText = data.error || 'Failed to fetch chart. Make sure date is Jan 1st for Sandbox.';
+                    errorBox.style.display = 'block';
+                }
+            } catch (err) {
+                errorBox.innerText = 'Network error fetching chart data.';
+                errorBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Cast My Chart";
+            }
+        });
+    </script>
+</body>
+
+</html>

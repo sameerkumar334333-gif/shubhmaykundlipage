@@ -17,16 +17,37 @@
   <script>
     (function () {
       var _sid = sessionStorage.getItem('shubhmay_sid');
-      if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+      if (!_sid) {
+        _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+        sessionStorage.setItem('shubhmay_sid', _sid);
+        sessionStorage.setItem('shubhmay_session_start_ts', String(Date.now()));
+      }
       window._shubhmaySid = _sid;
+      var params = new URLSearchParams(window.location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+        var v = params.get(k);
+        if (v && !sessionStorage.getItem('shubhmay_' + k)) sessionStorage.setItem('shubhmay_' + k, v);
+      });
+      function getAttribution() {
+        var o = {};
+        var st = sessionStorage.getItem('shubhmay_session_start_ts');
+        if (st) o.session_start_ts = parseInt(st, 10);
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+          var v = sessionStorage.getItem('shubhmay_' + k);
+          if (v) o[k] = v;
+        });
+        return o;
+      }
       try {
         window._shubhmaySupabase = window.supabase ? window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY') : null;
       } catch (e) { window._shubhmaySupabase = null; }
       window._shubhmayTrack = function (et, pl) {
-        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language };
+        var payload = Object.assign({}, getAttribution(), pl || {});
+        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: payload, user_agent: navigator.userAgent, language: navigator.language };
         if (window._shubhmaySupabase) try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function () { }, function () { }); } catch (e) { }
       };
-      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'kundli_preview' });
+      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'kundli_preview', funnel: 'kundli_preview' });
+      if (window._shubhmaySupabase) window._shubhmayTrack('step_view', { step_index: 1, step_name: 'form', funnel: 'kundli_preview' });
     })();
   </script>
   <!-- GTM: deferred to window.load so FCP/LCP stay fast -->
@@ -981,6 +1002,63 @@
         transform: scale(1);
       }
     }
+
+    /* Kundli checking loader – full-screen overlay */
+    .kundli-loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at top, rgba(45, 8, 14, 0.97), rgba(31, 5, 9, 0.98));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      color: #fef3c7;
+    }
+
+    .kundli-loader-overlay.visible {
+      display: flex !important;
+    }
+
+    .kundli-loader-inner {
+      max-width: 360px;
+    }
+
+    .kundli-loader-wheel {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      border: 3px solid rgba(251, 191, 36, 0.2);
+      border-top-color: var(--matte-gold);
+      border-right-color: var(--saffron);
+      animation: kundliLoaderSpin 1.2s linear infinite;
+      box-shadow: 0 0 24px rgba(199, 169, 98, 0.4);
+    }
+
+    .kundli-loader-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: #fde68a;
+    }
+
+    .kundli-loader-line {
+      font-size: 0.9rem;
+      color: #fde68a;
+      min-height: 48px;
+      line-height: 1.5;
+    }
+
+    @keyframes kundliLoaderSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
@@ -989,6 +1067,15 @@
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
       style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
+  <!-- Full-screen loader when "Check Kundli" is clicked -->
+  <div class="kundli-loader-overlay" id="kundliLoader" aria-hidden="true" role="status" aria-live="polite">
+    <div class="kundli-loader-inner">
+      <div class="kundli-loader-wheel" aria-hidden="true"></div>
+      <div class="kundli-loader-title">Checking kundli…</div>
+      <div class="kundli-loader-line" id="kundliLoaderLine">Graho ki position analyse ho rahi hai…</div>
+    </div>
+  </div>
+
   <div class="page-content">
     <header class="navbar">
       <div class="navbar-inner"
@@ -1139,9 +1226,12 @@
             </p>
           </div>
 
-          <!-- 2. SHORT POSITIVE OPENING -->
+          <!-- 2. SHORT POSITIVE OPENING – structured like report -->
           <div class="sec-card" style="margin-top:24px; padding: 16px;">
-            <p id="identityText" style="font-weight:600; font-size: 0.95rem; color: var(--navy); line-height:1.5;"></p>
+            <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.09em; color:var(--text-muted); margin-bottom:6px;">
+              Career & personality snapshot
+            </div>
+            <p id="identityText" style="font-weight:600; font-size: 0.95rem; color: var(--navy); line-height:1.55;"></p>
             <ul class="trait-list" id="traitsList" style="margin-top: 12px; font-size: 0.9rem;"></ul>
           </div>
 
@@ -1410,7 +1500,7 @@
           chip3: '2 min',
           pStatBadge: '⚡ Instant Grah Scan Completed',
           pStatSub: 'This is an automated surface-level preview based on your birth data.',
-          identText: '{name}, aapki kundli me ambition aur leadership ka strong yog dikh raha hai.',
+          identText: '{name}, aapki janam kundli ke chart me career aur leadership ka strong yog dikh raha hai.',
           doshTitle: '⚠ Koi kathin yog ka sanket',
           doshSub: 'Kundli me ek aisa grah sanyog dikh raha hai jo career aur paison ki growth me rukavat la sakta hai. Agar is yog ko samay par samjha na jaye toh pragati dheemi ho sakti hai.',
           valTrig: 'Kya aapne pichle 1–2 saal me delay, pressure ya unexpected rukavat feel ki hai?',
@@ -1470,7 +1560,7 @@
           chip3: '2 मिनट',
           pStatBadge: '⚡ इंस्टेंट ग्रह स्कैन पूरा हुआ',
           pStatSub: 'यह आपके जन्म विवरण पर आधारित एक स्वचालित प्रारंभिक प्रीव्यू है।',
-          identText: '{name}, आपकी कुंडली में महत्वाकांक्षा और नेतृत्व (leadership) का मजबूत योग दिख रहा है।',
+          identText: '{name}, आपकी जन्म कुंडली के chart में career और leadership का मजबूत योग दिख रहा है।',
           doshTitle: '⚠ मजबूत नकारात्मक योग का संकेत',
           doshSub: 'कुंडली में एक ऐसा ग्रह संयोग दिख रहा है जो करियर और आर्थिक उन्नति में रुकावट पैदा कर सकता है। अगर इसे समय पर न समझा जाए तो प्रगति धीमी हो सकती है।',
           valTrig: 'क्या आपने पिछले 1–2 साल में काम में देरी, दबाव या अकारण रुकावट महसूस की है?',
@@ -1530,7 +1620,7 @@
           chip3: '2 mins',
           pStatBadge: 'Prarambhik grah sthiti ka sanket',
           pStatSub: 'This is a small top‑level preview based on your birth chart. The detailed report is always checked and written by an astrologer.',
-          identText: '{name}, your kundli shows a strong indication of ambition and leadership.',
+          identText: '{name}, your birth chart shows a clear indication of strong ambition and leadership potential.',
           doshTitle: '⚠ Indication of a challenging yog',
           doshSub: 'There is a planetary combination in your kundli that can slow down career and financial growth. If not understood in time, progress may feel slower than expected.',
           valTrig: 'Have you felt delays, pressure, or unexpected roadblocks in the last 1–2 years?',
@@ -1728,25 +1818,62 @@
 
         var traits = pickTraits(name, dob, tob, place);
         var displayName = name.split(' ')[0] || name;
-
         var checkTitleTemplate = PREVIEW_COPY[currentLang]['titleCheck'] || '';
         var identTextTemplate = PREVIEW_COPY[currentLang]['identText'] || PREVIEW_COPY['hinglish']['identText'];
 
-        var pt = document.getElementById('previewTitle');
-        if (pt && checkTitleTemplate) pt.textContent = checkTitleTemplate.replace('{name}', displayName);
+        var loaderEl = document.getElementById('kundliLoader');
+        var loaderLineEl = document.getElementById('kundliLoaderLine');
+        var loaderLines = [
+          'Graho ki position analyse ho rahi hai…',
+          'Janam lagna aur dashao ka pattern check ho raha hai…',
+          'Career aur paison par grah ka asar scan ho raha hai…',
+          'Nakshatra aur rashi ki detail nikal rahi hai…',
+          'Dosha aur yog ka analysis ho raha hai…',
+          'Report taiyar ho rahi hai…'
+        ];
+        var LOADER_DURATION_MS = 5000;
 
-        var idt = document.getElementById('identityText');
-        if (idt) idt.textContent = identTextTemplate.replace('{name}', displayName);
+        function showPreviewPanel() {
+          emit('step_view', { step_index: 2, step_name: 'preview', funnel: 'kundli_preview' });
+          var pt = document.getElementById('previewTitle');
+          if (pt && checkTitleTemplate) pt.textContent = checkTitleTemplate.replace('{name}', displayName);
+          var idt = document.getElementById('identityText');
+          if (idt) idt.textContent = identTextTemplate.replace('{name}', displayName);
+          var tList = document.getElementById('traitsList');
+          if (tList) tList.innerHTML = traits.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+          if (loaderEl) {
+            loaderEl.classList.remove('visible');
+            loaderEl.style.display = 'none';
+            loaderEl.setAttribute('aria-hidden', 'true');
+          }
+          document.getElementById('formPanel').classList.remove('visible');
+          document.getElementById('previewPanel').classList.add('visible');
+          document.getElementById('previewPanel').scrollIntoView({ behavior: 'smooth' });
+          var stickyBar = document.getElementById('stickyBar');
+          if (stickyBar) stickyBar.classList.add('show');
+        }
 
-        var tList = document.getElementById('traitsList');
-        if (tList) tList.innerHTML = traits.map(function (t) { return '<li>' + t + '</li>'; }).join('');
-
-        document.getElementById('formPanel').classList.remove('visible');
-        document.getElementById('previewPanel').classList.add('visible');
-        document.getElementById('previewPanel').scrollIntoView({ behavior: 'smooth' });
-
-        var stickyBar = document.getElementById('stickyBar');
-        if (stickyBar) stickyBar.classList.add('show');
+        if (loaderEl && loaderLineEl) {
+          loaderEl.classList.add('visible');
+          loaderEl.style.display = 'flex';
+          loaderEl.setAttribute('aria-hidden', 'false');
+          loaderLineEl.textContent = loaderLines[0];
+          var idx = 0;
+          var interval = setInterval(function () {
+            idx = (idx + 1) % loaderLines.length;
+            loaderLineEl.textContent = loaderLines[idx];
+          }, 850);
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              setTimeout(function () {
+                clearInterval(interval);
+                showPreviewPanel();
+              }, LOADER_DURATION_MS);
+            });
+          });
+        } else {
+          showPreviewPanel();
+        }
       });
 
       document.getElementById('btnUnlock').addEventListener('click', function () {

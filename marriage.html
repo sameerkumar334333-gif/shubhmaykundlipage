@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubhmay | Marriage Indication Check</title>
+  <meta name="description" content="Quick numerology based marriage indication — Love, Arrange or Mixed — using your date of birth. Option to unlock full personalized marriage kundli on Shubhmay.com." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Supabase tracking (shared with admin panel) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    (function () {
+      var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
+      var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
+
+      var sid = sessionStorage.getItem('shubhmay_sid');
+      if (!sid) {
+        sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+        sessionStorage.setItem('shubhmay_sid', sid);
+        sessionStorage.setItem('shubhmay_session_start_ts', String(Date.now()));
+      }
+
+      var params = new URLSearchParams(window.location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+        var v = params.get(k);
+        if (v && !sessionStorage.getItem('shubhmay_' + k)) sessionStorage.setItem('shubhmay_' + k, v);
+      });
+
+      function getAttribution() {
+        var o = {};
+        var st = sessionStorage.getItem('shubhmay_session_start_ts');
+        if (st) o.session_start_ts = parseInt(st, 10);
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+          var v = sessionStorage.getItem('shubhmay_' + k);
+          if (v) o[k] = v;
+        });
+        return o;
+      }
+
+      window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+      window._shubhmayTrack = function (eventType, payload) {
+        if (!window._shubhmaySupabase) return;
+        var pl = Object.assign({}, getAttribution(), payload || {});
+        try {
+          window._shubhmaySupabase
+            .from('analytics_events')
+            .insert([{
+              session_id: sid,
+              page_url: location.href,
+              referrer: document.referrer || null,
+              event_type: eventType,
+              payload: pl,
+              user_agent: navigator.userAgent,
+              language: navigator.language
+            }])
+            .then(function () { });
+        } catch (e) { }
+      };
+
+      if (window._shubhmaySupabase) {
+        window._shubhmayTrack('page_view', { page: 'marriage_indicator', title: 'marriage_love_arrange_mixed' });
+      }
+    })();
+  </script>
+
+  <style>
+    :root{
+      --bg:#faf7f2;
+      --paper:#fffaf1;
+      --ink:#1c1a17;
+      --muted:#6a6258;
+      --gold:#caa24a;
+      --gold2:#f0d28a;
+      --maroon:#8b1b1b;
+      --green:#1f6b52;
+      --shadow: 0 14px 40px rgba(28,26,23,.12);
+      --radius: 20px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(202,162,74,.18), transparent 60%),
+        radial-gradient(1000px 600px at 90% 0%, rgba(139,27,27,.12), transparent 55%),
+        linear-gradient(180deg, #fbf6ee 0%, #f6efe3 55%, #f2eadc 100%);
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 18px 110px}
+
+    /* Topbar */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:14px 14px;border-radius:18px;
+      background:rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(202,162,74,.25);
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.2) 60%),
+                  linear-gradient(135deg, rgba(202,162,74,.95), rgba(139,27,27,.85));
+      display:grid;place-items:center;
+      box-shadow: 0 10px 24px rgba(139,27,27,.12);
+      border:1px solid rgba(255,255,255,.65);
+    }
+    .logo span{font-family:Cinzel,serif;color:#fff;font-weight:700;font-size:18px;letter-spacing:.5px}
+    .brand h1{margin:0;font-family:Cinzel,serif;font-size:18px;line-height:1.05}
+    .brand p{margin:0;color:var(--muted);font-size:12px}
+
+    .pill{
+      display:flex;align-items:center;gap:8px;
+      font-size:12px;color:var(--muted);
+      padding:10px 12px;border-radius:999px;
+      background:rgba(255,255,255,.7);
+      border:1px solid rgba(202,162,74,.28);
+      white-space:nowrap;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(31,107,82,.12)}
+
+    /* Cards */
+    .card{
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(202,162,74,.25);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    /* Buttons */
+    .btn{
+      border:0;cursor:pointer;
+      padding:14px 16px;border-radius:14px;
+      font-weight:800;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      transition: transform .12s ease, box-shadow .12s ease;
+      text-decoration:none;
+      font-family:Inter,system-ui;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn-primary{
+      color:#fff;
+      background: linear-gradient(135deg, var(--maroon), #b12c2c 55%, var(--gold));
+      box-shadow: 0 14px 30px rgba(139,27,27,.20);
+    }
+    .btn-primary:hover{box-shadow: 0 18px 40px rgba(139,27,27,.24)}
+    .btn-ghost{
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(202,162,74,.35);
+      color:var(--ink);
+      font-weight:800;
+    }
+
+    /* Main layout */
+    .hero{display:grid;grid-template-columns: 1.1fr .9fr;gap:18px;margin-top:18px}
+    @media(max-width:920px){.hero{grid-template-columns:1fr;}}
+
+    .hero-left{padding:26px 24px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(202,162,74,.14);
+      border:1px solid rgba(202,162,74,.25);
+      color:#5a4721;font-weight:700;font-size:12px;
+    }
+    .title{margin:14px 0 10px;font-family:Cinzel,serif;font-size:38px;line-height:1.08;letter-spacing:.2px}
+    @media(max-width:520px){.title{font-size:30px}}
+    .subtitle{margin:0 0 18px;color:var(--muted);font-size:15px;line-height:1.6;max-width:60ch}
+
+    .trust{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:12px}
+    .trust .chip{padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(202,162,74,.22)}
+
+    .hero-right{padding:0}
+
+    /* Form + result */
+    .section-header{padding:20px 22px;border-bottom:1px solid rgba(202,162,74,.18)}
+    .section-header h2{margin:0;font-family:Cinzel,serif;font-size:20px}
+    .section-header p{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.55}
+
+    .form-wrap{padding:18px}
+    .form{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+    @media(max-width:680px){.form{grid-template-columns:1fr;}}
+    .field{display:flex;flex-direction:column;gap:8px}
+    label{font-size:12px;color:var(--muted);font-weight:700}
+    input, select{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(202,162,74,.28);
+      background:rgba(255,255,255,.85);
+      outline:none;
+      font-size:14px;
+    }
+    input:focus, select:focus{border-color: rgba(139,27,27,.55); box-shadow:0 0 0 4px rgba(139,27,27,.10)}
+    .full{grid-column:1 / -1}
+
+    .info-box{
+      margin-top:12px;
+      border-radius:18px;
+      border:1px solid rgba(202,162,74,.25);
+      background:rgba(255,255,255,.72);
+      padding:14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    /* Result */
+    .result{
+      padding:24px 22px 26px;
+      margin-top:18px;
+      text-align:center;
+    }
+    .result h2{margin:0;font-family:Cinzel,serif;font-size:24px;letter-spacing:.4px}
+    .result p{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+    .answer-box{
+      margin:18px auto 8px;
+      max-width:260px;
+      padding:16px 10px 18px;
+      border-radius:20px;
+      background:linear-gradient(145deg, rgba(255,255,255,.95), rgba(240,210,138,.35));
+      border:1px solid rgba(202,162,74,.55);
+      box-shadow:0 18px 40px rgba(0,0,0,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      animation:pop-in 0.6s ease-out;
+    }
+    .tag-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:140px;
+      padding:10px 20px;
+      border-radius:999px;
+      background:#fff7e5;
+      border:1px solid rgba(202,162,74,.6);
+      font-size:20px;
+      font-weight:800;
+      color:#5a4721;
+      letter-spacing:.12em;
+    }
+    @keyframes pop-in{
+      0%{opacity:0;transform:translateY(10px) scale(.85);}
+      60%{opacity:1;transform:translateY(-2px) scale(1.02);}
+      100%{opacity:1;transform:translateY(0) scale(1);}
+    }
+
+    .insights{display:grid;gap:10px;margin-top:14px}
+    .insight{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(202,162,74,.18);
+      background:rgba(255,255,255,.70);
+    }
+    .badge{
+      width:28px;height:28px;border-radius:10px;
+      display:grid;place-items:center;
+      font-weight:900;
+      background:rgba(202,162,74,.18);
+      color:#5a4721;
+      flex:0 0 auto;
+    }
+
+    .locked{
+      margin-top:14px;
+      border-radius:18px;
+      border:1px solid rgba(139,27,27,.25);
+      background:rgba(139,27,27,.05);
+      padding:14px;
+    }
+    .locked h4{margin:0 0 10px;font-size:14px;color:#6f1818}
+    .lock-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(max-width:680px){.lock-grid{grid-template-columns:1fr;}}
+    .lock-item{
+      display:flex;align-items:center;gap:10px;
+      padding:12px;border-radius:14px;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(139,27,27,.15);
+      color:#3a231e;
+      font-size:13px;
+    }
+    .lock-ic{width:26px;height:26px;border-radius:10px;display:grid;place-items:center;background:rgba(139,27,27,.10);color:#6f1818;font-weight:900}
+
+    /* Upsell (risk framing) */
+    .upsell{
+      margin-top:14px;
+      border-radius:18px;
+      border:1px solid rgba(202,162,74,.30);
+      background: linear-gradient(135deg, rgba(202,162,74,.14), rgba(255,255,255,.78));
+      padding:14px;
+    }
+    .upsellTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .warn{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;font-weight:900;
+      padding:8px 10px;border-radius:999px;
+      background:rgba(139,27,27,.10);
+      color:#6f1818;
+      border:1px solid rgba(139,27,27,.16);
+    }
+    .upsell h3{margin:10px 0 6px;font-size:16px}
+    .upsell p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+    .riskList{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+    .riskList li{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5}
+    .bang{
+      width:22px;height:22px;border-radius:9px;
+      background:rgba(139,27,27,.12);
+      color:#6f1818;
+      display:grid;place-items:center;
+      font-weight:900;
+      flex:0 0 auto;
+    }
+
+    /* Offer box (same as earlier) */
+    .offerGrid{display:grid;grid-template-columns:1fr .9fr;gap:14px;margin-top:14px}
+    @media(max-width:920px){.offerGrid{grid-template-columns:1fr;}}
+    .offer-left{padding:18px}
+    .offer-left h3{margin:0 0 6px;font-family:Cinzel,serif;font-size:18px}
+    .offer-left p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+    .bullets{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+    .bullets li{display:flex;gap:10px;align-items:flex-start;color:var(--ink);font-size:13px;line-height:1.5}
+    .tick{width:22px;height:22px;border-radius:9px;background:rgba(31,107,82,.12);color:var(--green);display:grid;place-items:center;font-weight:900;flex:0 0 auto}
+
+    .offer-right{padding:18px}
+    .price-card{
+      border-radius:18px;
+      border:1px solid rgba(202,162,74,.30);
+      background: linear-gradient(135deg, rgba(202,162,74,.14), rgba(255,255,255,.72));
+      padding:18px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.08);
+    }
+    .price-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .tag{
+      font-size:11px;font-weight:900;letter-spacing:.3px;
+      padding:8px 10px;border-radius:999px;
+      background:rgba(31,107,82,.12);
+      color:var(--green);
+      border:1px solid rgba(31,107,82,.18);
+      white-space:nowrap;
+    }
+    .price{margin:10px 0 6px;font-size:30px;font-weight:950;letter-spacing:-.5px}
+    .price small{font-size:12px;color:var(--muted);font-weight:700}
+    .note{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.5}
+    .fine{margin-top:14px;color:var(--muted);font-size:11.5px;line-height:1.6}
+
+    /* Loader */
+    .loader{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.20);
+      backdrop-filter: blur(4px);
+      z-index:60;
+    }
+    .loader-box{
+      background:rgba(255,255,255,.95);
+      border-radius:18px;
+      padding:16px 20px;
+      border:1px solid rgba(202,162,74,.35);
+      box-shadow:0 14px 40px rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .spinner{
+      width:26px;height:26px;border-radius:50%;
+      border:3px solid rgba(202,162,74,.35);
+      border-top-color:rgba(139,27,27,.9);
+      animation:spin 0.8s linear infinite;
+    }
+    @keyframes spin{
+      to{transform:rotate(360deg);}
+    }
+
+    /* Sticky bottom bar */
+    .sticky-bar{
+      position:fixed;
+      left:0;right:0;bottom:10px;
+      padding:0 16px;
+      z-index:70;
+      pointer-events:none;
+    }
+    .sticky-inner{
+      max-width:960px;
+      margin:0 auto;
+      pointer-events:auto;
+      border-radius:18px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(202,162,74,.4);
+      box-shadow:0 18px 50px rgba(0,0,0,.18);
+      padding:10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:12px;
+    }
+    .sticky-inner strong{font-size:13px;}
+    .sticky-inner span{display:block;color:var(--muted);margin-top:2px;}
+    .sticky-inner .btn{padding:10px 14px;border-radius:999px;font-size:13px;}
+    @media(max-width:520px){
+      .sticky-inner{flex-direction:column;align-items:flex-start;}
+      .sticky-inner strong{font-size:12px;}
+      .sticky-inner .btn{width:100%;justify-content:center;}
+    }
+
+    footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center;line-height:1.6}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>ॐ</span></div>
+        <div>
+          <h1>Shubhmay</h1>
+          <p>Marriage Indication • Quick Numerology Check</p>
+        </div>
+      </div>
+      <div class="pill"><span class="dot"></span> WhatsApp Delivery • 24 Hours</div>
+    </div>
+
+    <section class="hero" id="inputPage">
+      <div class="card hero-left">
+        <div class="kicker">🔎 Quick Check • Reel wale chart ke base par</div>
+        <h2 class="title">Aapki Marriage: Love, Arrange ya Mixed?</h2>
+        <p class="subtitle">
+          Sirf date of birth se ye chart <b>Love</b>, <b>Arrange</b> ya <b>Mixed</b> side dikha deta hai.
+          Neeche details bharo aur ek simple indication dekh lo.
+        </p>
+
+        <div class="trust">
+          <div class="chip">✅ Chart-based quick answer</div>
+          <div class="chip">✅ Simple Hindi explanation</div>
+          <div class="chip">✅ Personalized Kundli report (optional)</div>
+        </div>
+      </div>
+
+      <div class="card hero-right">
+        <div class="section-header">
+          <h2>Birth Details</h2>
+          <p>Basic info bhar do, baaki hum handle karenge.</p>
+        </div>
+
+        <div class="form-wrap" id="form">
+          <form class="form" id="kundliForm" autocomplete="on">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" placeholder="e.g., Rahul Sharma" required />
+            </div>
+
+            <div class="field">
+              <label for="phone">WhatsApp Number</label>
+              <input id="phone" name="phone" type="tel" placeholder="e.g., 98XXXXXXXX" required />
+            </div>
+
+            <div class="field full">
+              <label for="dob">Date of Birth</label>
+              <input id="dob" name="dob" type="date" required />
+            </div>
+
+            <div class="field full">
+              <button type="submit" class="btn btn-primary" style="width:100%">Show My Indication →</button>
+            </div>
+          </form>
+
+          <div class="info-box">
+            Ye sirf <b>general numerology</b> hai. Exact timing & family scene ke liye kundli report better rahegi.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultPage" style="display:none">
+      <section class="card result" id="resultCard">
+        <h2>Result</h2>
+        <p>Ye answer aapke DOB date + reel chart rules se nikla hai.</p>
+        <div class="answer-box">
+          <div class="tag-pill" id="resultTag">
+            <span id="resultType" style="font-weight:900;"></span>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;font-size:13px;color:var(--muted);line-height:1.6">
+          For a proper marriage analysis (timing, partner nature, family approval) <br/>Shubhmay par <b>personalized premium marriage kundli</b> banwaye.
+        </div>
+
+        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+          <button class="btn btn-primary" id="checkoutBtn">Get Your Detailed Marriage Kundli →</button>
+          <button class="btn btn-ghost" type="button" id="whatsappBtn">Ask on WhatsApp</button>
+        </div>
+
+      </section>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Shubhmay • All rights reserved
+      <br/>For support, WhatsApp assistance is available.
+    </footer>
+
+  </div>
+
+  <div class="sticky-bar" id="stickyBar" style="display:none">
+    <div class="sticky-inner">
+      <div>
+        <strong>Get your Personalized Premium Marriage Kundli</strong>
+        <span>Marriage ka full report (timing, partner, family) dekhne ke liye Shubhmay par apni premium kundli banwaye.</span>
+      </div>
+      <button class="btn btn-primary" id="stickyKundliBtn">Checkout on Shubhmay.com →</button>
+    </div>
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <div>Calculating your indication…</div>
+    </div>
+  </div>
+
+  <script>
+    // =============================
+    // CONFIG (Edit these 3 values)
+    // =============================
+    const CHECKOUT_URL = "https://shubhmay.com"; // checkout
+    const WHATSAPP_NUMBER = "918000000000"; // replace with your WhatsApp number
+    const PRODUCT_NAME = "Personalized Marriage Kundli (PDF)";
+
+    // =============================
+    // Helpers
+    // =============================
+    const $ = (q) => document.querySelector(q);
+    const $$ = (q) => Array.from(document.querySelectorAll(q));
+
+    function sanitizePhone(p){ return (p || "").replace(/[^0-9]/g, ""); }
+
+    function getDobNumber(dobStr){
+      if(!dobStr) return null;
+      const d = new Date(dobStr);
+      if (isNaN(d.getTime())) return null;
+      return d.getDate();
+    }
+
+    function pickMarriageBucket(dobNumber){
+      // Persuasive hint only (non-final)
+      const love = new Set([2,5,7,11,14,15,20,23,25,29]);
+      const arrange = new Set([1,4,6,8,10,13,16,18,22,24,26,28]);
+      const mixed = new Set([3,12,17,19,21,27,30]);
+
+      if(love.has(dobNumber)) return "Love";
+      if(arrange.has(dobNumber)) return "Arrange";
+      if(mixed.has(dobNumber)) return "Mixed";
+      return "Mixed";
+    }
+
+    // currently no extra insight lines; kept for future use if needed
+    function buildInsights(){ return []; }
+
+    function toCheckoutUrl(params){
+      const url = new URL(CHECKOUT_URL);
+      Object.entries(params).forEach(([k,v])=>{
+        if(v !== undefined && v !== null && String(v).trim() !== "") url.searchParams.set(k, String(v));
+      });
+      return url.toString();
+    }
+
+    // =============================
+    // Form + Result
+    // =============================
+    $('#year').textContent = new Date().getFullYear();
+
+    const form = $('#kundliForm');
+    const resultCard = $('#resultCard');
+    const resultTypeEl = $('#resultType');
+    const inputPage = $('#inputPage');
+    const resultPage = $('#resultPage');
+    const loader = $('#loader');
+    const stickyBar = $('#stickyBar');
+    let lastPayload = null;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = $('#name').value.trim();
+      const phone = sanitizePhone($('#phone').value);
+      const dob = $('#dob').value;
+
+      const dobNumber = getDobNumber(dob);
+      const bucket = pickMarriageBucket(dobNumber);
+
+      lastPayload = { name, phone, dob, dobNumber, bucket };
+
+      const labelMap = {
+        Love: "LOVE",
+        Arrange: "ARRANGE",
+        Mixed: "MIXED"
+      };
+      resultTypeEl.textContent = labelMap[bucket] || "MIXED";
+
+      if (window._shubhmayTrack) {
+        window._shubhmayTrack('kundli_preview_submit', {
+          page: 'marriage_indicator',
+          name: name,
+          phone: phone,
+          dob: dob,
+          dob_number: dobNumber,
+          bucket: bucket
+        });
+      }
+
+      loader.style.display = 'flex';
+      setTimeout(()=>{
+        loader.style.display = 'none';
+        inputPage.style.display = 'none';
+        resultPage.style.display = 'block';
+        stickyBar.style.display = 'block';
+        resultCard.scrollIntoView({behavior:'smooth'});
+      }, 900);
+    });
+
+    function goCheckout(){
+      const p = lastPayload || {
+        name: ($('#name') && $('#name').value ? $('#name').value.trim() : ""),
+        phone: sanitizePhone(($('#phone') && $('#phone').value) ? $('#phone').value : ""),
+        dob: ($('#dob') && $('#dob').value) ? $('#dob').value : "",
+      };
+
+      if (window._shubhmayTrack) {
+        window._shubhmayTrack('cta_click', {
+          page: 'marriage_indicator',
+          cta_location: 'marriage_result',
+          cta_label: 'Get Personalized Marriage Kundli'
+        });
+        window._shubhmayTrack('checkout_start', {
+          page: 'marriage_indicator',
+          step: 'marriage_result_unlock',
+          name: p.name,
+          phone: p.phone,
+          dob: p.dob
+        });
+      }
+
+      const checkout = toCheckoutUrl({
+        product: PRODUCT_NAME,
+        name: p.name,
+        phone: p.phone,
+        dob: p.dob,
+        concern: '',
+        src: 'reel_marriage_chart_single_result'
+      });
+
+      window.location.href = checkout;
+    }
+
+    const checkoutBtn = $("#checkoutBtn");
+    if (checkoutBtn) checkoutBtn.addEventListener("click", goCheckout);
+
+    const stickyBtn = $("#stickyKundliBtn");
+    if (stickyBtn) stickyBtn.addEventListener("click", goCheckout);
+
+    $("#whatsappBtn").addEventListener("click", ()=>{
+      const p = lastPayload || {
+        name: ($('#name') && $('#name').value ? $('#name').value.trim() : ""),
+        phone: sanitizePhone(($('#phone') && $('#phone').value) ? $('#phone').value : ""),
+        dob: ($('#dob') && $('#dob').value) ? $('#dob').value : "",
+      };
+
+      if (window._shubhmayTrack) {
+        window._shubhmayTrack('whatsapp_click', {
+          page: 'marriage_indicator',
+          phone: p.phone,
+          name: p.name,
+          dob: p.dob
+        });
+      }
+
+      const msg = encodeURIComponent(
+        `Hi Shubhmay! I want my ${PRODUCT_NAME}.\n\n` +
+        `Name: ${p.name || '-'}\n` +
+        `DOB: ${p.dob || '-'}\n` +
+        `Phone: ${p.phone || '-'}\n`
+      );
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+    });
+  </script>
+</body>
+</html>

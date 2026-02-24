@@ -19,19 +19,39 @@
   <script>
     (function () {
       var _sid = sessionStorage.getItem('shubhmay_sid');
-      if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+      if (!_sid) {
+        _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+        sessionStorage.setItem('shubhmay_sid', _sid);
+        sessionStorage.setItem('shubhmay_session_start_ts', String(Date.now()));
+      }
       window._shubhmaySid = _sid;
+      var params = new URLSearchParams(window.location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+        var v = params.get(k);
+        if (v && !sessionStorage.getItem('shubhmay_' + k)) sessionStorage.setItem('shubhmay_' + k, v);
+      });
+      function getAttribution() {
+        var o = {};
+        var st = sessionStorage.getItem('shubhmay_session_start_ts');
+        if (st) o.session_start_ts = parseInt(st, 10);
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+          var v = sessionStorage.getItem('shubhmay_' + k);
+          if (v) o[k] = v;
+        });
+        return o;
+      }
       window._shubhmayQueue = [];
       try {
         window._shubhmaySupabase = window.supabase ? window.supabase.createClient('https://yhxbwlhfjznajnnlduwt.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY') : null;
       } catch (e) { window._shubhmaySupabase = null; }
       window._shubhmayTrack = function (et, pl) {
-        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language };
+        var payload = Object.assign({}, getAttribution(), pl || {});
+        var ev = { session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: payload, user_agent: navigator.userAgent, language: navigator.language };
         if (window._shubhmaySupabase) {
           try { window._shubhmaySupabase.from('analytics_events').insert([ev]).then(function () { }, function (err) { console.warn('Track err:', err); }); } catch (e) { window._shubhmayQueue.push(ev); }
         } else { window._shubhmayQueue.push(ev); }
       };
-      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'metal_finder' });
+      if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'metal_finder', funnel: 'metal_finder' });
     })();
   </script>
   <script>
@@ -616,6 +636,64 @@
 
     .result-sec-1 {
       animation-delay: 0.05s;
+      background: linear-gradient(145deg, #fffbeb 0%, rgba(255, 251, 235, 0.6) 50%, #fffef5 100%);
+      border-left: 4px solid var(--saffron);
+      border-color: rgba(180, 83, 9, 0.22);
+      box-shadow: 0 8px 32px rgba(180, 83, 9, 0.12);
+      padding: 20px 18px;
+    }
+
+    .result-rashi-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 6px;
+    }
+
+    .result-identity-hook {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+
+    .result-subtext {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      font-style: italic;
+      position: relative;
+      padding-left: 14px;
+      border-left: 2px solid rgba(180, 83, 9, 0.25);
+    }
+
+    .result-traits {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .result-traits li {
+      padding: 6px 12px;
+      position: relative;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(180, 83, 9, 0.18);
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .result-traits li::before {
+      content: none;
     }
 
     .result-sec-2 {
@@ -624,6 +702,17 @@
 
     .result-sec-3 {
       animation-delay: 0.25s;
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 40%, #fee2e2 100%);
+      border-color: rgba(220, 38, 38, 0.7);
+      border-left: 4px solid #b91c1c;
+      box-shadow: 0 18px 55px rgba(185, 28, 28, 0.35);
+      position: relative;
+      overflow: hidden;
+      animation-name: resultFadeIn, urgentShake;
+      animation-duration: 0.5s, 1.8s;
+      animation-timing-function: ease, cubic-bezier(0.36, 0.07, 0.19, 0.97);
+      animation-iteration-count: 1, infinite;
+      animation-delay: 0s, 0.8s;
     }
 
     .result-sec-4 {
@@ -632,6 +721,74 @@
 
     .result-sec-5 {
       animation-delay: 0.45s;
+    }
+
+    .result-warning-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: #dc2626;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: none;
+      box-shadow: none;
+      position: relative;
+      margin-bottom: 10px;
+      animation: badgePulse 1.4s ease-in-out infinite;
+    }
+
+    .result-dosh-main {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #7f1d1d;
+      font-weight: 600;
+    }
+
+    .result-dosh-main strong {
+      color: #b91c1c;
+    }
+
+    @keyframes badgePulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.18);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.08);
+      }
+    }
+
+    @keyframes urgentShake {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      10% {
+        transform: translateX(-1px);
+      }
+      20% {
+        transform: translateX(2px);
+      }
+      30% {
+        transform: translateX(-2px);
+      }
+      40% {
+        transform: translateX(1px);
+      }
+      50% {
+        transform: translateX(0);
+      }
     }
 
     @keyframes resultFadeIn {
@@ -673,23 +830,16 @@
       font-weight: 700;
     }
 
-    .result-metal-heading {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      font-weight: 500;
-    }
-
     .result-metal-glow {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 600;
       color: var(--gold-dark);
-      padding: 16px 24px;
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+      padding: 10px 14px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.16) 0%, rgba(245, 158, 11, 0.1) 100%);
       border-radius: var(--radius);
       text-align: center;
-      border: 1px solid rgba(180, 83, 9, 0.2);
-      animation: metalGlow 2s ease-in-out infinite;
+      border: 1px solid rgba(180, 83, 9, 0.16);
+      animation: none;
     }
 
     @keyframes metalGlow {
@@ -825,6 +975,50 @@
       left: 0;
       color: var(--green);
       font-weight: 700;
+    }
+
+    .result-cta-header {
+      margin-bottom: 14px;
+    }
+
+    .result-cta-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .result-cta-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(254, 243, 199, 0.9);
+      border: 1px solid rgba(180, 83, 9, 0.18);
+      font-size: 0.88rem;
+      color: var(--text-dark);
+    }
+
+    .result-cta-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      box-shadow: 0 0 6px rgba(251, 191, 36, 0.7);
+      flex-shrink: 0;
+    }
+
+    .result-cta-block-strong {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(245, 158, 11, 0.12));
+      border-color: rgba(180, 83, 9, 0.3);
+    }
+
+    .result-urgency {
+      font-size: 0.78rem;
+      color: #b91c1c;
+      margin-top: 8px;
+      text-align: center;
     }
 
     .result-reassure {
@@ -1043,6 +1237,61 @@
       max-width: 100%;
     }
 
+    /* Interstitial astrology loader */
+    .kundli-loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(45, 8, 14, 0.96), rgba(10, 10, 10, 0.98));
+      display: none;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      color: #fef3c7;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .kundli-loader-overlay.visible {
+      display: flex;
+    }
+
+    .kundli-loader-inner {
+      max-width: 360px;
+    }
+
+    .kundli-loader-wheel {
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      border: 3px solid rgba(252, 211, 77, 0.2);
+      border-top-color: #facc15;
+      border-right-color: #f97316;
+      margin: 0 auto 16px;
+      animation: spin 1.4s linear infinite;
+      box-shadow: 0 0 20px rgba(250, 204, 21, 0.45);
+    }
+
+    .kundli-loader-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .kundli-loader-line {
+      font-size: 0.92rem;
+      color: #fde68a;
+      min-height: 44px;
+      line-height: 1.5;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .result-popup-overlay {
       position: fixed;
       inset: 0;
@@ -1205,63 +1454,36 @@
       <div class="result-experience">
         <!-- Section 1: Personal Identity Hook -->
         <div class="result-sec result-sec-1">
+          <span class="result-rashi-label">Aapki rashi</span>
           <h1 class="result-identity-hook" id="result-identity-hook"></h1>
           <p class="result-subtext">Is rashi ke log alag soch rakhte hain…</p>
           <ul class="result-traits" id="resultTraits"></ul>
         </div>
-        <!-- Section 2: General Metal Result -->
+        <!-- Section 2: Rashi-based Metal Result (deliberately incomplete) -->
         <div class="result-sec result-sec-2">
-          <h2 class="result-metal-heading">General Guide ke hisaab se aapke liye:</h2>
           <div class="result-metal-glow" id="resultMetalGlow"></div>
-          <p class="result-metal-note">Ye rashi-based recommendation hai.</p>
+          <p class="result-metal-note">Ye sirf rashi-based recommendation hai… lekin yahi final answer nahi hota.</p>
         </div>
-        <!-- Section 3: Interest Escalation – Accordion -->
+        <!-- Section 3: Dosh education – sharp + short -->
         <div class="result-sec result-sec-3">
-          <div class="accordion" role="region">
-            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="1">Kya aap jaante
-              hain?</button>
-            <div class="accordion-panel" id="accordion1">
-              <p class="accordion-text" id="accordion1Text">Har rashi wale ke liye metal same nahi hota.</p>
-            </div>
-            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="2">Kyun change hota
-              hai?</button>
-            <div class="accordion-panel" id="accordion2">
-              <p class="accordion-text">Janam samay, lagna aur grah sthiti metal ko impact karte hain.</p>
-            </div>
-            <button type="button" class="accordion-trigger" aria-expanded="false" data-accordion="3">Galat metal ka
-              asar?</button>
-            <div class="accordion-panel" id="accordion3">
-              <p class="accordion-text">Energy imbalance, delay, ya expected result na milna.</p>
-            </div>
-          </div>
+          <div class="result-warning-badge">Important: sirf rashi se decision mat lo</div>
+          <p class="result-dosh-main">
+            Agar aapki janam kundli me dosh ya weak grah hain to ye rashi‑based metal kaam nahi kar sakta —
+            kabhi‑kabhi ulta effect bhi de sakta hai.
+          </p>
         </div>
-        <!-- Section 4: Curiosity Peak -->
-        <div class="result-sec result-sec-4">
-          <h2 class="result-curiosity-head">Aapka Exact Metal Different bhi ho sakta hai.</h2>
-          <p class="result-curiosity-sub">Sirf janam kundli ke analysis se final dhatu decide hota hai.</p>
-          <div class="progress-wrap">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width:70%"></div>
-            </div>
-            <p class="progress-label">Aap 70% result dekh chuke hain.</p>
-          </div>
-        </div>
-        <!-- Section 5: Soft Conversion Push -->
+        <!-- Section 4: Direct CTA to kundli -->
         <div class="result-sec result-sec-5">
-          <h2 class="result-cta-head">Apni Personalized Kundli Check Karein</h2>
-          <ul class="result-benefits">
-            <li>Exact Lucky Metal (Right ear specific)</li>
-            <li>Grah strength analysis</li>
-            <li>Career & Finance direction</li>
-            <li>10-year overview</li>
-          </ul>
-          <div class="result-cta-block">
-            <button type="button" class="btn" id="cta-check-kundli" data-cta="result">Check My Personalized Kundli –
-              ₹499</button>
+          <div class="result-cta-header">
+            <h2 class="result-cta-head">Turant apni janam kundli check karein</h2>
+          </div>
+          <div class="result-cta-block result-cta-block-strong">
+            <button type="button" class="btn" id="cta-check-kundli" data-cta="result">
+              Check Your Janam Kundli
+            </button>
             <button type="button" class="btn btn-whatsapp" id="cta-whatsapp-result" data-i18n="step3Whatsapp">Send This
               Result on WhatsApp</button>
           </div>
-          <p class="result-reassure">Report WhatsApp + Email par milegi • 24–48 hours</p>
         </div>
         <button type="button" class="btn btn-secondary result-back" id="cta-back-rashi" data-i18n="step3Back">Back /
           Change Rashi</button>
@@ -1344,9 +1566,18 @@
     </footer>
   </main>
 
+  <!-- Interstitial kundli checking loader -->
+  <div class="kundli-loader-overlay" id="kundliLoader" aria-hidden="true">
+    <div class="kundli-loader-inner">
+      <div class="kundli-loader-wheel"></div>
+      <div class="kundli-loader-title">Checking kundli…</div>
+      <div class="kundli-loader-line" id="kundliLoaderLine">Graho ki position analyse ho rahi hai…</div>
+    </div>
+  </div>
+
   <!-- Sticky CTA (Steps 3–5) -->
   <div class="sticky-cta-bar" id="stickyCta" aria-hidden="true">
-    <button type="button" class="btn" id="cta-sticky" data-i18n="stickyCta">Check My Personalized Kundli</button>
+    <button type="button" class="btn" id="cta-sticky" data-i18n="stickyCta">Check Your Janam Kundli</button>
   </div>
 
   <!-- Phone capture modal for WhatsApp -->
@@ -1480,7 +1711,7 @@
           footer2: 'Mental clarity',
           footer3: 'Grah alignment',
           footer4: 'Right ear specific',
-          stickyCta: 'Check My Personalized Kundli',
+          stickyCta: 'Check Your Janam Kundli',
           popupText: 'Apni janam kundli se personalized report pao.',
           popupCta: 'Check My Personalized Kundli'
         },
@@ -1530,7 +1761,7 @@
           footer2: 'Mental clarity',
           footer3: 'Grah alignment',
           footer4: 'Right ear specific',
-          stickyCta: 'Check My Personalized Kundli',
+          stickyCta: 'Check Your Janam Kundli',
           popupText: 'Get your personalized report from your birth chart.',
           popupCta: 'Check My Personalized Kundli'
         }
@@ -1661,9 +1892,49 @@
         emit('cta_click', { cta_location: 'hook', cta_label: 'Start Now', step_index: 1 });
         showStep(2);
       });
+      var kundliLoader = document.getElementById('kundliLoader');
+      var kundliLoaderLine = document.getElementById('kundliLoaderLine');
+      var loaderLines = [
+        'Graho ki position analyse ho rahi hai…',
+        'Janam lagna aur dashao ka pattern check ho raha hai…',
+        'Career aur paison par grah ka asar scan ho raha hai…',
+        'Nakshatra aur rashi ki detail nikal rahi hai…',
+        'Dosha aur yog ka analysis ho raha hai…',
+        'Report taiyar ho rahi hai…'
+      ];
+      var LOADER_DURATION_MS = 5000;
+
+      function showKundliLoaderAndGo() {
+        if (!kundliLoader || !kundliLoaderLine) {
+          goToPreview();
+          return;
+        }
+        kundliLoader.classList.add('visible');
+        kundliLoader.style.display = 'flex';
+        kundliLoader.setAttribute('aria-hidden', 'false');
+        kundliLoaderLine.textContent = loaderLines[0];
+
+        var idx = 0;
+        var interval = setInterval(function () {
+          idx = (idx + 1) % loaderLines.length;
+          kundliLoaderLine.textContent = loaderLines[idx];
+        }, 850);
+
+        function done() {
+          clearInterval(interval);
+          goToPreview();
+        }
+
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            setTimeout(done, LOADER_DURATION_MS);
+          });
+        });
+      }
+
       document.getElementById('cta-check-kundli').addEventListener('click', function () {
         emit('cta_click', { cta_location: 'result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        goToPreview();
+        showKundliLoaderAndGo();
       });
       document.getElementById('cta-whatsapp-result').addEventListener('click', function () {
         document.getElementById('whatsappPhoneInput').value = '';
@@ -1712,7 +1983,7 @@
       document.getElementById('cta-pay').addEventListener('click', goCheckout);
       document.getElementById('cta-sticky').addEventListener('click', function () {
         emit('cta_click', { cta_location: 'sticky_result', cta_label: 'Check My Personalized Kundli', step_index: 3 });
-        goToPreview();
+        showKundliLoaderAndGo();
       });
 
       // Step 1 already visible for fast LCP; init state

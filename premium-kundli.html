@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Kundli Test | ShubhMay</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Prokerala Location Widget CSS -->
+    <link rel="stylesheet" href="https://client-api.prokerala.com/static/css/location.min.css">
+
+    <style>
+        /* Minimal styles specifically for this test page container */
+        .kundli-test-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(10, 12, 16, 0.95);
+            border: 1px solid var(--border-color, #30363d);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .kundli-test-container h1 {
+            color: var(--accent-gold, #c7a962);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted, #8b949e);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid var(--border-color, #30363d);
+            border-radius: 8px;
+            color: var(--text-primary, #ffffff);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--accent-gold, #c7a962);
+            box-shadow: 0 0 0 2px rgba(199, 169, 98, 0.2);
+        }
+
+        .row {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 1rem;
+            background: var(--accent-gold, #c7a962);
+            color: #2d080e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #e3c57a;
+            box-shadow: 0 0 20px rgba(199, 169, 98, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Location widget overrides to fit dark theme */
+        .prokerala-location-search {
+            background: transparent !important;
+        }
+
+        .prokerala-location-search .input-wrapper input {
+            background: rgba(22, 27, 34, 0.8) !important;
+            color: white !important;
+            border: 1px solid #30363d !important;
+        }
+
+        .prokerala-location-search .suggestion-list {
+            background: #161b22 !important;
+            border: 1px solid #30363d !important;
+        }
+
+        .prokerala-location-search .suggestion-list li {
+            color: white !important;
+            border-bottom: 1px solid #30363d !important;
+        }
+
+        .prokerala-location-search .suggestion-list li:hover {
+            background: #2d080e !important;
+        }
+
+        #result-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: rgba(35, 134, 54, 0.1);
+            border: 1px solid #238636;
+            display: none;
+            text-align: center;
+        }
+
+        #result-box.error {
+            background: rgba(218, 54, 51, 0.1);
+            border-color: #da3633;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 10px 24px;
+            background: #238636;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .download-btn:hover {
+            background: #2ea043;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Adding a simple nav bar for testing -->
+    <nav class="navbar" style="position:static;">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🕉️</span>
+                <span class="logo-text">ShubhMay</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="kundli-test-container">
+        <h1>Test Kundli PDF Report</h1>
+        <p style="text-align:center; color: #8b949e; margin-bottom: 2rem;">Sandbox Environment - Free Generation</p>
+
+        <form id="kundliForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required placeholder="e.g. Ramesh Kumar">
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lang">Report Language</label>
+                    <select id="lang" required>
+                        <option value="en">English (en)</option>
+                        <option value="hi">Hindi (hi)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="tob">Time of Birth</label>
+                    <input type="time" id="tob" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Place of Birth</label>
+                <!-- The ID must be pk-location-input for the Prokerala widget -->
+                <input type="text" id="pk-location-input" class="prokerala-location-input"
+                    placeholder="Start typing city name..." autocomplete="off">
+                <input type="hidden" id="latitude">
+                <input type="hidden" id="longitude">
+                <input type="hidden" id="timezone">
+                <small style="color:#c7a962; display:block; margin-top:5px; font-size:0.8rem">Powered by Prokerala
+                    Auto-complete API</small>
+            </div>
+
+            <button type="submit" id="generateBtn" class="submit-btn" disabled>Generate Report</button>
+        </form>
+
+        <div id="result-box">
+            <h3 style="color:#f0f6fc; margin-bottom:10px;" id="resultTitle">Report Generated!</h3>
+            <p style="color:#c9d1d9; font-size:0.9rem;" id="resultMsg">Preview your PDF report below.</p>
+            <div id="resultAction" style="margin-bottom: 20px;"></div>
+
+            <!-- Container for the PDF Preview -->
+            <div id="pdfPreviewContainer"
+                style="display: none; width: 100%; height: 600px; border: 1px solid #c7a962; border-radius: 8px; overflow: hidden;">
+                <iframe id="pdfFrame" src="" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+            <div id="debugBox" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Original widget JS removed -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const locationInput = document.getElementById('pk-location-input');
+            const latInput = document.getElementById('latitude');
+            const lonInput = document.getElementById('longitude');
+            const tzInput = document.getElementById('timezone');
+            const generateBtn = document.getElementById('generateBtn');
+
+            // Auto-complete suggestion box
+            const suggestionBox = document.createElement('ul');
+            suggestionBox.style.cssText = 'position:absolute; width:100%; background:#161b22; border:1px solid #30363d; list-style:none; padding:0; margin:0; max-height:200px; overflow-y:auto; z-index:10; display:none; border-radius:0 0 8px 8px;';
+            locationInput.parentNode.style.position = 'relative';
+            locationInput.parentNode.appendChild(suggestionBox);
+
+            let debounceTimer;
+
+            locationInput.addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                const keyword = this.value.trim();
+
+                if (keyword.length < 3) {
+                    suggestionBox.style.display = 'none';
+                    generateBtn.disabled = true;
+                    return;
+                }
+
+                debounceTimer = setTimeout(async () => {
+                    try {
+                        const res = await fetch(`/.netlify/functions/search-location?keyword=${encodeURIComponent(keyword)}`);
+                        const data = await res.json();
+
+                        suggestionBox.innerHTML = '';
+
+                        if (data.data && data.data.length > 0) {
+                            suggestionBox.style.display = 'block';
+                            data.data.forEach(loc => {
+                                const li = document.createElement('li');
+                                li.style.cssText = 'padding:10px; cursor:pointer; color:white; border-bottom:1px solid #30363d; font-size:0.9rem;';
+                                li.innerText = `${loc.name}, ${loc.admin1 || ''} - ${loc.country || ''}`;
+
+                                li.addEventListener('mouseover', () => li.style.background = '#2d080e');
+                                li.addEventListener('mouseout', () => li.style.background = 'transparent');
+
+                                li.addEventListener('click', () => {
+                                    locationInput.value = loc.name;
+                                    latInput.value = loc.latitude;
+                                    lonInput.value = loc.longitude;
+                                    tzInput.value = loc.timezone;
+                                    generateBtn.disabled = false;
+                                    suggestionBox.style.display = 'none';
+                                });
+                                suggestionBox.appendChild(li);
+                            });
+                        } else {
+                            suggestionBox.style.display = 'none';
+                        }
+                    } catch (e) {
+                        console.error('Location search failed', e);
+                    }
+                }, 500);
+            });
+
+            // Hide on click outside
+            document.addEventListener('click', (e) => {
+                if (e.target !== locationInput) suggestionBox.style.display = 'none';
+            });
+
+            // Form Submission
+            const form = document.getElementById('kundliForm');
+            const btn = document.getElementById('generateBtn');
+            const resultBox = document.getElementById('result-box');
+            const pdfPreviewContainer = document.getElementById('pdfPreviewContainer');
+            const pdfFrame = document.getElementById('pdfFrame');
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                // Disable button during loading
+                btn.disabled = true;
+                btn.innerText = 'Generating Premium PDF... Please wait';
+                resultBox.style.display = 'none';
+                pdfPreviewContainer.style.display = 'none';
+                document.getElementById('debugBox').style.display = 'none';
+
+                // Gather data
+                const dob = document.getElementById('dob').value;
+                const tob = document.getElementById('tob').value;
+                const tz = document.getElementById('timezone').value; // e.g. "Asia/Kolkata"
+                const lat = document.getElementById('latitude').value;
+                const lon = document.getElementById('longitude').value;
+
+                // Simple manual calculation of standard timezone offset
+                const dateStr = `${dob}T${tob}:00+05:30`;
+
+                const payload = {
+                    datetime: dateStr,
+                    place: document.getElementById('pk-location-input').value,
+                    coordinates: `${lat},${lon}`,
+                    la: document.getElementById('lang').value,
+                    name: document.getElementById('name').value,
+                    gender: document.getElementById('gender').value
+                };
+
+                try {
+                    const res = await fetch('/.netlify/functions/generate-report', {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    const rawText = await res.text();
+                    let data;
+                    try { data = JSON.parse(rawText); } catch (e) { data = { error: rawText }; }
+
+                    resultBox.style.display = 'block';
+
+                    if (res.ok && data.success) {
+                        resultBox.className = '';
+                        document.getElementById('resultTitle').textContent = 'Success!';
+
+                        if (data.pdf_base64) {
+                            // Convert Base64 back to a PDF Blob to download
+                            const byteCharacters = atob(data.pdf_base64);
+                            const byteNumbers = new Array(byteCharacters.length);
+                            for (let i = 0; i < byteCharacters.length; i++) {
+                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                            }
+                            const byteArray = new Uint8Array(byteNumbers);
+                            const blob = new Blob([byteArray], { type: 'application/pdf' });
+                            const blobUrl = URL.createObjectURL(blob);
+
+                            document.getElementById('resultMsg').textContent = 'Your Personalized Premium PDF Report is ready!';
+
+                            // 1. Give them the download button
+                            document.getElementById('resultAction').innerHTML = `<a href="${blobUrl}" download="${payload.name.replace(/ /g, '_')}_Kundli.pdf" class="download-btn">Download PDF Report</a> <button class="btn btn-outline" style="margin-left: 10px; padding: 10px 24px; border-radius: 6px; cursor: pointer; color:#c9d1d9; background:transparent; border: 1px solid #c9d1d9;" onclick="window.open('${blobUrl}', '_blank')">Open in New Tab</button>`;
+
+                            // 2. Show the PDF preview iframe
+                            pdfFrame.src = blobUrl;
+                            pdfPreviewContainer.style.display = 'block';
+
+                            // 3. Automatically open in new tab
+                            window.open(blobUrl, '_blank');
+
+                        } else {
+                            document.getElementById('resultMsg').textContent = 'Response received, but unable to construct PDF.';
+                            document.getElementById('resultAction').innerHTML = '';
+                        }
+
+                    } else {
+                        resultBox.className = 'error';
+                        document.getElementById('resultTitle').textContent = 'API Error';
+                        document.getElementById('resultMsg').textContent = data.error || 'Failed to generate report.';
+                        document.getElementById('resultAction').innerHTML = '';
+                        console.error('API Error Details:', data.details || rawText); // Replaced debugBox references
+                    }
+
+                } catch (err) {
+                    resultBox.style.display = 'block';
+                    resultBox.className = 'error';
+                    document.getElementById('resultTitle').textContent = 'Error'; // Changed from 'Network Error'
+                    document.getElementById('resultMsg').textContent = err.message || 'An unexpected error occurred.'; // Modified message
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = 'Generate Report';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

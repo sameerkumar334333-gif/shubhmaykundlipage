@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,192 +13,702 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-card: #1e293b;
-      --border: #334155;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --accent: #f59e0b;
-      --green: #22c55e;
-      --red: #ef4444;
-      --blue: #3b82f6;
+      --bg: #0a0c10;
+      --sidebar-bg: #11141b;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-bold: #f0f6fc;
+      --muted: #8b949e;
+      --accent: #c7a962;
+      --accent-hover: #e3c57a;
+      --deep-maroon: #2d080e;
+      --green: #238636;
+      --red: #da3633;
+      --blue: #1f6feb;
+      --sidebar-width: 260px;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-    .header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 28px;
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .header h1 { font-size: 1.35rem; font-weight: 600; }
-    .header-meta { display: flex; align-items: center; gap: 16px; font-size: 0.85rem; color: var(--muted); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
-    .status-dot.ok { background: var(--green); }
-    .status-dot.err { background: var(--red); }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Layout Structure */
+    .admin-layout {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 32px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-bold);
+    }
+
+    .nav-item.active {
+      background: rgba(199, 169, 98, 0.1);
+      color: var(--accent);
+      border-left: 3px solid var(--accent);
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Main Content */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .top-bar {
+      height: 70px;
+      background: var(--sidebar-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .status-dot.ok {
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .status-dot.err {
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    .dashboard-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dashboard-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Premium Cards */
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-bold);
+    }
+
+    .card-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Stats Grid */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .stat-val {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Buttons */
     .btn {
-      padding: 10px 18px; background: var(--accent); color: #1e293b;
-      border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .btn:hover { opacity: 0.9; }
-    .btn-ghost { background: transparent; color: var(--muted); }
-    .btn-ghost:hover { color: var(--text); }
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
-    .section {
-      background: var(--bg-card); border-radius: 12px; padding: 24px;
-      margin-bottom: 24px; border: 1px solid var(--border);
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--deep-maroon);
     }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-    .section-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
-    .section-sub { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
-    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
-    .stat {
-      background: rgba(0,0,0,0.25); border-radius: 10px; padding: 18px; border: 1px solid var(--border);
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px rgba(199, 169, 98, 0.4);
     }
-    .stat-val { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
-    .tab-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-    .tab {
-      padding: 10px 18px; background: rgba(255,255,255,0.05); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500;
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
     }
-    .tab:hover { color: var(--text); border-color: var(--accent); }
-    .tab.active { background: rgba(245,158,11,0.15); color: var(--accent); border-color: var(--accent); }
-    .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: rgba(0,0,0,0.3); color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    tr:hover { background: rgba(255,255,255,0.03); }
-    .rashi-badge { display: inline-block; padding: 4px 10px; background: rgba(245,158,11,0.2); border-radius: 6px; font-size: 0.8rem; }
-    .empty-msg { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 0.95rem; }
-    .err-msg { color: var(--red); font-size: 0.9rem; padding: 16px; background: rgba(239,68,68,0.1); border-radius: 8px; margin-bottom: 16px; }
-    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent);
+    }
+
+    .btn-sm {
+      padding: 8px 14px;
+      font-size: 0.8rem;
+    }
+
+    .btn-export {
+      background: rgba(35, 134, 54, 0.1);
+      color: #3fb950;
+      border: 1px solid #238636;
+    }
+
+    .btn-export:hover {
+      background: #238636;
+      color: white;
+    }
+
+    /* Table Styling */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Login Screen */
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, var(--deep-maroon) 0%, var(--bg) 100%);
+    }
+
     .login-card {
-      width: 100%; max-width: 400px; background: var(--bg-card); border-radius: 12px;
-      padding: 36px; border: 1px solid var(--border);
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     }
-    .login-card h1 { font-size: 1.35rem; margin-bottom: 28px; text-align: center; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; }
-    .form-group input {
-      width: 100%; padding: 12px 14px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 8px; color: var(--text); font-size: 1rem;
+
+    .login-card h1 {
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 1.75rem;
     }
-    .form-group input:focus { outline: none; border-color: var(--accent); }
-    .login-btn { width: 100%; padding: 14px; margin-top: 8px; }
-    .err { color: var(--red); font-size: 0.9rem; margin-top: 12px; }
-    .loading { text-align: center; padding: 40px; color: var(--muted); }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(199, 169, 98, 0.2);
+    }
+
+    /* Badges */
+    .badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-rashi {
+      background: rgba(199, 169, 98, 0.15);
+      color: var(--accent);
+    }
+
+    .badge-success {
+      background: rgba(35, 134, 54, 0.15);
+      color: #3fb950;
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .search-inp {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      min-width: 180px;
+    }
+
+    .search-inp::placeholder {
+      color: var(--muted);
+    }
+
+    .search-inp:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .badge-utm {
+      background: rgba(31, 111, 235, 0.15);
+      color: #58a6ff;
+    }
+
+    .empty-msg, .err-msg {
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .err-msg { color: var(--red); }
+
+    .table-loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        transform: translateX(-100%);
+        width: 0;
+      }
+
+      .sidebar.open {
+        width: 260px;
+        transform: translateX(0);
+      }
+    }
   </style>
 </head>
+
 <body>
-  <div id="loginScreen" class="login-wrap" style="display:none;">
-    <div class="login-card">
-      <h1>ShubhMay Admin</h1>
-      <form id="loginForm">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="loginEmail" required autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPass" required autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn login-btn">Sign In</button>
-        <p id="loginErr" class="err"></p>
-      </form>
+  <div id="loginScreen" style="display:none;">
+    <div class="login-wrap">
+      <div class="login-card">
+        <h1>ShubhMay Admin</h1>
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="admin@shubhmay.com">
+          </div>
+          <div class="input-group">
+            <label>Secure Password</label>
+            <input type="password" id="loginPass" required>
+          </div>
+          <button type="submit" class="btn btn-primary login-btn">Sign into Dashboard</button>
+          <p id="loginErr" class="err"></p>
+        </form>
+      </div>
     </div>
   </div>
 
   <div id="dashboard" style="display:none;">
-    <div class="container">
-      <div class="header">
-        <div>
-          <h1>Analytics Dashboard</h1>
-          <p class="header-meta">
-            <span id="connStatus"><span class="status-dot" id="statusDot"></span> <span id="statusText">Connecting…</span></span>
-            <span>•</span>
-            <span id="lastRefresh">—</span>
-          </p>
+    <div class="admin-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1>ShubhMay <span
+              style="font-size:0.7rem; padding: 3px 6px; background: rgba(199,169,98,0.2); border-radius: 4px;">ADMIN</span>
+          </h1>
         </div>
-        <button type="button" class="btn btn-ghost" id="btnLogout">Logout</button>
-      </div>
+        <nav class="sidebar-nav">
+          <div class="nav-item active" data-target="overview">Overview</div>
+          <div class="nav-item" data-target="utm">UTM / Source</div>
+          <div class="nav-item" data-target="submissions">Kundli Submissions</div>
+          <div class="nav-item" data-target="marriage">Marriage Indicator</div>
+          <div class="nav-item" data-target="rashi">Rashi Analysis</div>
+          <div class="nav-item" data-target="leads">WhatsApp Leads</div>
+          <div class="nav-item" data-target="clicks">CTA Tracking</div>
+          <div class="nav-item" data-target="events">Raw Events</div>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="btn btn-outline btn-sm" style="width:100%" id="btnLogout">Sign Out</button>
+        </div>
+      </aside>
 
-      <!-- Section: Overview -->
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Overview</h2>
-            <p class="section-sub">Last 7 days • Auto-refresh on load</p>
+      <!-- Main Content Container -->
+      <main class="main-wrapper">
+        <header class="top-bar">
+          <div class="header-meta">
+            <span><span class="status-dot" id="statusDot"></span> <span id="statusText">Connecting…</span></span>
+            <span id="lastRefresh"></span>
           </div>
-          <button type="button" class="btn btn-sm" id="btnRefresh">↻ Refresh</button>
-        </div>
-        <div id="statGrid" class="stat-row"></div>
-      </section>
+          <div style="display:flex; gap: 12px; align-items:center; flex-wrap:wrap;">
+            <select id="dateRange" class="search-inp" style="min-width:140px;">
+              <option value="7">Last 7 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="1">Today</option>
+              <option value="0">All time</option>
+            </select>
+            <button class="btn btn-outline btn-sm" id="btnRefresh">↻ Refresh</button>
+            <button class="btn btn-export btn-sm" id="btnExportGlobal">⬇ Export CSV</button>
+          </div>
+        </header>
 
-      <!-- Section: Rashi Clicks -->
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Rashi Clicks</h2>
-            <p class="section-sub">Konse rashi par kitne users ne click kiya</p>
+        <section class="content-area">
+          <!-- SECTION: OVERVIEW -->
+          <div id="sec-overview" class="dashboard-section active">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Business Overview</h2>
+                  <p class="card-sub" id="overviewDateSub">Snapshot (Last 7 Days)</p>
+                </div>
+              </div>
+              <div id="statGrid" class="stat-row"></div>
+              <div class="card-header" style="margin-top:20px; margin-bottom:12px;">
+                <h3 class="card-title" style="font-size:1rem;">Top sources (conversions)</h3>
+              </div>
+              <div id="topSourcesWrap" class="table-container"></div>
+            </div>
           </div>
-        </div>
-        <div id="rashiTableWrap"></div>
-      </section>
 
-      <!-- Section: Leads (WhatsApp) -->
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Leads – WhatsApp</h2>
-            <p class="section-sub">Phone numbers captured • Send Result flow</p>
+          <!-- SECTION: UTM / SOURCE -->
+          <div id="sec-utm" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">UTM / Source breakdown</h2>
+                  <p class="card-sub">Page views, submissions & checkouts by utm_source / utm_medium</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('utm')">Export CSV</button>
+              </div>
+              <div id="utmTableWrap" class="table-container"></div>
+            </div>
           </div>
-        </div>
-        <div id="leadsTableWrap"></div>
-      </section>
 
-      <!-- Section: CTA Clicks -->
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">CTA / Upsell Clicks</h2>
-            <p class="section-sub">Location-wise breakdown</p>
+          <!-- SECTION: SUBMISSIONS -->
+          <div id="sec-submissions" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Kundli Submissions</h2>
+                  <p class="card-sub">Users who filled birth details & reached preview</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('submissions')">Export CSV</button>
+              </div>
+              <div class="filter-row">
+                <input type="text" id="submissionsSearch" class="search-inp" placeholder="Search name or place…">
+              </div>
+              <div class="table-container" id="submissionsTableWrap"></div>
+            </div>
           </div>
-        </div>
-        <div id="ctaTableWrap"></div>
-      </section>
 
-      <!-- Section: Event Stream -->
-      <section class="section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Event Stream</h2>
-            <p class="section-sub">Recent activity • Filter by type</p>
+          <!-- SECTION: MARRIAGE INDICATOR -->
+          <div id="sec-marriage" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Marriage Indicator (Love / Arrange / Mixed)</h2>
+                  <p class="card-sub">Submissions from DOB-based marriage indication page</p>
+                </div>
+              </div>
+              <div class="filter-row">
+                <input type="text" id="marriageSearch" class="search-inp" placeholder="Search name or phone…">
+              </div>
+              <div class="table-container" id="marriageTableWrap"></div>
+            </div>
           </div>
-        </div>
-        <div class="tab-row" id="eventTabs">
-          <button type="button" class="tab active" data-filter="">All</button>
-          <button type="button" class="tab" data-filter="page_view">Page views</button>
-          <button type="button" class="tab" data-filter="rashi_selected">Rashi</button>
-          <button type="button" class="tab" data-filter="cta_click">CTA</button>
-          <button type="button" class="tab" data-filter="whatsapp_click">Leads</button>
-          <button type="button" class="tab" data-filter="step_view">Steps</button>
-        </div>
-        <div class="table-wrap">
-          <div id="eventsTableWrap"></div>
-        </div>
-      </section>
+
+          <!-- SECTION: RASHI -->
+          <div id="sec-rashi" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Rashi Clicks</h2>
+                  <p class="card-sub">Popularity breakdown from Metal Finder</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('rashi')">Export CSV</button>
+              </div>
+              <div id="rashiTableWrap" class="table-container"></div>
+            </div>
+          </div>
+
+          <!-- SECTION: LEADS -->
+          <div id="sec-leads" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">WhatsApp Leads</h2>
+                  <p class="card-sub">Captured from "Send Result" popup</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('leads')">Export CSV</button>
+              </div>
+              <div class="filter-row">
+                <input type="text" id="leadsSearch" class="search-inp" placeholder="Search phone…">
+              </div>
+              <div id="leadsTableWrap" class="table-container"></div>
+            </div>
+          </div>
+
+          <!-- SECTION: CLICKS -->
+          <div id="sec-clicks" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">CTA Clicks</h2>
+                  <p class="card-sub">Checkout behavior & navigation</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('clicks')">Export CSV</button>
+              </div>
+              <div id="ctaTableWrap" class="table-container"></div>
+            </div>
+          </div>
+
+          <!-- SECTION: EVENTS -->
+          <div id="sec-events" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Raw Event Log</h2>
+                  <p class="card-sub">All interaction data for debugging</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('events')">Export CSV</button>
+              </div>
+              <div class="tab-row" id="eventTabs" style="display:flex; gap:10px; margin-bottom:20px;">
+                <button class="btn btn-outline btn-sm active" data-filter="">All</button>
+                <button class="btn btn-outline btn-sm" data-filter="kundli_preview_submit">Submissions</button>
+                <button class="btn btn-outline btn-sm" data-filter="cta_click">Clicks</button>
+                <button class="btn btn-outline btn-sm" data-filter="step_view">Steps</button>
+                <button class="btn btn-outline btn-sm" data-filter="whatsapp_click">WhatsApp</button>
+                <button class="btn btn-outline btn-sm" data-filter="checkout_start">Checkout</button>
+                <button class="btn btn-outline btn-sm" data-filter="page_view">Page view</button>
+              </div>
+              <div class="filter-row">
+                <input type="text" id="eventsSearch" class="search-inp" placeholder="Search session or details…">
+              </div>
+              <div id="eventsTableWrap" class="table-container"></div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 
-  <div id="loadScreen" class="loading">Loading…</div>
+  <div id="loadOverlay" class="loading-overlay">ShubhMay Admin Loading…</div>
 
   <script>
-    (function() {
+    (function () {
       var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
       var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
 
       var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
       var eventFilter = '';
+
+      function getDateRangeStart() {
+        var days = parseInt(document.getElementById('dateRange').value, 10) || 7;
+        if (days === 0) return null;
+        var d = new Date();
+        if (days === 1) d.setHours(0, 0, 0, 0);
+        else d.setDate(d.getDate() - days);
+        return d.toISOString();
+      }
+
+      function setOverviewSubLabel() {
+        var sel = document.getElementById('overviewDateSub');
+        if (!sel) return;
+        var days = document.getElementById('dateRange').value;
+        if (days === '0') sel.textContent = 'Snapshot (All time)';
+        else if (days === '1') sel.textContent = 'Snapshot (Today)';
+        else sel.textContent = 'Snapshot (Last ' + days + ' days)';
+      }
 
       function show(el) { if (el) el.style.display = ''; }
       function hide(el) { if (el) el.style.display = 'none'; }
@@ -213,9 +724,10 @@
       }
 
       function checkAuth() {
-        supabase.auth.getSession().then(function(res) {
+        supabase.auth.getSession().then(function (res) {
           var session = res.data.session;
-          hide(document.getElementById('loadScreen'));
+          var overlay = document.getElementById('loadOverlay');
+          if (overlay) overlay.style.display = 'none';
           if (session) {
             show(document.getElementById('dashboard'));
             loadData();
@@ -225,7 +737,29 @@
         });
       }
 
-      document.getElementById('loginForm').addEventListener('submit', function(e) {
+      // Sidebar Navigation Logic
+      document.querySelectorAll('.nav-item').forEach(function (item) {
+        item.addEventListener('click', function () {
+          var target = this.getAttribute('data-target');
+          document.querySelectorAll('.nav-item').forEach(function (i) { i.classList.remove('active'); });
+          this.classList.add('active');
+
+          document.querySelectorAll('.dashboard-section').forEach(function (s) { s.classList.remove('active'); });
+          var sec = document.getElementById('sec-' + target);
+          if (sec) sec.classList.add('active');
+        });
+      });
+
+      // Global Data Storage for Exports
+      var cachedData = { submissions: [], marriage: [], rashi: [], leads: [], clicks: [], events: [], utm: [] };
+      var cachedCheckouts = [];
+
+      document.getElementById('dateRange').addEventListener('change', function () {
+        setOverviewSubLabel();
+        loadData();
+      });
+
+      document.getElementById('loginForm').addEventListener('submit', function (e) {
         e.preventDefault();
         var errEl = document.getElementById('loginErr');
         var btn = document.querySelector('#loginForm button[type="submit"]');
@@ -234,8 +768,8 @@
         supabase.auth.signInWithPassword({
           email: document.getElementById('loginEmail').value,
           password: document.getElementById('loginPass').value
-        }).then(function(res) {
-          if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
+        }).then(function (res) {
+          if (btn) { btn.disabled = false; btn.textContent = 'Sign into Dashboard'; }
           if (res.error) {
             errEl.textContent = res.error.message || 'Login failed';
             return;
@@ -243,14 +777,14 @@
           hide(document.getElementById('loginScreen'));
           show(document.getElementById('dashboard'));
           loadData();
-        }).catch(function(err) {
-          if (btn) { btn.disabled = false; btn.textContent = 'Sign In'; }
+        }).catch(function (err) {
+          if (btn) { btn.disabled = false; btn.textContent = 'Sign into Dashboard'; }
           errEl.textContent = err.message || 'Network error';
         });
       });
 
-      document.getElementById('btnLogout').addEventListener('click', function() {
-        supabase.auth.signOut().then(function() {
+      document.getElementById('btnLogout').addEventListener('click', function () {
+        supabase.auth.signOut().then(function () {
           hide(document.getElementById('dashboard'));
           show(document.getElementById('loginScreen'));
         });
@@ -258,23 +792,71 @@
 
       function loadData() {
         loadStats();
+        loadUtmBreakdown();
         loadEvents();
         loadRashiBreakdown();
         loadCtaBreakdown();
         loadLeads();
+        loadSubmissions();
         setRefresh();
       }
 
-      document.getElementById('btnRefresh').addEventListener('click', function() {
+      document.getElementById('btnRefresh').addEventListener('click', function () {
         loadData();
         document.getElementById('btnRefresh').textContent = '↻ Refreshing…';
-        setTimeout(function() { document.getElementById('btnRefresh').textContent = '↻ Refresh'; }, 800);
+        setTimeout(function () { document.getElementById('btnRefresh').textContent = '↻ Refresh'; }, 800);
       });
 
-      document.getElementById('eventTabs').addEventListener('click', function(e) {
-        var t = e.target.closest('.tab');
+      // Global CSV export based on active section
+      document.getElementById('btnExportGlobal').addEventListener('click', function () {
+        var activeNav = document.querySelector('.nav-item.active');
+        var target = activeNav ? activeNav.getAttribute('data-target') : '';
+
+        // Map overview to events export, utm to utm, others match exportData types
+        var type = target === 'overview' ? 'events' : (target === 'utm' ? 'utm' : target) || 'events';
+
+        if (typeof window.exportData === 'function') {
+          window.exportData(type);
+        }
+      });
+
+      function loadUtmBreakdown() {
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('event_type, payload').in('event_type', ['page_view', 'kundli_preview_submit', 'checkout_start']).limit(5000);
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+        q.then(function (res) {
+          if (res.error) {
+            document.getElementById('utmTableWrap').innerHTML = '<div class="err-msg">' + (res.error.message || 'Failed') + '</div>';
+            return;
+          }
+          var data = res.data || [];
+          var key = function (pl) { return (pl.utm_source || 'direct') + '|' + (pl.utm_medium || ''); };
+          var agg = {};
+          data.forEach(function (r) {
+            var pl = r.payload || {};
+            var k = key(pl);
+            if (!agg[k]) agg[k] = { source: pl.utm_source || 'direct', medium: pl.utm_medium || '—', page_views: 0, submissions: 0, checkouts: 0 };
+            if (r.event_type === 'page_view') agg[k].page_views++;
+            if (r.event_type === 'kundli_preview_submit') agg[k].submissions++;
+            if (r.event_type === 'checkout_start') agg[k].checkouts++;
+          });
+          var sorted = Object.values(agg).sort(function (a, b) { return (b.checkouts + b.submissions) - (a.checkouts + a.submissions); });
+          cachedData.utm = sorted;
+          var rows = sorted.map(function (x) {
+            return '<tr><td><span class="badge badge-utm">' + x.source + '</span></td><td>' + x.medium + '</td><td>' + x.page_views + '</td><td>' + x.submissions + '</td><td>' + x.checkouts + '</td></tr>';
+          }).join('');
+          document.getElementById('utmTableWrap').innerHTML = sorted.length
+            ? '<table><thead><tr><th>UTM Source</th><th>UTM Medium</th><th>Page views</th><th>Submissions</th><th>Checkouts</th></tr></thead><tbody>' + rows + '</tbody></table>'
+            : '<div class="empty-msg">No UTM data in this range</div>';
+        }).catch(function (e) {
+          document.getElementById('utmTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
+        });
+      }
+
+      document.getElementById('eventTabs').addEventListener('click', function (e) {
+        var t = e.target.closest('.btn');
         if (!t) return;
-        document.querySelectorAll('#eventTabs .tab').forEach(function(x) { x.classList.remove('active'); });
+        document.querySelectorAll('#eventTabs .btn').forEach(function (x) { x.classList.remove('active'); });
         t.classList.add('active');
         eventFilter = t.getAttribute('data-filter') || '';
         loadEvents();
@@ -283,11 +865,13 @@
       function loadStats() {
         var now = new Date();
         var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
-        var weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+        var rangeStart = getDateRangeStart();
+        setOverviewSubLabel();
 
-        supabase.from('analytics_events').select('event_type, session_id, created_at, payload')
-          .gte('created_at', weekStart)
-          .then(function(res) {
+        var q = supabase.from('analytics_events').select('event_type, session_id, created_at, payload');
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+
+        q.then(function (res) {
             if (res.error) {
               setStatus(false, 'Error: ' + (res.error.message || 'Failed'));
               var g = document.getElementById('statGrid');
@@ -296,32 +880,46 @@
             }
             setStatus(true, 'Connected');
             var data = res.data || [];
-            var pageViews = data.filter(function(r) { return r.event_type === 'page_view'; }).length;
-            var uniqueSessions = new Set(data.map(function(r) { return r.session_id || ''; }).filter(Boolean)).size;
-            var rashiSelects = data.filter(function(r) { return r.event_type === 'rashi_selected'; }).length;
-            var ctaClicks = data.filter(function(r) { return r.event_type === 'cta_click'; }).length;
-            var leadsCount = data.filter(function(r) { return r.event_type === 'whatsapp_click'; }).length;
-            var todayViews = data.filter(function(r) { return r.event_type === 'page_view' && r.created_at >= todayStart; }).length;
+            var pageViews = data.filter(function (r) { return r.event_type === 'page_view'; }).length;
+            var uniqueSessions = new Set(data.map(function (r) { return r.session_id || ''; }).filter(Boolean)).size;
+            var rashiSelects = data.filter(function (r) { return r.event_type === 'rashi_selected'; }).length;
+            var ctaClicks = data.filter(function (r) { return r.event_type === 'cta_click'; }).length;
+            var leadsCount = data.filter(function (r) { return r.event_type === 'whatsapp_click'; }).length;
+            var kundliSubmissions = data.filter(function (r) { return r.event_type === 'kundli_preview_submit'; });
+            var kundliSales = data.filter(function (r) { return r.event_type === 'checkout_start' && (r.payload || {}).step === 'kundli_preview_unlock'; }).length;
+            var todayViews = data.filter(function (r) { return r.event_type === 'page_view' && r.created_at >= todayStart; }).length;
             var upsellRate = rashiSelects > 0 ? Math.round(100 * ctaClicks / rashiSelects) : 0;
-            var rashiCounts = {};
-            data.filter(function(r) { return r.event_type === 'rashi_selected'; }).forEach(function(r) {
-              var k = (r.payload && r.payload.rashi) || 'unknown';
-              rashiCounts[k] = (rashiCounts[k] || 0) + 1;
-            });
-            var topRashi = Object.entries(rashiCounts).sort(function(a,b) { return b[1] - a[1]; })[0];
-            var topRashiHtml = topRashi ? '<div class="stat"><div class="stat-val" style="font-size:1.1rem;">' + topRashi[0] + '</div><div class="stat-label">Top rashi (' + topRashi[1] + ')</div></div>' : '';
+            var kundliConvRate = kundliSubmissions.length > 0 ? Math.round(100 * kundliSales / kundliSubmissions.length) : 0;
 
             document.getElementById('statGrid').innerHTML =
-              '<div class="stat"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Sessions (7d)</div></div>' +
-              '<div class="stat"><div class="stat-val">' + rashiSelects + '</div><div class="stat-label">Rashi clicks</div></div>' +
-              '<div class="stat"><div class="stat-val">' + ctaClicks + '</div><div class="stat-label">CTA clicks</div></div>' +
-              '<div class="stat"><div class="stat-val">' + leadsCount + '</div><div class="stat-label">Leads</div></div>' +
-              '<div class="stat"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Today</div></div>' +
-              '<div class="stat"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate</div></div>' +
-              topRashiHtml;
+              '<div class="stat-card"><div class="stat-val">' + pageViews + '</div><div class="stat-label">Page views</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + uniqueSessions + '</div><div class="stat-label">Unique sessions</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + kundliSubmissions.length + '</div><div class="stat-label">Submissions</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + kundliSales + '</div><div class="stat-label">Unlock Clicks</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + kundliConvRate + '%</div><div class="stat-label">Goal CVR</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + leadsCount + '</div><div class="stat-label">Leads</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + todayViews + '</div><div class="stat-label">Today views</div></div>' +
+              '<div class="stat-card"><div class="stat-val">' + upsellRate + '%</div><div class="stat-label">Upsell rate</div></div>';
+
+            // Top sources by checkout_start (conversions)
+            var bySource = {};
+            data.filter(function (r) { return r.event_type === 'checkout_start' && (r.payload || {}).utm_source; }).forEach(function (r) {
+              var pl = r.payload || {};
+              var k = (pl.utm_source || '') + '|' + (pl.utm_medium || '');
+              bySource[k] = (bySource[k] || 0) + 1;
+            });
+            var topSources = Object.entries(bySource).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 8);
+            var topHtml = topSources.length
+              ? '<table><thead><tr><th>Source</th><th>Medium</th><th>Checkouts</th></tr></thead><tbody>' +
+                topSources.map(function (x) {
+                  var parts = x[0].split('|');
+                  return '<tr><td><span class="badge badge-utm">' + (parts[0] || '—') + '</span></td><td>' + (parts[1] || '—') + '</td><td>' + x[1] + '</td></tr>';
+                }).join('') + '</tbody></table>'
+              : '<div class="empty-msg">No UTM checkouts in this range</div>';
+            var wrap = document.getElementById('topSourcesWrap');
+            if (wrap) wrap.innerHTML = topHtml;
           })
-          .catch(function(e) {
+          .catch(function (e) {
             setStatus(false, 'Network error');
             var g = document.getElementById('statGrid');
             if (g) g.innerHTML = '<div class="err-msg" style="grid-column:1/-1;">' + (e.message || 'Network error') + '</div>';
@@ -329,99 +927,271 @@
       }
 
       function loadEvents() {
-        var q = supabase.from('analytics_events').select('*').order('created_at', { ascending: false }).limit(150);
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('*').order('created_at', { ascending: false }).limit(1000);
+        if (rangeStart) q = q.gte('created_at', rangeStart);
         if (eventFilter) q = q.eq('event_type', eventFilter);
 
-        q.then(function(res) {
+        q.then(function (res) {
           if (res.error) {
             document.getElementById('eventsTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
             return;
           }
           var data = res.data || [];
-          var rows = data.map(function(r) {
-            var pl = r.payload || {};
-            var extra = '';
-            if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' → ' + (pl.metal || '');
-            if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
-            if (r.event_type === 'whatsapp_click') extra = (pl.phone ? '+91 ' + pl.phone + ' | ' : '') + (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '');
-            if (r.event_type === 'page_view') extra = pl.page || '';
-            if (r.event_type === 'step_view') extra = pl.step_name || '';
-            return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + ((r.session_id || '').slice(0, 14)) + '</td><td>' + (extra || '—') + '</td></tr>';
-          }).join('');
-          document.getElementById('eventsTableWrap').innerHTML = data.length
-            ? '<table><thead><tr><th>Time</th><th>Event</th><th>Session</th><th>Details</th></tr></thead><tbody>' + rows + '</tbody></table>'
-            : '<div class="empty-msg">No events found</div>';
-        }).catch(function(e) {
+          cachedData.events = data;
+          renderEventsTable(data);
+        }).catch(function (e) {
           document.getElementById('eventsTableWrap').innerHTML = '<div class="err-msg">' + (e.message || 'Error') + '</div>';
         });
       }
 
+      function renderEventsTable(data) {
+        var q = (document.getElementById('eventsSearch') && document.getElementById('eventsSearch').value) || '';
+        q = q.trim().toLowerCase();
+        if (q) {
+          data = data.filter(function (r) {
+            var session = (r.session_id || '').toLowerCase();
+            var pl = r.payload || {};
+            var extra = (pl.cta_location || '') + ' ' + (pl.cta_label || '') + ' ' + (pl.rashi || '') + ' ' + (pl.name || '') + ' ' + (pl.place || '');
+            return session.indexOf(q) !== -1 || extra.toLowerCase().indexOf(q) !== -1;
+          });
+        }
+        var rows = data.map(function (r) {
+          var pl = r.payload || {};
+          var extra = '';
+          if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' → ' + (pl.metal || '');
+          if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
+          if (r.event_type === 'whatsapp_click') extra = (pl.phone ? '+91 ' + pl.phone + ' | ' : '') + (pl.rashi_display || pl.rashi || '') + ' → ' + (pl.metal || '');
+          if (r.event_type === 'kundli_preview_submit') extra = (pl.name || '') + ' | ' + (pl.gender || '') + ' | ' + (pl.place || '');
+          if (r.event_type === 'page_view') extra = pl.page || '';
+          if (r.event_type === 'step_view') extra = pl.step_name || '';
+          var utm = pl.utm_source ? ('<span class="badge badge-utm">' + (pl.utm_source || '') + '</span>') : '—';
+          return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + r.event_type + '</td><td>' + ((r.session_id || '').slice(0, 12)) + '</td><td>' + utm + '</td><td>' + (extra || '—') + '</td></tr>';
+        }).join('');
+        document.getElementById('eventsTableWrap').innerHTML = data.length
+          ? '<table><thead><tr><th>Time</th><th>Event</th><th>Session</th><th>UTM</th><th>Details</th></tr></thead><tbody>' + rows + '</tbody></table>'
+          : '<div class="empty-msg">No events found</div>';
+      }
+
+      document.getElementById('eventsSearch').addEventListener('input', function () {
+        renderEventsTable(cachedData.events);
+      });
+
+      function downloadCSV(csv, filename) {
+        var csvFile = new Blob([csv], { type: "text/csv" });
+        var downloadLink = document.createElement("a");
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      }
+
+      window.exportData = function (type) {
+        var rows = [];
+        var headers = [];
+
+        if (type === 'submissions') {
+          headers = ["Time", "Name", "Gender", "DOB", "TOB", "Place", "UTM Source", "UTM Medium"];
+          rows = cachedData.submissions.map(function (r) {
+            var pl = r.payload || {};
+            return [new Date(r.created_at).toLocaleString(), pl.name, pl.gender, pl.dob, pl.tob, pl.place, pl.utm_source || '', pl.utm_medium || ''];
+          });
+        } else if (type === 'leads') {
+          headers = ["Time", "Phone", "Rashi", "Metal", "UTM Source", "UTM Medium"];
+          rows = cachedData.leads.map(function (r) {
+            var pl = r.payload || {};
+            return [new Date(r.created_at).toLocaleString(), pl.phone, pl.rashi_display, pl.metal, pl.utm_source || '', pl.utm_medium || ''];
+          });
+        } else if (type === 'rashi') {
+          headers = ["Rashi", "Count"];
+          rows = cachedData.rashi;
+        } else if (type === 'clicks') {
+          headers = ["Location", "Count"];
+          rows = cachedData.clicks;
+        } else if (type === 'utm') {
+          headers = ["UTM Source", "UTM Medium", "Page Views", "Submissions", "Checkouts"];
+          rows = (cachedData.utm || []).map(function (x) { return [x.source, x.medium, x.page_views, x.submissions, x.checkouts]; });
+        } else if (type === 'events') {
+          headers = ["Time", "Event Type", "Session ID", "UTM Source", "Details"];
+          rows = cachedData.events.map(function (r) {
+            var pl = r.payload || {};
+            var extra = '';
+            if (r.event_type === 'rashi_selected') extra = (pl.rashi || '') + ' -> ' + (pl.metal || '');
+            if (r.event_type === 'cta_click') extra = (pl.cta_location || '') + ' | ' + (pl.cta_label || '');
+            if (r.event_type === 'whatsapp_click') extra = (pl.phone ? '+91 ' + pl.phone + ' | ' : '') + (pl.rashi_display || pl.rashi || '') + ' -> ' + (pl.metal || '');
+            if (r.event_type === 'kundli_preview_submit') extra = (pl.name || '') + ' | ' + (pl.gender || '') + ' | ' + (pl.place || '');
+            if (r.event_type === 'page_view') extra = pl.page || '';
+            if (r.event_type === 'step_view') extra = pl.step_name || '';
+            return [new Date(r.created_at).toLocaleString(), r.event_type, (r.session_id || '').slice(0, 14), pl.utm_source || '', extra];
+          });
+        }
+
+        var csv = [headers.join(",")].concat(rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(","))).join("\n");
+        downloadCSV(csv, "shubhmay_" + type + "_" + new Date().toISOString().split('T')[0] + ".csv");
+      };
+
       function loadRashiBreakdown() {
-        supabase.from('analytics_events').select('payload').eq('event_type', 'rashi_selected')
-          .then(function(res) {
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('payload').eq('event_type', 'rashi_selected');
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+        q.then(function (res) {
             if (res.error) {
               document.getElementById('rashiTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
             var counts = {};
-            data.forEach(function(r) { var k = (r.payload || {}).rashi || 'unknown'; counts[k] = (counts[k] || 0) + 1; });
-            var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
-            var rows = sorted.map(function(x, i) {
+            data.forEach(function (r) { var k = (r.payload || {}).rashi || 'unknown'; counts[k] = (counts[k] || 0) + 1; });
+            var sorted = Object.entries(counts).sort(function (a, b) { return b[1] - a[1]; });
+            cachedData.rashi = sorted;
+            var rows = sorted.map(function (x, i) {
               var top = i === 0 ? ' <span style="color:var(--accent);font-size:0.75rem;">(top)</span>' : '';
-              return '<tr><td><span class="rashi-badge">' + x[0] + '</span>' + top + '</td><td>' + x[1] + '</td></tr>';
+              return '<tr><td><span class="badge badge-rashi">' + x[0] + '</span>' + top + '</td><td>' + x[1] + '</td></tr>';
             }).join('');
             document.getElementById('rashiTableWrap').innerHTML = data.length
-              ? '<div class="table-wrap"><table><thead><tr><th>Rashi</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+              ? '<table><thead><tr><th>Rashi</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<div class="empty-msg">No rashi clicks yet</div>';
-          }).catch(function(e) {
+          }).catch(function (e) {
             document.getElementById('rashiTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
 
       function loadCtaBreakdown() {
-        supabase.from('analytics_events').select('payload').eq('event_type', 'cta_click')
-          .then(function(res) {
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('payload').eq('event_type', 'cta_click');
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+        q.then(function (res) {
             if (res.error) {
               document.getElementById('ctaTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
             var counts = {};
-            data.forEach(function(r) { var pl = r.payload || {}; var loc = pl.cta_location || pl.cta_label || 'unknown'; counts[loc] = (counts[loc] || 0) + 1; });
-            var sorted = Object.entries(counts).sort(function(a, b) { return b[1] - a[1]; });
-            var rows = sorted.map(function(x) { return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>'; }).join('');
+            data.forEach(function (r) { var pl = r.payload || {}; var loc = pl.cta_location || pl.cta_label || 'unknown'; counts[loc] = (counts[loc] || 0) + 1; });
+            var sorted = Object.entries(counts).sort(function (a, b) { return b[1] - a[1]; });
+            cachedData.clicks = sorted;
+            var rows = sorted.map(function (x) { return '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>'; }).join('');
             document.getElementById('ctaTableWrap').innerHTML = data.length
-              ? '<div class="table-wrap"><table><thead><tr><th>CTA Location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+              ? '<table><thead><tr><th>CTA Location</th><th>Clicks</th></tr></thead><tbody>' + rows + '</tbody></table>'
               : '<div class="empty-msg">No CTA clicks yet</div>';
-          }).catch(function(e) {
+          }).catch(function (e) {
             document.getElementById('ctaTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
 
       function loadLeads() {
-        supabase.from('analytics_events').select('*').eq('event_type', 'whatsapp_click').order('created_at', { ascending: false }).limit(100)
-          .then(function(res) {
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('*').eq('event_type', 'whatsapp_click').order('created_at', { ascending: false }).limit(1000);
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+        q.then(function (res) {
             if (res.error) {
               document.getElementById('leadsTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
               return;
             }
             var data = res.data || [];
-            var rows = data.map(function(r) {
-              var pl = r.payload || {};
-              var ph = pl.phone ? ('+91 ' + pl.phone) : '—';
-              return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + ph + '</td><td>' + (pl.rashi_display || pl.rashi || '—') + '</td><td>' + (pl.metal || '—') + '</td></tr>';
-            }).join('');
-            document.getElementById('leadsTableWrap').innerHTML = data.length
-              ? '<div class="table-wrap"><table><thead><tr><th>Time</th><th>Phone</th><th>Rashi</th><th>Metal</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
-              : '<div class="empty-msg">No leads yet</div>';
-          }).catch(function(e) {
+            cachedData.leads = data;
+            renderLeadsTable(data);
+          }).catch(function (e) {
             document.getElementById('leadsTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
       }
+
+      function renderLeadsTable(data) {
+        var q = (document.getElementById('leadsSearch') && document.getElementById('leadsSearch').value) || '';
+        q = (q + '').replace(/\D/g, '');
+        if (q.length) data = data.filter(function (r) { return ((r.payload || {}).phone || '').replace(/\D/g, '').indexOf(q) !== -1; });
+        var rows = data.map(function (r) {
+          var pl = r.payload || {};
+          var ph = pl.phone ? ('+91 ' + pl.phone) : '—';
+          var utm = pl.utm_source ? ('<span class="badge badge-utm">' + (pl.utm_source || '') + '</span>') : '—';
+          return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td>' + ph + '</td><td>' + (pl.rashi_display || pl.rashi || '—') + '</td><td>' + (pl.metal || '—') + '</td><td>' + utm + '</td></tr>';
+        }).join('');
+        document.getElementById('leadsTableWrap').innerHTML = data.length
+          ? '<table><thead><tr><th>Time</th><th>Phone</th><th>Rashi</th><th>Metal</th><th>UTM</th></tr></thead><tbody>' + rows + '</tbody></table>'
+          : '<div class="empty-msg">No leads found</div>';
+      }
+
+      document.getElementById('leadsSearch').addEventListener('input', function () {
+        renderLeadsTable(cachedData.leads);
+      });
+
+      function loadSubmissions() {
+        var rangeStart = getDateRangeStart();
+        var q = supabase.from('analytics_events').select('*').in('event_type', ['kundli_preview_submit', 'checkout_start']).order('created_at', { ascending: false }).limit(2000);
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+        q.then(function (res) {
+            if (res.error) {
+              document.getElementById('submissionsTableWrap').innerHTML = '<div class="err-msg">' + res.error.message + '</div>';
+              return;
+            }
+            var all = res.data || [];
+            var subs = all.filter(function (r) { return r.event_type === 'kundli_preview_submit'; });
+            var marriageSubs = subs.filter(function (r) { return (r.payload || {}).page === 'marriage_indicator'; });
+            var kundliSubs = subs.filter(function (r) { return (r.payload || {}).page !== 'marriage_indicator'; });
+            cachedData.submissions = kundliSubs;
+            cachedData.marriage = marriageSubs;
+            cachedCheckouts = all.filter(function (r) { return r.event_type === 'checkout_start'; });
+            renderSubmissionsTable(kundliSubs, cachedCheckouts);
+            renderMarriageTable(marriageSubs, cachedCheckouts);
+          }).catch(function (e) {
+            document.getElementById('submissionsTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
+          });
+      }
+
+      function renderSubmissionsTable(subs, checkouts) {
+        var q = (document.getElementById('submissionsSearch') && document.getElementById('submissionsSearch').value) || '';
+        q = q.trim().toLowerCase();
+        if (q) subs = subs.filter(function (r) {
+          var pl = r.payload || {};
+          return ((pl.name || '') + ' ' + (pl.place || '')).toLowerCase().indexOf(q) !== -1;
+        });
+        var rows = subs.map(function (r) {
+          var pl = r.payload || {};
+          var sid = r.session_id;
+          var isConverted = checkouts.some(function (c) { return c.session_id === sid && (c.payload || {}).step === 'kundli_preview_unlock'; });
+          var statusHtml = isConverted ? '<span class="badge badge-success">✓ CONVERTED</span>' : '<span style="color:var(--muted);">In Preview</span>';
+          var details = (pl.gender || '') + ' • ' + (pl.dob || '') + ' • ' + (pl.tob || '') + '<br><small style="color:var(--muted);">' + (pl.place || '') + '</small>';
+          var utm = pl.utm_source ? ('<span class="badge badge-utm">' + (pl.utm_source || '') + '</span>') : '—';
+          return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td><strong>' + (pl.name || '—') + '</strong></td><td>' + details + '</td><td>' + utm + '</td><td>' + statusHtml + '</td></tr>';
+        }).join('');
+        document.getElementById('submissionsTableWrap').innerHTML = subs.length
+          ? '<table><thead><tr><th>Time</th><th>Name</th><th>Birth Details</th><th>UTM</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>'
+          : '<div class="empty-msg">No submissions found</div>';
+      }
+
+      document.getElementById('submissionsSearch').addEventListener('input', function () {
+        renderSubmissionsTable(cachedData.submissions, cachedCheckouts);
+      });
+
+      function renderMarriageTable(subs, checkouts) {
+        var q = (document.getElementById('marriageSearch') && document.getElementById('marriageSearch').value) || '';
+        q = q.trim().toLowerCase();
+        if (q) subs = subs.filter(function (r) {
+          var pl = r.payload || {};
+          return ((pl.name || '') + ' ' + (pl.phone || '')).toLowerCase().indexOf(q) !== -1;
+        });
+        var rows = subs.map(function (r) {
+          var pl = r.payload || {};
+          var sid = r.session_id;
+          var isConverted = checkouts.some(function (c) { return c.session_id === sid && (c.payload || {}).step === 'marriage_result_unlock'; });
+          var statusHtml = isConverted ? '<span class="badge badge-success">✓ CHECKOUT STARTED</span>' : '<span style="color:var(--muted);">Only indication</span>';
+          var bucket = (pl.bucket || '').toUpperCase() || '—';
+          var utm = pl.utm_source ? ('<span class="badge badge-utm">' + (pl.utm_source || '') + '</span>') : '—';
+          return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td><td><strong>' + (pl.name || '—') + '</strong><br><small style="color:var(--muted);">' + (pl.phone || '—') + '</small></td><td>' + (pl.dob || '—') + '</td><td>' + bucket + '</td><td>' + utm + '</td><td>' + statusHtml + '</td></tr>';
+        }).join('');
+        document.getElementById('marriageTableWrap').innerHTML = subs.length
+          ? '<table><thead><tr><th>Time</th><th>Name & Phone</th><th>DOB</th><th>Bucket</th><th>UTM</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>'
+          : '<div class="empty-msg">No marriage indicator submissions found</div>';
+      }
+
+      document.getElementById('marriageSearch').addEventListener('input', function () {
+        renderMarriageTable(cachedData.marriage, cachedCheckouts);
+      });
 
       checkAuth();
     })();
   </script>
 </body>
+
 </html>

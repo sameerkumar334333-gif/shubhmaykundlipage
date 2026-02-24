@@ -17,11 +17,31 @@
             var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
             var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
             var _sid = sessionStorage.getItem('shubhmay_sid');
-            if (!_sid) { _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11); sessionStorage.setItem('shubhmay_sid', _sid); }
+            if (!_sid) {
+                _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
+                sessionStorage.setItem('shubhmay_sid', _sid);
+                sessionStorage.setItem('shubhmay_session_start_ts', String(Date.now()));
+            }
+            var params = new URLSearchParams(window.location.search);
+            ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+                var v = params.get(k);
+                if (v && !sessionStorage.getItem('shubhmay_' + k)) sessionStorage.setItem('shubhmay_' + k, v);
+            });
+            function getAttribution() {
+                var o = {};
+                var st = sessionStorage.getItem('shubhmay_session_start_ts');
+                if (st) o.session_start_ts = parseInt(st, 10);
+                ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+                    var v = sessionStorage.getItem('shubhmay_' + k);
+                    if (v) o[k] = v;
+                });
+                return o;
+            }
             window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
             window._shubhmayTrack = function (et, pl) {
                 if (!window._shubhmaySupabase) return;
-                try { window._shubhmaySupabase.from('analytics_events').insert([{ session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: pl || {}, user_agent: navigator.userAgent, language: navigator.language }]).then(function () { }); } catch (e) { }
+                var payload = Object.assign({}, getAttribution(), pl || {});
+                try { window._shubhmaySupabase.from('analytics_events').insert([{ session_id: _sid, page_url: location.href, referrer: document.referrer || null, event_type: et, payload: payload, user_agent: navigator.userAgent, language: navigator.language }]).then(function () { }); } catch (e) { }
             };
             if (window._shubhmaySupabase) window._shubhmayTrack('page_view', { page: 'index', title: 'kundli_lp' });
         })();
@@ -2795,7 +2815,7 @@
 
                     </div>
                     <div class="faq-answer">
-                        <p>No. Charts are generated mathematically, but interpretation is manual.</p>
+                        <p>No. Charts are Generated thru a software named "Astrosage", but interpretation is manual.</p>
                     </div>
                 </div>
                 <div class="faq-item">
