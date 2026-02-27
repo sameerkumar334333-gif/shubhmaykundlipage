@@ -516,6 +516,7 @@
           <div class="nav-item" data-target="rashi">Rashi Analysis</div>
           <div class="nav-item" data-target="leads">WhatsApp Leads</div>
           <div class="nav-item" data-target="clicks">CTA Tracking</div>
+          <div class="nav-item" data-target="lps">LPs / Ads Performance</div>
           <div class="nav-item" data-target="events">Raw Events</div>
         </nav>
         <div class="sidebar-footer">
@@ -652,6 +653,21 @@
             </div>
           </div>
 
+          <!-- SECTION: LPS / ADS PERFORMANCE -->
+          <div id="sec-lps" class="dashboard-section">
+            <div class="section-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">LPs / Ads Performance (lps/ only)</h2>
+                  <p class="card-sub">Traffic, conversions & core web vitals for `lps/` URLs</p>
+                </div>
+                <button class="btn btn-export btn-sm" onclick="exportData('lps')">Export CSV</button>
+              </div>
+              <div class="stat-row" id="lpsStatRow"></div>
+              <div class="table-container" id="lpsTableWrap" style="margin-top:24px;"></div>
+            </div>
+          </div>
+
           <!-- SECTION: EVENTS -->
           <div id="sec-events" class="dashboard-section">
             <div class="section-card">
@@ -751,7 +767,7 @@
       });
 
       // Global Data Storage for Exports
-      var cachedData = { submissions: [], marriage: [], rashi: [], leads: [], clicks: [], events: [], utm: [] };
+      var cachedData = { submissions: [], marriage: [], rashi: [], leads: [], clicks: [], events: [], utm: [], lps: [] };
       var cachedCheckouts = [];
 
       document.getElementById('dateRange').addEventListener('change', function () {
@@ -798,6 +814,7 @@
         loadCtaBreakdown();
         loadLeads();
         loadSubmissions();
+        loadLpsStats();
         setRefresh();
       }
 
@@ -1012,6 +1029,20 @@
         } else if (type === 'utm') {
           headers = ["UTM Source", "UTM Medium", "Page Views", "Submissions", "Checkouts"];
           rows = (cachedData.utm || []).map(function (x) { return [x.source, x.medium, x.page_views, x.submissions, x.checkouts]; });
+        } else if (type === 'lps') {
+          headers = ["Time", "Page URL", "Event Type", "FCP (ms)", "LCP (ms)", "Session ID", "UTM Source"];
+          rows = (cachedData.lps || []).map(function (r) {
+            var pl = r.payload || {};
+            return [
+              new Date(r.created_at).toLocaleString(),
+              r.page_url || '',
+              r.event_type,
+              (pl.fcp || ''),
+              (pl.lcp || ''),
+              (r.session_id || '').slice(0, 14),
+              pl.utm_source || ''
+            ];
+          });
         } else if (type === 'events') {
           headers = ["Time", "Event Type", "Session ID", "UTM Source", "Details"];
           rows = cachedData.events.map(function (r) {
@@ -1078,6 +1109,73 @@
           }).catch(function (e) {
             document.getElementById('ctaTableWrap').innerHTML = '<div class="err-msg">' + e.message + '</div>';
           });
+      }
+
+      function loadLpsStats() {
+        var rangeStart = getDateRangeStart();
+        // Fetch only lps/ page views + web_vital events
+        var q = supabase.from('analytics_events')
+          .select('*')
+          .in('event_type', ['page_view', 'web_vital'])
+          .like('page_url', '%/lps/%');
+        if (rangeStart) q = q.gte('created_at', rangeStart);
+
+        q.then(function (res) {
+          if (res.error) {
+            document.getElementById('lpsTableWrap').innerHTML = '<div class="err-msg">' + (res.error.message || 'Failed') + '</div>';
+            return;
+          }
+          var data = res.data || [];
+          cachedData.lps = data;
+
+          var pageViews = data.filter(function (r) { return r.event_type === 'page_view'; }).length;
+          var sessions = Array.from(new Set(data.map(function (r) { return r.session_id || ''; }).filter(Boolean))).length;
+          var vitals = data.filter(function (r) { return r.event_type === 'web_vital'; });
+          var fcpValues = vitals.map(function (r) { return (r.payload || {}).fcp || 0; }).filter(Boolean);
+          var lcpValues = vitals.map(function (r) { return (r.payload || {}).lcp || 0; }).filter(Boolean);
+          var avgFcp = fcpValues.length ? Math.round(fcpValues.reduce(function (a, b) { return a + b; }, 0) / fcpValues.length) : 0;
+          var avgLcp = lcpValues.length ? Math.round(lcpValues.reduce(function (a, b) { return a + b; }, 0) / lcpValues.length) : 0;
+
+          var fcpOk = avgFcp && avgFcp <= 1500;
+          var lcpOk = avgLcp && avgLcp <= 2500;
+
+          var htmlStats =
+            '<div class="stat-card">' +
+            '<div class="stat-val">' + pageViews + '</div>' +
+            '<div class="stat-label">LP Page views</div>' +
+            '</div>' +
+            '<div class="stat-card">' +
+            '<div class="stat-val">' + sessions + '</div>' +
+            '<div class="stat-label">Unique sessions (LP)</div>' +
+            '</div>' +
+            '<div class="stat-card">' +
+            '<div class="stat-val">' + (avgFcp || '—') + ' ms</div>' +
+            '<div class="stat-label">Avg FCP (target ≤ 1500ms)</div>' +
+            '</div>' +
+            '<div class="stat-card">' +
+            '<div class="stat-val">' + (avgLcp || '—') + ' ms</div>' +
+            '<div class="stat-label">Avg LCP (target ≤ 2500ms)</div>' +
+            '</div>';
+
+          var lpsStatRow = document.getElementById('lpsStatRow');
+          if (lpsStatRow) lpsStatRow.innerHTML = htmlStats;
+
+          var vitalsRows = vitals.slice(0, 100).map(function (r) {
+            var pl = r.payload || {};
+            return '<tr><td>' + new Date(r.created_at).toLocaleString() + '</td>' +
+              '<td>' + (r.page_url || '') + '</td>' +
+              '<td>' + (pl.fcp || '—') + '</td>' +
+              '<td>' + (pl.lcp || '—') + '</td>' +
+              '<td>' + ((r.session_id || '').slice(0, 12)) + '</td>' +
+              '<td>' + (pl.utm_source || '') + '</td></tr>';
+          }).join('');
+
+          document.getElementById('lpsTableWrap').innerHTML = vitalsRows
+            ? '<table><thead><tr><th>Time</th><th>Page URL</th><th>FCP (ms)</th><th>LCP (ms)</th><th>Session</th><th>UTM Source</th></tr></thead><tbody>' + vitalsRows + '</tbody></table>'
+            : '<div class="empty-msg">No LP vitals events yet</div>';
+        }).catch(function (e) {
+          document.getElementById('lpsTableWrap').innerHTML = '<div class="err-msg">' + (e.message || 'Error') + '</div>';
+        });
       }
 
       function loadLeads() {

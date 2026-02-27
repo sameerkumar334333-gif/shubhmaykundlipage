@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="/assets/images/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" sizes="180x180">
   <link rel="preconnect" href="https://yhxbwlhfjznajnnlduwt.supabase.co" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -492,6 +492,16 @@
       }
     }
 
+    /* iOS Safari – use native selects to avoid glitches */
+    @supports (-webkit-touch-callout: none) {
+      .form-group select {
+        -webkit-appearance: menulist;
+        appearance: menulist;
+        background-image: none;
+        padding-right: 16px;
+      }
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -534,28 +544,46 @@
 
     /* Preview sections */
     .preview-header {
-      text-align: center;
-      margin-bottom: 28px;
-      padding-bottom: 20px;
-      border-bottom: 2px dashed rgba(180, 83, 9, 0.2);
+      text-align: left;
+      margin-bottom: 24px;
+      padding: 16px 18px 14px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.18), rgba(255, 255, 255, 0.95));
+      border: 1px solid rgba(180, 83, 9, 0.18);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
-    .preview-header h1 {
+    .preview-header h1,
+    .preview-header h2 {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--navy);
+      margin-bottom: 4px;
+      letter-spacing: 0.01em;
+    }
+
+    .preview-header p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
       margin-bottom: 6px;
     }
 
-    .preview-header .badge {
-      display: inline-block;
-      padding: 6px 14px;
-      background: linear-gradient(135deg, rgba(180, 83, 9, 0.15), rgba(251, 191, 36, 0.2));
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--gold-dark);
-      margin-top: 10px;
+    .preview-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--navy-light);
+    }
+
+    .preview-meta-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(45, 8, 14, 0.05);
+      border: 1px solid rgba(180, 83, 9, 0.18);
+      font-weight: 500;
     }
 
     /* Section cards – unique styles */
@@ -629,6 +657,101 @@
       font-size: 0.95rem;
       line-height: 1.65;
       color: var(--text-dark);
+    }
+
+    .video-section {
+      margin-top: 8px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(15, 23, 42, 0.3);
+      background: #020617;
+      width: calc(100% + 12px);
+      margin-left: -6px;
+      margin-right: -6px;
+    }
+
+    .video-iframe {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: none;
+      display: block;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .testimonial-card {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-dark);
+    }
+
+    .testimonial-name {
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 460px) {
+      .testimonial-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .trust-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .trust-item {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: linear-gradient(145deg, #f9fafb, #ffffff);
+    }
+
+    .trust-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #16a34a;
+    }
+
+    .trust-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 2px;
+    }
+
+    .trust-copy {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--text-muted);
     }
 
     .trait-list {
@@ -984,15 +1107,15 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(180deg, rgba(239, 68, 68, 0.95), #b91c1c);
-      padding: 12px 16px;
-      text-align: center;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, rgba(45, 8, 14, 0.98), rgba(77, 14, 25, 0.98));
+      padding: 10px 14px;
+      box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.75);
       z-index: 200;
       display: none;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
+      border-top: 1px solid rgba(199, 169, 98, 0.5);
     }
 
     .sticky-cta-bar.show {
@@ -1011,29 +1134,58 @@
     }
 
     .sticky-bar-text {
-      color: white;
+      color: var(--cream);
       text-align: left;
-      font-size: 0.85rem;
-      line-height: 1.2;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .sticky-bar-text strong {
-      display: block;
-      font-size: 1rem;
-      color: #fefce8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.94rem;
+      color: var(--saffron-bright);
+      font-weight: 700;
+    }
+
+    .sticky-bar-text strong::before {
+      content: '⚠';
+      font-size: 0.95rem;
+    }
+
+    .sticky-bar-sub {
+      font-size: 0.76rem;
+      color: rgba(248, 250, 252, 0.9);
+      opacity: 0.9;
     }
 
     .sticky-bar-btn {
-      background: var(--gold-bright);
+      background: linear-gradient(135deg, var(--saffron-bright), var(--matte-gold));
       color: var(--navy);
-      padding: 10px 16px;
+      padding: 8px 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 999px;
       font-weight: 700;
       font-size: 0.9rem;
       cursor: pointer;
       animation: btnPulse 2s infinite;
       white-space: nowrap;
+    }
+
+    .sticky-price-old {
+      text-decoration: line-through;
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-right: 4px;
+    }
+
+    .sticky-price-new {
+      font-size: 0.96rem;
+      font-weight: 700;
     }
 
     @keyframes btnPulse {
@@ -1263,14 +1415,17 @@
 
           <!-- 1. TOP STATUS STRIP -->
           <div class="preview-header">
-            <h2 data-i18n="pHead"
-              style="font-family: var(--font-display); font-size: 1.55rem; color: var(--navy); font-weight: 700; letter-spacing: 0.01em; margin-bottom: 6px;">
+            <h2 data-i18n="pHead">
               Basic Kundali Report
             </h2>
-            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.45;" data-i18n="pStatSub">
+            <p data-i18n="pStatSub">
               Yah sirf aapki janam kundli ka upar‑upar se ek chhota sa preview hai. Asli vistrit report hamare jyotishi
               manually dekh kar banate hain.
             </p>
+            <div class="preview-meta-row">
+              <span class="preview-meta-pill">Preview snapshot – full report abhi locked hai</span>
+              <span class="preview-meta-pill">Birth details based auto‑analysis</span>
+            </div>
           </div>
 
           <!-- 2. SHORT POSITIVE OPENING – structured like report -->
@@ -1282,7 +1437,7 @@
             <ul class="trait-list" id="traitsList" style="margin-top: 12px; font-size: 0.9rem;"></ul>
           </div>
 
-          <!-- 3. TENSION BLOCK -->
+          <!-- 3. TENSION BLOCK (KATHIN YOG) -->
           <div class="critical-blockage-box" style="background: #fef2f2; border-color: #fecaca; margin-top: 16px;">
             <div class="icon-wrap" style="color:#b91c1c;">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1300,7 +1455,25 @@
               samay par samjha na jaye toh progress delay ho sakti hai.</p>
           </div>
 
-          <!-- 4. SELF-VALIDATION TRIGGER -->
+          <!-- 4. KATHIN YOG EXPLAINER VIDEO -->
+          <div class="sec-card" style="margin-top: 18px;">
+            <div class="sec-head">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </span>
+              <h2>Iss video ko jarur dekhein</h2>
+            </div>
+            <div class="video-section">
+              <iframe class="video-iframe" title="Kathin yog video"
+                src="https://player.mediadelivery.net/embed/550381/2a2bf641-1191-4b83-98b5-dc37a5184255"
+                loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+
+          <!-- 5. SELF-VALIDATION TRIGGER -->
           <div class="escalation-card"
             style="background: rgba(180, 83, 9, 0.05); border-left: 3px solid var(--saffron); border-radius: 4px; padding: 12px 16px; margin: 16px 0;">
             <strong data-i18n="valTrig" style="color: var(--navy); font-size:0.95rem; display:block;">Kya aapne pichle
@@ -1311,8 +1484,85 @@
             </p>
           </div>
 
-          <!-- 5. LOCKED PREVIEW BLOCK -->
-          <div class="sec-card" style="margin-bottom: 24px;">
+          <!-- 7. VALUE STACK SECTION -->
+          <div class="sec-card">
+            <div class="sec-head">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </span>
+              <h2 data-i18n="lockTitle">What You'll Unlock in Your Detailed Personalized Kundli Report</h2>
+            </div>
+
+            <img src="/assets/premium_kundli.webp" alt="Premium Kundli Report"
+              style="width: 100%; border-radius: var(--radius); margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(180, 83, 9, 0.2);">
+
+            <div class="blur-grid" style="margin:0;">
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v1">Complete Dosha & Dasha Breakdown</span>
+              </div>
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v2">Exact Severity Analysis</span>
+              </div>
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v3">Personalized Remedies (Easy-to-follow)</span>
+              </div>
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v4">Lucky Metal & Timing Guidance</span>
+              </div>
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v5">Career & Wealth Roadmap</span>
+              </div>
+              <div class="deliverable-block" style="margin-bottom:12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span data-i18n="v6">12-Month Forecast</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8, 9, 10: SCARCITY + CAPACITY, PRICING, PRIMARY CTA -->
+          <div class="offer-card" style="margin-top: 24px;">
+            <div
+              style="font-size:0.85rem; font-weight:600; color:#b91c1c; margin-bottom:12px; display:inline-block; background:rgba(239, 68, 68, 0.1); padding:6px 12px; border-radius:20px;"
+              data-i18n="scarLimit">
+              Today’s manual analysis capacity is almost full.
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;" data-i18n="offSub">Limited-time
+              offer – 73% off</p>
+            <div class="price-row" style="margin-bottom: 20px;">
+              <span class="price-old">₹1499</span>
+              <span class="price-new">₹399</span>
+            </div>
+            <button type="button" class="btn unlock-cta" id="btnUnlock" data-i18n="btnUnlock"
+              style="background:var(--saffron); color:white;">Get My Exact Lucky Metal & Full Kundli – ₹399</button>
+            <button type="button" class="skip-cta" id="btnSkipPreview" data-i18n="btnSkip">Directly go to
+              checkout</button>
+          </div>
+
+          <!-- 6. LOCKED PREVIEW BLOCK (MOVED BELOW UPSELL FOR LP) -->
+          <div class="sec-card" style="margin-top: 18px; margin-bottom: 24px;">
             <div
               style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;">
               <h3 data-i18n="notBasicHead"
@@ -1387,81 +1637,86 @@
             </div>
           </div>
 
-          <!-- 7. VALUE STACK SECTION -->
-          <div class="sec-card">
+          <!-- SOCIAL PROOF NEAR RESULT CTA -->
+          <div class="sec-card" style="margin-top: 18px;">
             <div class="sec-head">
               <span class="icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-dark)" stroke-width="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2">
+                  <circle cx="9" cy="7" r="3"></circle>
+                  <path d="M15 11c1.38 0 2.5-1.12 2.5-2.5S16.38 6 15 6"></path>
+                  <path d="M4 21v-1.5C4 16.57 6.57 14 9.5 14h1"></path>
+                  <path d="M17.5 14.5c1.86.5 3.5 2.1 3.5 4V21"></path>
                 </svg>
               </span>
-              <h2 data-i18n="lockTitle">What You'll Unlock in Your Detailed Personalized Kundli Report</h2>
+              <h2>Jinko is report se real fayda mila</h2>
             </div>
-
-            <img src="assets/premium_kundli.webp" alt="Premium Kundli Report"
-              style="width: 100%; border-radius: var(--radius); margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(180, 83, 9, 0.2);">
-
-            <div class="blur-grid" style="margin:0;">
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v1">Complete Dosha & Dasha Breakdown</span>
+            <div class="testimonial-grid">
+              <div class="testimonial-card">
+                <p>“Job me 8 mahine se promotion rukha hua tha. Report ke baad jo remedies bataye, 3–4 mahine me finally
+                    growth mili.”</p>
+                <div class="testimonial-name">— Rohan (28), Bengaluru</div>
               </div>
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v2">Exact Severity Analysis</span>
-              </div>
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v3">Personalized Remedies (Easy-to-follow)</span>
-              </div>
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v4">Lucky Metal & Timing Guidance</span>
-              </div>
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v5">Career & Wealth Roadmap</span>
-              </div>
-              <div class="deliverable-block" style="margin-bottom:12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="v6">12-Month Forecast</span>
+              <div class="testimonial-card">
+                <p>“Financial stress ka phase chal raha tha. Lucky metal aur timing follow karne se expenses control me
+                    aaye aur savings wapas build hue.”</p>
+                <div class="testimonial-name">— Neha (32), Delhi</div>
               </div>
             </div>
           </div>
 
-          <!-- 8, 9, 10: SCARCITY + CAPACITY, PRICING, PRIMARY CTA -->
-          <div class="offer-card" style="margin-top: 24px;">
-            <div
-              style="font-size:0.85rem; font-weight:600; color:#b91c1c; margin-bottom:12px; display:inline-block; background:rgba(239, 68, 68, 0.1); padding:6px 12px; border-radius:20px;"
-              data-i18n="scarLimit">
-              Today’s manual analysis capacity is almost full.
+          <!-- TRUST & SAFETY SECTION FOR LP VISITORS -->
+          <div class="sec-card" style="margin-top: 14px;">
+            <div class="sec-head">
+              <span class="icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2">
+                  <path d="M12 2l7 4v5c0 5-3.5 9.5-7 11-3.5-1.5-7-6-7-11V6z"></path>
+                  <path d="M9 12l2 2 4-4"></path>
+                </svg>
+              </span>
+              <h2>Safe, private aur trusted vedic process</h2>
             </div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;" data-i18n="offSub">Limited-time
-              offer – 73% off</p>
-            <div class="price-row" style="margin-bottom: 20px;">
-              <span class="price-old">₹1499</span>
-              <span class="price-new">₹399</span>
+            <div class="trust-grid">
+              <div class="trust-item">
+                <div class="trust-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="10" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <div class="trust-copy">
+                  <div class="trust-label">Data 100% private</div>
+                  <p>Kundli details sirf hamari jyotish team dekhti hai – kisi third‑party app, tool ya ads platform ke
+                      saath share nahi hota.</p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1l3 5.5 6 .9-4.3 4.2L17.7 19 12 16.2 6.3 19l1-7.4L3 7.4l6-.9z"></path>
+                  </svg>
+                </div>
+                <div class="trust-copy">
+                  <div class="trust-label">Manual vedic analysis</div>
+                  <p>Report kisi generic app se auto‑generate nahi hoti; experienced jyotishi aapki exact birth details ke
+                      hisaab se manually chart analyse karke likhte hain.</p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 5h18"></path>
+                    <path d="M3 10h18"></path>
+                    <path d="M3 15h18"></path>
+                    <path d="M7 20h10"></path>
+                  </svg>
+                </div>
+                <div class="trust-copy">
+                  <div class="trust-label">Fast delivery assurance</div>
+                  <p>Detailed personalized report aapko WhatsApp + Email par bheji jati hai, generally 24–48 ghanton ke
+                      andar – taki aap delay ke bina action le saken.</p>
+                </div>
+              </div>
             </div>
-            <button type="button" class="btn unlock-cta" id="btnUnlock" data-i18n="btnUnlock"
-              style="background:var(--saffron); color:white;">Get My Exact Lucky Metal & Full Kundli – ₹399</button>
-            <button type="button" class="skip-cta" id="btnSkipPreview" data-i18n="btnSkip">Directly go to
-              checkout</button>
           </div>
 
           <!-- HUMAN REVIEW EXPLANATION (near upsell) -->
@@ -1470,21 +1725,22 @@
             <strong style="color: #0f172a; display:block; margin-bottom:4px; font-size:0.95rem;" data-i18n="hrHead">🧿
               Kaise taiyar hoti hai report?</strong>
             <span data-i18n="hrDesc" style="display:block; margin-bottom:6px; line-height:1.5;">Detailed kundli report
-              hamare jyotishi manually banate hain — grah bal, dasha timing aur upay sab aapke hisaab se dekhe jaate
-              hain.</span>
+              hamare jyotishi manually banate hain — graho ke kathin yog, dasha timing aur aapke liye safe remedies sab
+              clearly explain kiye jaate hain.</span>
             <strong data-i18n="hrDel" style="font-size:0.85rem; color:#475569; display:block;">Report WhatsApp + Email
-              par bheji jati hai.</strong>
+              par bheji jati hai – taki aap baar‑baar refer kar saken.</strong>
           </div>
         </div>
       </section>
       <!-- Sticky Urgency Bar -->
       <div class="sticky-cta-bar" id="stickyBar">
         <div class="sticky-bar-text">
-          <strong data-i18n="stickHead">Get Your Lucky Metal Today</strong>
-          <span data-i18n="stickSub" style="display:none;"></span>
+          <strong data-i18n="stickHead">Apni personalized kundli banwaye</strong>
         </div>
-        <button type="button" class="sticky-bar-btn" id="btnStickyUnlock" data-i18n="btnSticky">Get Metal & Kundli
-          ₹399</button>
+        <button type="button" class="sticky-bar-btn" id="btnStickyUnlock">
+          <span class="sticky-price-old">₹1499</span>
+          <span class="sticky-price-new">₹399</span>
+        </button>
       </div>
 
   </div>
@@ -1548,7 +1804,7 @@
           pStatBadge: '⚡ Instant Grah Scan Completed',
           pStatSub: 'This is an automated surface-level preview based on your birth data.',
           identText: '{name}, aapki janam kundli ke chart me career aur leadership ka strong yog dikh raha hai.',
-          doshTitle: '⚠ Koi kathin yog ka sanket',
+          doshTitle: '⚠ Aapki kundli me kathin yog ka sanket hai',
           doshSub: 'Kundli me ek aisa grah sanyog dikh raha hai jo career aur paison ki growth me rukavat la sakta hai. Agar is yog ko samay par samjha na jaye toh pragati dheemi ho sakti hai.',
           valTrig: 'Kya aapne pichle 1–2 saal me delay, pressure ya unexpected rukavat feel ki hai?',
           valYes: 'Agar haan, toh aapko apni personalized kundli report banwani chahiye.',
@@ -1567,20 +1823,20 @@
           hrHead: '🧿 Kaise taiyar hoti hai report?',
           hrDesc: 'Detailed kundli report hamare jyotishi manually banate hain — grah bal, dasha timing aur upay sab aapke hisaab se check kiya jata hai.',
           hrDel: 'Report WhatsApp + Email par bheji jati hai.',
-          lockTitle: 'What You\'ll Unlock in Your Detailed Personalized Kundli Report',
-          v1: 'Complete Dosha & Dasha Breakdown',
-          v2: 'Exact Severity Analysis',
-          v3: 'Personalized Remedies (Easy-to-follow)',
-          v4: 'Lucky Metal & Timing Guidance',
-          v5: 'Career & Wealth Roadmap',
-          v6: '12-Month Forecast',
-          scarLimit: 'Today’s manual analysis capacity is almost full.',
-          offSub: 'Limited-time offer – 73% off',
-          btnUnlock: 'Unlock Full Kundli – ₹399',
-          btnSkip: 'Directly go to checkout',
-          stickHead: 'Fix Your Doshas Today',
+          lockTitle: 'Detailed Personalized Kundli Report me kya milega',
+          v1: 'Aapke dosh aur dasha ka detailed breakdown',
+          v2: 'Problem ki exact severity ka clear analysis',
+          v3: 'Aapke liye easy aur practical personalized remedies',
+          v4: 'Birth chart based exact lucky metal aur timing guidance',
+          v5: 'Career aur wealth growth ke liye clear roadmap',
+          v6: 'Agle 12 mahino ka focused forecast',
+          scarLimit: 'Aaj jyotishi ki manual analysis capacity almost full hai.',
+          offSub: 'Limited time ke liye – 73% off',
+          btnUnlock: 'Meri Full Kundli Report Unlock karo – ₹399',
+          btnSkip: 'Skip karke seedha checkout par jao',
+          stickHead: 'Apni personalized kundli banwaye',
           stickSub: '',
-          btnSticky: 'Buy Now ₹399'
+          btnSticky: 'Unlock – ₹399'
         },
         hi: {
           step1Ind: 'स्टेप 1',
