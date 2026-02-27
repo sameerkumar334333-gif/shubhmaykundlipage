@@ -9,63 +9,96 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://www.google-analytics.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Supabase tracking (shared with admin panel) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- dataLayer + attribution for GTM / GTAG -->
   <script>
+    window.dataLayer = window.dataLayer || [];
+    // sanitize URL to remove dob from query BEFORE any tracking
     (function () {
-      var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
-      var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
-
+      try {
+        var url = new URL(window.location.href);
+        if (url.searchParams.has('dob')) {
+          url.searchParams.delete('dob');
+          var qs = url.searchParams.toString();
+          var clean = url.origin + url.pathname + (qs ? ('?' + qs) : '') + url.hash;
+          window.history.replaceState({}, document.title, clean);
+        }
+      } catch (e) { }
+    })();
+    (function () {
       var sid = sessionStorage.getItem('shubhmay_sid');
       if (!sid) {
         sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
         sessionStorage.setItem('shubhmay_sid', sid);
         sessionStorage.setItem('shubhmay_session_start_ts', String(Date.now()));
       }
-
+      window._shubhmay_sid = sid;
       var params = new URLSearchParams(window.location.search);
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
         var v = params.get(k);
         if (v && !sessionStorage.getItem('shubhmay_' + k)) sessionStorage.setItem('shubhmay_' + k, v);
       });
-
-      function getAttribution() {
-        var o = {};
-        var st = sessionStorage.getItem('shubhmay_session_start_ts');
-        if (st) o.session_start_ts = parseInt(st, 10);
-        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
-          var v = sessionStorage.getItem('shubhmay_' + k);
-          if (v) o[k] = v;
-        });
-        return o;
-      }
-
-      window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
-      window._shubhmayTrack = function (eventType, payload) {
-        if (!window._shubhmaySupabase) return;
-        var pl = Object.assign({}, getAttribution(), payload || {});
-        try {
-          window._shubhmaySupabase
-            .from('analytics_events')
-            .insert([{
-              session_id: sid,
-              page_url: location.href,
-              referrer: document.referrer || null,
-              event_type: eventType,
-              payload: pl,
-              user_agent: navigator.userAgent,
-              language: navigator.language
-            }])
-            .then(function () { });
-        } catch (e) { }
-      };
-
-      if (window._shubhmaySupabase) {
-        window._shubhmayTrack('page_view', { page: 'marriage_indicator', title: 'marriage_love_arrange_mixed' });
-      }
     })();
+    // queue events before Supabase loads
+    window._trackQueue = [];
+    window._shubhmayTrack = function (eventType, payload) {
+      window._trackQueue.push([eventType, payload]);
+    };
+  </script>
+
+  <!-- GTM (for GTAG / GA4) + Supabase loaded after onload → no render-blocking -->
+  <script>
+    window.addEventListener('load', function () {
+      // Google Tag Manager
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-MGBML6GZ');
+
+      // Supabase analytics
+      var sb = document.createElement('script');
+      sb.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      sb.onload = function () {
+        var SUPABASE_URL = 'https://yhxbwlhfjznajnnlduwt.supabase.co';
+        var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeGJ3bGhmanpuYWpubmxkdXd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDc0NjYsImV4cCI6MjA4NzI4MzQ2Nn0.IVZ9AjLF5FgMG4_W1vhGNUX-JSpblj2nhtgkkJn7-MY';
+        window._shubhmaySupabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+        var sid = window._shubhmay_sid;
+        function getAttribution() {
+          var o = {};
+          var st = sessionStorage.getItem('shubhmay_session_start_ts');
+          if (st) o.session_start_ts = parseInt(st, 10);
+          ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+            var v = sessionStorage.getItem('shubhmay_' + k); if (v) o[k] = v;
+          });
+          return o;
+        }
+        window._shubhmayTrack = function (eventType, payload) {
+          if (!window._shubhmaySupabase) return;
+          var pl = Object.assign({}, getAttribution(), payload || {});
+          try {
+            window._shubhmaySupabase
+              .from('analytics_events')
+              .insert([{
+                session_id: sid,
+                page_url: location.href,
+                referrer: document.referrer || null,
+                event_type: eventType,
+                payload: pl,
+                user_agent: navigator.userAgent,
+                language: navigator.language
+              }])
+              .then(function () { });
+          } catch (e) { }
+        };
+        (window._trackQueue || []).forEach(function (q) { window._shubhmayTrack(q[0], q[1]); });
+        window._shubhmayTrack('page_view', { page: 'marriage_indicator', title: 'marriage_love_arrange_mixed' });
+      };
+      document.head.appendChild(sb);
+    });
   </script>
 
   <style>
@@ -427,6 +460,10 @@
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+
   <div class="wrap">
 
     <div class="topbar">

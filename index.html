@@ -2313,271 +2313,100 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGBML6GZ" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
+    <!-- 1. Navbar -->
+    <nav
+        style="background: linear-gradient(to right, var(--deep-maroon), var(--light-maroon)); padding: 16px 24px; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-md);">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div
+                style="font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem; color: var(--matte-gold); letter-spacing: 1px;">
+                SHUBHMAY
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center;">
+                <a href="#services"
+                    style="color: var(--cream); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition);"
+                    onmouseover="this.style.color='var(--saffron)'"
+                    onmouseout="this.style.color='var(--cream)'">Services</a>
+                <a href="#about"
+                    style="color: var(--cream); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition);"
+                    onmouseover="this.style.color='var(--saffron)'"
+                    onmouseout="this.style.color='var(--cream)'">About</a>
+                <a href="#tools"
+                    style="color: var(--cream); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition);"
+                    onmouseover="this.style.color='var(--saffron)'" onmouseout="this.style.color='var(--cream)'">Free
+                    Tools</a>
+                <a href="#featured-offer"
+                    style="background: var(--matte-gold); color: var(--deep-maroon); padding: 8px 20px; border-radius: var(--radius-full); text-decoration: none; font-weight: 700; font-size: 0.95rem; box-shadow: var(--shadow-sm); transition: var(--transition);"
+                    onmouseover="this.style.background='var(--saffron)'"
+                    onmouseout="this.style.background='var(--matte-gold)'">Get Report</a>
+            </div>
+        </div>
+    </nav>
+    <style>
+        @media (max-width: 768px) {
+            nav .container {
+                flex-direction: column;
+                gap: 12px;
+            }
 
-    <!-- 1. Hero Section -->
-    <section class="hero-section dark-section">
-        <!-- Upgraded Advanced Backgrounds -->
+            nav .container>div:last-child {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+            }
+        }
+    </style>
+
+    <!-- 2. Hero Section -->
+    <section class="hero-section dark-section" style="padding: 0; background-color: var(--deep-maroon);">
         <div class="hero-bg-gradient"></div>
         <div class="hero-bg-pattern"></div>
         <div class="hero-bg-overlay watermark"></div>
-
-        <div class="container hero-content">
-            <div class="hero-grid">
-
-                <!-- Left Column (Text & Offer) -->
-                <div class="hero-text-col">
-                    <h1 class="headline">Personalized <span class="accent-text">Kundli Report</span></h1>
-
-                    <p class="subheadline" style="color: rgba(255,255,255,0.8);">Full birth chart report. Career,
-                        marriage, money, dasha and remedies. Based on your exact date, time and place of birth.</p>
-
-                    <!-- Authority Strip -->
-                    <div class="hero-trust-chips">
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron"
-                                style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg><span>Vedic Chart Analysis</span></div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron"
-                                style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg><span>Expert Reviewed</span></div>
-                        <div class="trust-chip" style="color: #fff;"><svg class="lucide lucide-check icon-saffron"
-                                style="width: 14px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg><span>Sent to Your Email</span></div>
-                    </div>
-                </div>
-
-                <!-- Right Column (Product Image) -->
-                <div class="hero-visual-col">
-                    <div class="hero-mockup-wrapper mockup-img-container">
-                        <img src="assets/premium_kundli.webp" alt="Personalized Kundli Report" class="hero-png-img"
-                            fetchpriority="high" width="600" height="600" decoding="async" loading="eager">
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Price & CTA at bottom -->
-            <div class="hero-price-bottom">
-                <div class="impact-price-wrapper">
-                    <div class="impact-price-box">
-                        <span class="mrp-impact"><span class="line-through">₹999</span></span>
-                        <span class="price-amount-impact">₹499</span>
-                    </div>
-                    <button id="cta-hero" class="cta-button impact-cta pulse-anim" data-cta="hero"
-                        onclick="trackCta('hero','Order My Kundli Report')">
-                        <span class="cta-text">Order My Kundli Report</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- 1b. Karmic Solution Image + CTA -->
-    <section class="karmic-image-section" style="padding: 48px 0; background: var(--cream);">
-        <div class="container" style="text-align: center;">
-            <img src="assets/karmic_solution_compressed.webp" alt="Karmic Solution" loading="lazy"
-                style="max-width: 500px; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); margin-bottom: 24px;"
-                width="600" height="600">
-            <button id="cta-karmic" class="cta-button pulse-anim" data-cta="karmic"
-                onclick="trackCta('karmic_section','Get My Kundli Report')">
-                Get My Kundli Report
-            </button>
+        <div class="hero-content" style="width: 100%; text-align: center;">
+            <img src="assets/images/hero.png" alt="Hero Banner" style="width: 100%; height: auto; display: block;"
+                onerror="this.src='assets/premium_kundli.webp'">
         </div>
     </section>
 
-    <!-- 2. Emotional Hook Section -->
-    <section class="agitation-section dark-section">
+    <!-- 3. About Shubhmay (Brand Section) -->
+    <section id="about" class="founder-section" style="background-color: var(--cream); padding: 100px 0;">
         <div class="container">
-            <h2 class="section-title text-light">Clear The Hurdles In Your Destiny</h2>
-            <p class="section-subtitle" style="color: rgba(255,255,255,0.8); max-width: 720px;">Your Detailed
-                Personalized Kundli report dives deep into your past, present and future. We hand-analyze your birth
-                chart, planets, DOB and houses to uncover exactly what's blocking your progress, and provide clear
-                answers and remedies. No guesswork.</p>
-        </div>
-    </section>
-
-    <!-- 2b. How Janam Kundli Report Helps You -->
-    <section class="how-helps-section" style="padding: 80px 0; background: var(--cream-light);">
-        <div class="container">
-            <h2 class="section-title">How Janam Kundli Report Helps You</h2>
-            <p class="section-subtitle">Your birth chart holds answers. A Janam Kundli report helps you use them.</p>
-            <div class="helps-grid">
-                <div class="helps-card">
-                    <div class="helps-icon">📅</div>
-                    <h3>Know Your Right Time</h3>
-                    <p>Dasha tells you which planet is running your life now. Know the best years for job change,
-                        marriage, business start. Act when stars support you.</p>
-                </div>
-                <div class="helps-card">
-                    <div class="helps-icon">💑</div>
-                    <h3>Understand Marriage & Love</h3>
-                    <p>See your 7th house, Venus, Mars. Know delay reasons, compatible partner, when marriage can
-                        happen. No more confusion.</p>
-                </div>
-                <div class="helps-card">
-                    <div class="helps-icon">💼</div>
-                    <h3>Plan Career & Money</h3>
-                    <p>10th house and Saturn show career. 2nd, 8th, 11th show money. Know your strong periods. Make
-                        smart moves.</p>
-                </div>
-                <div class="helps-card">
-                    <div class="helps-icon">🛡️</div>
-                    <h3>Fix Dosha & Weakness</h3>
-                    <p>Mangal dosha, Rahu, Shani—know what affects you. Get simple remedies. Reduce stress, improve
-                        results.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. Areas Covered -->
-    <section class="who-section" id="areas-covered">
-        <div class="container">
-            <h2 class="section-title">What We Cover in Your Report</h2>
-            <div class="areas-grid">
-                <div class="who-card">
-                    <h3>Relationships & Marriage</h3>
-                    <p>Compatibility, delay, and when to expect marriage.</p>
-                </div>
-                <div class="who-card">
-                    <h3>Career & Job</h3>
-                    <p>Best time for job change, exams, going abroad.</p>
-                </div>
-                <div class="who-card">
-                    <h3>Business & Money</h3>
-                    <p>Wealth timing, risk periods, stability.</p>
-                </div>
-                <div class="who-card">
-                    <h3>Love & Emotions</h3>
-                    <p>Planets and your love life, attachment patterns.</p>
-                </div>
-                <div class="who-card">
-                    <h3>Home & Property</h3>
-                    <p>Property timing, shifting, family peace.</p>
-                </div>
-                <div class="who-card">
-                    <h3>Health</h3>
-                    <p>Body and mind balance from your chart.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. What You Will Get -->
-    <section class="deliverables-section" id="what-you-get">
-        <div class="container">
-            <h2 class="section-title">What You Get in Your Report</h2>
-            <div class="deliverables-grid">
-                <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Dosha & Dasha</strong> — Mangal, Shani, Rahu-Ketu and your current planetary
-                            period.</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Yog & Strength</strong> — Important yogas and how they affect career, money,
-                            relationships.</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Remedies</strong> — Simple, easy-to-do suggestions based on your chart.</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Numerology</strong> <em>(Optional)</em> — Name and birth number insight.</span>
-                    </li>
-                </ul>
-                <ul class="deliverables-list">
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>1-Year Monthly Forecast</strong> — Month-wise prediction.</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>Long-Term Trends</strong> — Major planetary shifts in coming years.</span>
-                    </li>
-                    <li><svg class="lucide lucide-check-circle-2 icon-saffron" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span><strong>House Strength Chart</strong> — Visual house strength.</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. Meet Your Astrologer -->
-    <section class="founder-section">
-        <div class="container">
-            <div class="founder-layout" style="max-width: 700px; margin: 0 auto; text-align: center;">
+            <div class="founder-layout" style="max-width: 800px; margin: 0 auto; text-align: center;">
                 <div class="founder-content">
-                    <div class="founder-badge">Meet Your Astrologer</div>
-                    <h2 class="founder-title">Clear &amp; Simple <span class="accent-text">Reports</span></h2>
-                    <p class="founder-desc">I have studied Vedic astrology for years. I help people with career,
-                        marriage, and money questions. No scary words. No confusion. Just clear answers from your birth
-                        chart.</p>
+                    <div class="founder-badge" style="background: rgba(199, 169, 98, 0.15); color: var(--dark-gold);">
+                        Clarity, not superstition</div>
+                    <h2 class="founder-title">What is <span class="accent-text">Shubhmay?</span></h2>
 
-                    <div class="founder-stats">
-                        <div class="stat-item">
-                            <h4 class="stat-num">14K+</h4>
-                            <p class="stat-label">Community Members</p>
-                        </div>
-                        <div class="stat-item">
-                            <h4 class="stat-num">1000s</h4>
-                            <p class="stat-label">Charts Analyzed</p>
-                        </div>
-                    </div>
+                    <p class="subheadline"
+                        style="margin: 0 auto 40px auto; color: var(--text-muted); font-size: 1.15rem; max-width: 700px; line-height: 1.8;">
+                        Shubhmay is built on a simple mission: <strong>No fear-based astrology.</strong> We believe the
+                        stars offer guidance and clarity, not anxiety.
+                        Our approach strips away the confusing jargon to give you practical, modern, and perfectly
+                        personalized astrological insights.
+                    </p>
 
-                    <div class="founder-profile impulsive-founder">
-                        <div class="profile-img-placeholder">
-                            <svg class="lucide lucide-user-check icon-gold icon-large"
-                                style="width: 40px; height: 40px;" class="lucide lucide-user-check"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
+                    <div class="founder-profile impulsive-founder"
+                        style="display: inline-flex; flex-direction: column; align-items: center; padding: 32px 48px; gap: 16px;">
+                        <div class="profile-img-placeholder" style="width: 80px; height: 80px; margin-bottom: 8px;">
+                            <svg class="lucide lucide-user-check"
+                                style="width: 48px; height: 48px; color: var(--matte-gold);"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                 <circle cx="9" cy="7" r="4" />
                                 <polyline points="16 11 18 13 22 9" />
                             </svg>
-
                         </div>
-                        <div class="profile-info">
-                            <h3 class="founder-name-highlight">AstroGuru Ashutosh</h3>
-                            <p class="founder-title-highlight">Vedic Astrologer</p>
+                        <div class="profile-info" style="text-align: center;">
+                            <h3
+                                style="font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, #c7a962, #f29f58); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                                Who is AstroGuru Ashutosh?</h3>
+                            <p
+                                style="color: var(--text-muted); padding: 0; font-style: normal; margin-top: 12px; margin-bottom: 0;">
+                                A Vedic Astrologer dedicated to demystifying your birth chart. With thousands of charts
+                                analyzed, Ashutosh focuses on delivering honest, empowering answers that help you
+                                navigate your career, relationships, and wealth.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -2585,348 +2414,276 @@
         </div>
     </section>
 
-    <!-- 4. How Your Kundli Report Is Prepared -->
-    <section class="process-section dark-section" id="how-it-works">
+    <!-- 4. Services Section -->
+    <section id="services" style="background-color: var(--cream-light); padding: 100px 0;">
         <div class="container">
-            <h2 class="section-title text-light">How We Make Your Report</h2>
-            <div class="steps-layout steps-five">
-                <div class="step-card dark-step-card">
-                    <div class="step-number">1</div>
-                    <h4 class="step-title">You Enter Birth Details</h4>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card dark-step-card">
-                    <div class="step-number">2</div>
-                    <h4 class="step-title">We Make Your Birth Chart</h4>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card dark-step-card">
-                    <div class="step-number">3</div>
-                    <h4 class="step-title">We Analyse Planets & Houses</h4>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card dark-step-card">
-                    <div class="step-number">4</div>
-                    <h4 class="step-title">We Study Dasha & Timeline</h4>
-                </div>
-                <div class="step-connector"></div>
-                <div class="step-card dark-step-card">
-                    <div class="step-number">5</div>
-                    <h4 class="step-title">We Send PDF to Your Email</h4>
-                </div>
-            </div>
-            <p class="process-note"
-                style="text-align: center; margin-top: 32px; color: rgba(255,255,255,0.7); font-size: 1rem;">Every
-                report is checked by our expert before sending.</p>
-        </div>
-    </section>
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Everything you need to understand your cosmic blueprint.</p>
 
-    <!-- 6. Differentiation -->
-    <section class="diff-section">
-        <div class="container">
-            <h2 class="section-title">Why Choose Us</h2>
-            <div class="diff-split-grid">
-                <div class="diff-column neg-column">
-                    <h4 class="diff-col-title">Other Astrologers</h4>
-                    <ul class="diff-list">
-                        <li><svg class="lucide lucide-x text-red" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-top: 48px;">
+                <!-- Card 1 -->
+                <div
+                    style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: var(--shadow-sm); text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="background: rgba(199, 169, 98, 0.1); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--matte-gold);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M2 12h4l3-9 5 18 3-9h5" />
                             </svg>
-                            <span>Generic rashifal</span>
-                        </li>
-                        <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-                            </svg>
-                            <span>Fear-based predictions</span>
-                        </li>
-                        <li><svg class="lucide lucide-x text-red" style="" class="lucide lucide-x"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-                            </svg>
-                            <span>Pressure to buy more</span>
-                        </li>
-                    </ul>
+                        </div>
+                        <h3 style="font-size: 1.4rem; margin-bottom: 12px;">Personalized Kundali Report</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Your complete
+                            15-20 page detailed birth chart analysis.</p>
+                        <div
+                            style="font-size: 2rem; font-family: var(--font-heading); color: var(--deep-maroon); font-weight: 800; margin-bottom: 32px;">
+                            ₹499</div>
+                    </div>
+                    <a href="#featured-offer" class="cta-button"
+                        style="width: 100%; padding: 14px 24px; font-size: 1rem;">View Details</a>
                 </div>
-                <div class="diff-column pos-column">
-                    <h4 class="diff-col-title">What We Offer</h4>
-                    <ul class="diff-list">
-                        <li><svg class="lucide lucide-check text-green" style="" class="lucide lucide-check"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M20 6 9 17l-5-5" />
+
+                <!-- Card 2 -->
+                <div
+                    style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: var(--shadow-sm); text-align: center; position: relative; overflow: hidden; opacity: 0.8;">
+                    <div
+                        style="position: absolute; top: 16px; right: 16px; background: var(--border-color); color: var(--text-muted); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 1px;">
+                        Coming Soon</div>
+                    <div
+                        style="background: rgba(45, 8, 14, 0.05); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--deep-maroon);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 1.4rem; margin-bottom: 12px; color: #777;">Consultation</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">One-on-one deep dive sessions over a call
+                        to resolve your specific queries.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px 32px; box-shadow: var(--shadow-sm); text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div
+                            style="background: rgba(242, 159, 88, 0.1); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--saffron);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                             </svg>
-                            <span>Report made from your real chart</span>
-                        </li>
-                        <li><svg class="lucide lucide-check text-green" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                            <span>Easy words, no complex terms</span>
-                        </li>
-                        <li><svg class="lucide lucide-check text-green" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
-                            <span>Direct answers, no fear</span>
-                        </li>
-                    </ul>
+                        </div>
+                        <h3 style="font-size: 1.4rem; margin-bottom: 12px;">Free Tools</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">Quick calculators
+                            for fast insights into your Rashi and elements.</p>
+                    </div>
+                    <a href="#tools" class="cta-button"
+                        style="width: 100%; padding: 14px 24px; font-size: 1rem; background: var(--cream); color: var(--deep-maroon); border: 2px solid var(--matte-gold); box-shadow: none;">Try
+                        Tools</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. Pricing -->
-    <section class="price-stack-section dark-section" id="pricing">
+    <!-- 5. Why Trust Us -->
+    <section class="dark-section" style="padding: 100px 0;">
         <div class="container">
-            <h2 class="section-title text-light">Real Value Breakdown</h2>
-            <div class="stack-box">
-                <div class="stack-items">
-                    <div class="stack-row"><span>Birth Chart Analysis</span> <span>₹499</span></div>
-                    <div class="stack-row"><span>Dasha Timeline</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Marriage &amp; Relationship Analysis</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Career &amp; Finance Section</span> <span>₹399</span></div>
-                    <div class="stack-row"><span>Yog, Dosha &amp; Remedial Suggestions</span> <span>₹299</span></div>
+            <h2 class="section-title text-light">Why Trust Us</h2>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin-top: 56px;">
+                <div class="problem-card" style="border-color: rgba(199, 169, 98, 0.3);">
+                    <i class="icon-gold"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 16v-4" />
+                            <path d="M12 8h.01" />
+                        </svg></i>
+                    <h3 style="color: var(--matte-gold); margin-bottom: 12px;">Personalized Analysis</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">Every chart is analyzed manually,
+                        ensuring the insights represent YOU, not a generic computer script.</p>
                 </div>
-                <div class="stack-total">
-                    <span class="total-label">Total Value</span>
-                    <span class="total-amount line-through">₹1995</span>
+                <div class="problem-card" style="border-color: rgba(199, 169, 98, 0.3);">
+                    <i class="icon-gold"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="m5 11 4-7" />
+                            <path d="m19 11-4-7" />
+                            <path d="M2 11h20" />
+                            <path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8c.9 0 1.7-.7 1.9-1.6L20.5 11" />
+                            <path d="M9 11v9" />
+                            <path d="M15 11v9" />
+                        </svg></i>
+                    <h3 style="color: var(--matte-gold); margin-bottom: 12px;">Practical Remedies</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">We provide modern, executable remedies
+                        that fit easily into your lifestyle, without complex rituals.</p>
                 </div>
-                <div class="stack-offer">
-                    <span class="offer-label">Today Only</span>
-                    <span class="offer-amount">₹499</span>
+                <div class="problem-card" style="border-color: rgba(199, 169, 98, 0.3);">
+                    <i class="icon-gold"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect width="20" height="14" x="2" y="5" rx="2" />
+                            <line x1="2" x2="22" y1="10" y2="10" />
+                        </svg></i>
+                    <h3 style="color: var(--matte-gold); margin-bottom: 12px;">Transparent Pricing</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">No hidden fees. No upsells. What you
+                        see is exactly what you get, guaranteed.</p>
                 </div>
-                <button id="cta-pricing" class="cta-button final-cta pulse-anim" data-cta="pricing"
-                    onclick="trackCta('pricing','Proceed to Checkout')">
-                    <span class="cta-text">Proceed to Checkout</span>
+                <div class="problem-card" style="border-color: rgba(199, 169, 98, 0.3);">
+                    <i class="icon-gold"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="m12 14 4-4" />
+                            <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+                        </svg></i>
+                    <h3 style="color: var(--matte-gold); margin-bottom: 12px;">Modern Approach</h3>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.95rem;">We bridge ancient wisdom with modern
+                        logical frameworks, discarding the superstitions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Testimonials -->
+    <section style="background-color: var(--cream); padding: 100px 0; overflow: hidden;">
+        <div class="container">
+            <h2 class="section-title">Brand Validation</h2>
+            <p class="section-subtitle">Real words from real people who found clarity.</p>
+
+            <div
+                style="display: flex; gap: 24px; overflow-x: auto; padding: 24px 0; scroll-snap-type: x mandatory; max-width: 100vw; margin: 40px auto 0;">
+                <div
+                    style="min-width: 320px; background: white; padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); scroll-snap-align: center;">
+                    <div style="color: var(--matte-gold); margin-bottom: 16px;">★★★★★</div>
+                    <p style="font-style: italic; color: var(--text-dark); margin-bottom: 24px; font-size: 1.05rem;">"I
+                        was terrified of my Kundali because of things I heard. Shubhmay completely changed my
+                        perspective. Finally, actionable advice without the fear factor."</p>
+                    <div style="font-weight: 700; color: var(--deep-maroon);">Priya M.</div>
+                </div>
+                <div
+                    style="min-width: 320px; background: white; padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); scroll-snap-align: center;">
+                    <div style="color: var(--matte-gold); margin-bottom: 16px;">★★★★★</div>
+                    <p style="font-style: italic; color: var(--text-dark); margin-bottom: 24px; font-size: 1.05rem;">
+                        "The detail in the ₹499 report is unbelievable. It clearly pointed out my current career
+                        struggles and what I need to focus on next year."</p>
+                    <div style="font-weight: 700; color: var(--deep-maroon);">Rohan S.</div>
+                </div>
+                <div
+                    style="min-width: 320px; background: white; padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); scroll-snap-align: center;">
+                    <div style="color: var(--matte-gold); margin-bottom: 16px;">★★★★★</div>
+                    <p style="font-style: italic; color: var(--text-dark); margin-bottom: 24px; font-size: 1.05rem;">
+                        "Straightforward, brutally honest, but weirdly comforting. This is exactly how astrology should
+                        be practiced in modern times."</p>
+                    <div style="font-weight: 700; color: var(--deep-maroon);">Ananya V.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Featured Offer Section (Strong Push) -->
+    <section id="featured-offer" class="dark-section"
+        style="padding: 100px 0; background-image: radial-gradient(circle at center, var(--light-maroon), var(--deep-maroon) 80%);">
+        <div class="container">
+            <div
+                style="background: rgba(255, 255, 255, 0.05); border: 2px solid var(--matte-gold); border-radius: var(--radius-lg); padding: 56px 40px; text-align: center; max-width: 800px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                <div
+                    style="display: inline-block; background: var(--matte-gold); color: var(--deep-maroon); font-weight: 800; padding: 6px 16px; border-radius: var(--radius-full); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px;">
+                    Featured Offer</div>
+                <h2 style="font-size: 3rem; color: white; margin-bottom: 24px; line-height: 1.1;">Personalized Kundali
+                    Report</h2>
+                <p
+                    style="font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    A comprehensive, manually reviewed document revealing the truth of your birth chart. Career
+                    milestones, relationship insights, and practical remedies.
+                </p>
+
+                <div
+                    style="display: flex; justify-content: center; align-items: center; gap: 24px; margin-bottom: 48px; flex-wrap: wrap;">
+                    <div style="text-align: right;">
+                        <span
+                            style="display: block; color: rgba(255,255,255,0.5); font-size: 1.2rem; text-decoration: line-through;">₹999</span>
+                        <span
+                            style="display: block; color: var(--saffron-bright); font-size: 4rem; font-family: var(--font-heading); font-weight: 800; line-height: 1; text-shadow: 0 4px 12px rgba(0,0,0,0.4);">₹499</span>
+                    </div>
+                </div>
+
+                <button class="cta-button pulse-anim"
+                    style="font-size: 1.4rem; padding: 20px 48px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(242, 159, 88, 0.4);"
+                    onclick="trackCta('featured_offer','Get My Report Now')">
+                    Get My Report Now
                 </button>
-                <p class="pricing-note"
-                    style="text-align: center; margin-top: 20px; font-size: 0.95rem; color: var(--text-muted);">Delivery
-                    Time: 24–48 Hours &bull; Digital PDF Format</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. Testimonials -->
-    <section class="testimonials-section" id="reviews">
-        <div class="container">
-            <h2 class="section-title">What People Are Saying</h2>
-            <p class="section-subtitle">Grounded feedback from people who ordered the report.</p>
-        </div>
-        <div class="testimonials-mask" id="testimonialsMask">
-            <div class="testimonials-track" id="testimonialsTrack">
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The timeline section helped me understand when to make my career move. The
-                        explanations were clear and structured."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">R</div>
-                        <div>
-                            <div class="review-name">Rahul</div>
-                            <div class="review-meta">Delhi</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."
-                    </p>
-                    <div class="review-author">
-                        <div class="review-avatar">P</div>
-                        <div>
-                            <div class="review-name">Priya</div>
-                            <div class="review-meta">Mumbai</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">A</div>
-                        <div>
-                            <div class="review-name">Amit</div>
-                            <div class="review-meta">Bangalore</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The timeline section helped me understand when to make my career move. The
-                        explanations were clear and structured."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">R</div>
-                        <div>
-                            <div class="review-name">Rahul</div>
-                            <div class="review-meta">Delhi</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"I appreciated that the report focused on analysis rather than superstition."
-                    </p>
-                    <div class="review-author">
-                        <div class="review-avatar">P</div>
-                        <div>
-                            <div class="review-name">Priya</div>
-                            <div class="review-meta">Mumbai</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="review-card">
-                    <div class="review-stars">★★★★★</div>
-                    <p class="review-text">"The Dasha breakdown clarified patterns I had been noticing for years."</p>
-                    <div class="review-author">
-                        <div class="review-avatar">A</div>
-                        <div>
-                            <div class="review-name">Amit</div>
-                            <div class="review-meta">Bangalore</div>
-                        </div>
-                    </div>
+                <div style="margin-top: 24px; color: rgba(255,255,255,0.6); font-size: 0.9rem;">
+                    Delivered straight to your inbox securely.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 9. FAQ Section -->
-    <section class="faq-section dark-section">
+    <!-- 8. Tools Preview -->
+    <section id="tools" style="background-color: var(--cream-light); padding: 100px 0;">
         <div class="container">
-            <h2 class="section-title text-light">Frequently Asked Questions</h2>
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is this software generated?</span>
-                        <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
+            <h2 class="section-title">Explore Our Ecosystem</h2>
+            <p class="section-subtitle">Start with our free mini-tools to get a glimpse of your cosmic architecture.</p>
 
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px;">
+                <a href="free-metal-finder-tool.html" style="text-decoration: none; color: inherit; display: block;">
+                    <div
+                        style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm); text-align: center; height: 100%;">
+                        <h3 style="color: var(--deep-maroon); margin-bottom: 12px; font-size: 1.3rem;">Rashi Finder Tool
+                        </h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Find your exact moon sign instantly
+                            based on your birth details.</p>
+                        <div
+                            style="margin-top: 24px; color: var(--saffron); font-weight: 700; font-size: 0.9rem; text-transform: uppercase;">
+                            Try Now →</div>
                     </div>
-                    <div class="faq-answer">
-                        <p>No. Charts are Generated thru a software named "Astrosage", but interpretation is manual.</p>
-                    </div>
+                </a>
+
+                <div
+                    style="background: white; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm); text-align: center; opacity: 0.7;">
+                    <h3 style="color: var(--text-muted); margin-bottom: 12px; font-size: 1.3rem;">Numerology Calculator
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Discover your life path number and hidden
+                        traits.</p>
+                    <div
+                        style="margin-top: 24px; background: var(--border-color); color: var(--text-muted); display: inline-block; padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700;">
+                        COMING SOON</div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What if I don't know exact birth time?</span>
-                        <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
 
-                    </div>
-                    <div class="faq-answer">
-                        <p>Approximate time can provide overview; exact time improves accuracy.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How will I receive the report?</span>
-                        <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-
-                    </div>
-                    <div class="faq-answer">
-                        <p>PDF via email and optionally WhatsApp.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is my data secure?</span>
-                        <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-
-                    </div>
-                    <div class="faq-answer">
-                        <p>Birth details are used only for report preparation.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is consultation included?</span>
-                        <svg class="lucide lucide-chevron-down icon-gold" style="" class="lucide lucide-chevron-down"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-
-                    </div>
-                    <div class="faq-answer">
-                        <p>The report is a standalone PDF. One-on-one consultation can be discussed separately if
-                            needed.</p>
-                    </div>
+                <div
+                    style="background: white; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm); text-align: center; opacity: 0.7;">
+                    <h3 style="color: var(--text-muted); margin-bottom: 12px; font-size: 1.3rem;">Daily Guidance</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Personalized planetary alignments for your
+                        exact sign every day.</p>
+                    <div
+                        style="margin-top: 24px; background: var(--border-color); color: var(--text-muted); display: inline-block; padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700;">
+                        COMING SOON</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 9. Urgency (Subtle) -->
-    <section class="urgency-section dark-section" style="padding: 48px 0;">
-        <div class="container">
-            <p class="urgency-text" style="text-align: center; font-size: 1.1rem; color: rgba(255,255,255,0.9);">Get
-                your report now. Limited time price.</p>
+    <!-- 9. Final CTA -->
+    <section class="dark-section" style="padding: 120px 0; text-align: center; position: relative;">
+        <div class="container" style="position: relative; z-index: 2;">
+            <h2 class="section-title text-light" style="font-size: 3.5rem; margin-bottom: 24px; line-height: 1.1;">Start
+                Your Journey With Shubhmay</h2>
+            <p style="font-size: 1.25rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 48px auto;">
+                No more confusion. Just clarity, truth, and empowering remedies.
+            </p>
+            <button class="cta-button pulse-anim"
+                style="font-size: 1.5rem; padding: 22px 56px; box-shadow: 0 10px 40px rgba(242, 159, 88, 0.5);"
+                onclick="trackCta('bottom_cta','Get Report ₹499')">
+                Get Report ₹499
+            </button>
+        </div>
+        <div
+            style="position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); font-size: 0.85rem;">
+            &copy; 2026 Shubhmay. All rights reserved.
         </div>
     </section>
 
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 Kundli Reports. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- 10. Sticky CTA Bar -->
-    <div class="sticky-cta-bar">
-        <div class="sticky-container">
-            <span class="sticky-text">Hurry — offer is only for today</span>
-            <button id="cta-sticky" class="cta-button sticky-btn pulse-anim" data-cta="sticky"
-                onclick="trackCta('sticky_bar','Get Your Report – ₹499')">Get Your Report – ₹499</button>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // FAQ Accordion
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-                    faqItems.forEach(i => {
-                        i.classList.remove('active');
-                        const answer = i.querySelector('.faq-answer');
-                        answer.style.maxHeight = '0px';
-                        answer.style.padding = '0 24px';
-                    });
-                    if (!isActive) {
-                        item.classList.add('active');
-                        const answer = item.querySelector('.faq-answer');
-                        answer.style.maxHeight = `${answer.scrollHeight + 24}px`;
-                        answer.style.padding = '0 24px 24px 24px';
-                    }
-                });
-            });
-
-        });
-    </script>
 </body>
 
 </html>

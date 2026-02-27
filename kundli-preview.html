@@ -16,6 +16,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     (function () {
+      // sanitize URL: remove dob from query so it never reaches GTM / Meta
+      try {
+        var url = new URL(window.location.href);
+        if (url.searchParams.has('dob')) {
+          url.searchParams.delete('dob');
+          var qs = url.searchParams.toString();
+          var clean = url.origin + url.pathname + (qs ? ('?' + qs) : '') + url.hash;
+          window.history.replaceState({}, document.title, clean);
+        }
+      } catch (e) { }
       var _sid = sessionStorage.getItem('shubhmay_sid');
       if (!_sid) {
         _sid = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
